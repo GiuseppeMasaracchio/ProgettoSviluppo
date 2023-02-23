@@ -795,3 +795,4 @@ MonoBehaviour:
   cam: {fileID: 105963710}
   player: {fileID: 1831365408}
   move: {fileID: 1831365411}
+  sCam: {fileID: 963194227}

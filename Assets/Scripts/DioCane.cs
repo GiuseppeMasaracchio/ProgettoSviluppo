@@ -8,6 +8,7 @@ public class DioCane : MonoBehaviour
     [SerializeField] CameraRotation cam;
     [SerializeField] Rigidbody player;
     [SerializeField] Movement move;
+    [SerializeField] Camera sCam;
     void Start() {
         
     }
@@ -22,7 +23,10 @@ public class DioCane : MonoBehaviour
     }
 
     public void OnLook(InputValue input) {
-        Debug.Log(input.Get<Vector2>());
-        cam.xRot(input.Get<Vector2>());
+        Vector2 position = new Vector2(input.Get<Vector2>().x - (sCam.pixelWidth /2), input.Get<Vector2>().y - (sCam.pixelHeight / 2));
+        //sCam.ScreenToWorldPoint(position);
+        
+        Debug.Log(position);
+        cam.xRot(position);
     }
 }

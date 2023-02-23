@@ -7,6 +7,7 @@ public class PlayerMov : MonoBehaviour {
     [SerializeField] Transform camHolder;
     [SerializeField] float horizontalSens;
     [SerializeField] Rigidbody player;
+    //[SerializeField] Camera sCam;
     //[SerializeField] PlayerInput puzzo;
 
     public CameraRotation cam;
@@ -21,7 +22,7 @@ public class PlayerMov : MonoBehaviour {
     }
 
     void Start() {
-        //Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Confined;
         
         //camHolder.transform.rotation.Set(0f, 0f, 0f, 0f);
         
@@ -29,6 +30,7 @@ public class PlayerMov : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        //Debug.Log(Mouse.current.position.ReadValue());
         /*
         if (Keyboard.current.escapeKey.wasPressedThisFrame) {
             puzzo.SwitchCurrentActionMap("UI");
@@ -38,6 +40,7 @@ public class PlayerMov : MonoBehaviour {
         */
         //Debug.Log(camHolder.rotation);
         //Debug.Log(camHolder.localRotation);
+        
         camHolder.rotation = cam.CamRot(horizontalSens);
         player.AddForce(move.Mov().normalized * 500f * Time.fixedDeltaTime);
         
