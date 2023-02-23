@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ba4ed348ef4f848be76b75cfdc65e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rotation: {x: 0, y: 0}
+  screenPosition: {x: 0, y: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camHolder: {fileID: 105963709}
-  horizontalSens: 80
+  horizontalSens: 20
   player: {fileID: 1831365408}
   cam: {fileID: 105963710}
   move: {fileID: 1831365411}
@@ -792,7 +792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02e4b5386ef64b4aba143c3ea8b0b2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 105963710}
   player: {fileID: 1831365408}
-  move: {fileID: 1831365411}
   sCam: {fileID: 963194227}
+  cam: {fileID: 105963710}
+  move: {fileID: 1831365411}

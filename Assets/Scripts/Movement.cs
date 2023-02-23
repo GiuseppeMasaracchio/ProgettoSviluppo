@@ -5,11 +5,11 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public Vector2 direction = Vector2.zero;
-    public Vector3 Mov() {
+    public Vector3 Move() {
         return new Vector3 (direction.x, 0f, direction.y);
     }
 
-    public void Dir(Vector2 dir) {
+    public void Direction(Vector2 dir) {
         this.direction = dir;
     }
 }
