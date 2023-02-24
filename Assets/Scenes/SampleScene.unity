@@ -169,6 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenPosition: {x: 0, y: 0}
+  camHolder: {fileID: 105963709}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0}
+  player: {fileID: 1831365408}
 --- !u!1 &1946892850
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,9 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3df79bc4f4edc4cb0ca599e1ed74c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camHolder: {fileID: 105963709}
   horizontalSens: 20
-  player: {fileID: 1831365408}
   cam: {fileID: 105963710}
   move: {fileID: 1831365411}
 --- !u!114 &1946892856
@@ -792,7 +792,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02e4b5386ef64b4aba143c3ea8b0b2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1831365408}
   sCam: {fileID: 963194227}
   cam: {fileID: 105963710}
   move: {fileID: 1831365411}

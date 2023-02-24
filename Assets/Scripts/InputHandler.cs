@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputHandler : MonoBehaviour
-{   
+public class InputHandler : MonoBehaviour {
     //Reference to object
     [SerializeField] Camera sCam;
 
@@ -13,7 +12,7 @@ public class InputHandler : MonoBehaviour
     [SerializeField] Movement move;
 
     void Start() {
-        
+
     }
 
     public void OnMove(InputValue input) {
@@ -23,14 +22,17 @@ public class InputHandler : MonoBehaviour
 
     public void OnFire(InputValue input) {
         Debug.Log(input.Get());
-        Debug.Log("puzzo");
 
     }
 
     public void OnLook(InputValue input) {
-        Vector2 position = new Vector2(input.Get<Vector2>().x - (sCam.pixelWidth /2), input.Get<Vector2>().y - (sCam.pixelHeight / 2));
-        Debug.Log(position);
+        Vector2 position = new Vector2(input.Get<Vector2>().x - (sCam.pixelWidth / 2), input.Get<Vector2>().y - (sCam.pixelHeight / 2));
+        //Debug.Log(position);
         cam.ScreenPosition(position);
 
+    }
+
+    public void OnJump(InputValue input) {
+        Debug.Log("Zaltato");
     }
 }
