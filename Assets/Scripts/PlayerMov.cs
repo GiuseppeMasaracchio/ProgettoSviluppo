@@ -5,13 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerMov : MonoBehaviour {
 
-    [SerializeField] float horizontalSens;
-
-    public CameraRotation cam;
-    public Movement move;
+    private Movement move;
 
     void Awake() {
-
+        move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
     }
 
     void Start() {
@@ -19,7 +16,7 @@ public class PlayerMov : MonoBehaviour {
     }
 
     void Update() {
-        //move.Walk();
+        move.Grounded();
         
     }
 }
