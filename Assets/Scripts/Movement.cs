@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
-    public Vector2 direction = Vector2.zero;
-    [SerializeField] Rigidbody player;
-    [SerializeField] float movespeed;
-    [SerializeField] float airborne;
+    private Vector2 direction = Vector2.zero;
+    private Rigidbody player;
+    private Vault vault;
 
+    void Awake() {
+        player = GameObject.Find("Player").GetComponent<Rigidbody>();
+        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
+    }
     public Vector3 Move() {
         return new Vector3(direction.x, 0f, direction.y);
     }
@@ -17,12 +20,12 @@ public class Movement : MonoBehaviour {
     }
 
     public void Grounded() { 
-        player.AddForce(Move().normalized * movespeed * Time.fixedDeltaTime);
+        player.AddForce(Move().normalized * vault.Get("movespeed") * Time.fixedDeltaTime);
     
     }
 
     public void Airborne() {
-        player.AddForce(Move().normalized * movespeed * airborne * Time.fixedDeltaTime);
+        player.AddForce(Move().normalized * vault.Get("movespeed") * vault.Get("airborne") * Time.fixedDeltaTime);
     }
 
     public void Walk(bool grounded) {

@@ -5,11 +5,17 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour {
     //Reference to object
-    [SerializeField] Camera sCam;
+    private Camera screenspace;
 
     //Reference to script
-    [SerializeField] CameraRotation cam;
-    [SerializeField] Movement move;
+    private CameraRotation cam;
+    private Movement move;
+
+    void Awake() {
+        screenspace = GameObject.Find("Main Camera").GetComponent<Camera>();
+        cam = GameObject.Find("ScriptsHolder").GetComponent<CameraRotation>();
+        move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
+    }
 
     void Start() {
 
@@ -26,8 +32,7 @@ public class InputHandler : MonoBehaviour {
     }
 
     public void OnLook(InputValue input) {
-        Vector2 position = new Vector2(input.Get<Vector2>().x - (sCam.pixelWidth / 2), input.Get<Vector2>().y - (sCam.pixelHeight / 2));
-        //Debug.Log(position);
+        Vector2 position = new Vector2(input.Get<Vector2>().x - (screenspace.pixelWidth / 2), input.Get<Vector2>().y - (screenspace.pixelHeight / 2));
         cam.ScreenPosition(position);
 
     }
