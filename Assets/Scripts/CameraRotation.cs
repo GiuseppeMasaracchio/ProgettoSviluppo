@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraRotation : MonoBehaviour {
-    private Vector2 screenPosition = Vector2.zero;
     private Transform camHolder;
 
     void Awake() {
         camHolder = GameObject.Find("CameraHolder").transform;
-    }
-    public Quaternion CamRot(float horizontalSens) {
-        return Quaternion.Euler(Mathf.Clamp(screenPosition.y * horizontalSens, -1000f, 2000f) * Time.fixedDeltaTime, screenPosition.x * horizontalSens * Time.fixedDeltaTime, 0f);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void ScreenPosition(Vector2 mousePosition) {
-        this.screenPosition = mousePosition;
-        camHolder.rotation = CamRot(20f);
+    
+
+    public void ScreenPosition(Vector2 input) {
+        camHolder.eulerAngles += new Vector3 (input.y, input.x, 0f) * Time.deltaTime * 60f;
+        
     }
 }
+        
