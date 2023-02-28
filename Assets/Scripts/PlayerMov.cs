@@ -6,9 +6,11 @@ using UnityEngine.InputSystem;
 public class PlayerMov : MonoBehaviour {
 
     private Movement move;
+    private GroundCheck gCheck;
 
     void Awake() {
         move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
+        gCheck = GameObject.Find("ScriptsHolder").GetComponent<GroundCheck>();
     }
 
     void Start() {
@@ -16,7 +18,7 @@ public class PlayerMov : MonoBehaviour {
     }
 
     void Update() {
-        move.Grounded();
         
+        move.Walk(gCheck.GetGroundCheck());
     }
 }

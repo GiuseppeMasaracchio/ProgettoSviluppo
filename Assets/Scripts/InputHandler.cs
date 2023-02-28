@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+
 public class InputHandler : MonoBehaviour {
     //Reference to object
     private Camera screenspace;
@@ -18,7 +20,7 @@ public class InputHandler : MonoBehaviour {
     }
 
     void Start() {
-
+       
     }
 
     public void OnMove(InputValue input) {
@@ -38,6 +40,8 @@ public class InputHandler : MonoBehaviour {
     }
 
     public void OnJump(InputValue input) {
-        Debug.Log("Zaltato");
+        move.Jump();
+        
+        
     }
 }
