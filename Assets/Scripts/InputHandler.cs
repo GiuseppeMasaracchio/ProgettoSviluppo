@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 
 public class InputHandler : MonoBehaviour {
-    //Reference to object
-    private Camera screenspace;
 
     //Reference to script
     private CameraRotation cam;
@@ -34,15 +32,13 @@ public class InputHandler : MonoBehaviour {
     }
 
     public void OnLook(InputValue input) {
-        //Vector2 position = new Vector2(input.Get<Vector2>().x - (screenspace.pixelWidth / 2), input.Get<Vector2>().y - (screenspace.pixelHeight / 2));
         Vector2 position = input.Get<Vector2>();
         cam.ScreenPosition(position);
 
     }
 
     public void OnJump(InputValue input) {
+        Debug.Log("Zaltado");
         move.Jump();
-        
-        
     }
 }

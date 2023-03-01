@@ -9,7 +9,8 @@ public class Movement : MonoBehaviour {
     private Rigidbody player;
     private Vault vault;
 
-    private bool jumpCd = true;
+    private bool canJump = true;
+    private float jumpCd = 0.25f; 
 
     
 
@@ -27,15 +28,22 @@ public class Movement : MonoBehaviour {
     }
 
 
-    public async void Jump() {
-        if (jumpCd) {
-            jumpCd = false;
-            player.AddForce(0f, 10f, 0f, ForceMode.Impulse);
-            await Task.Delay(1000); //cd 1s
-            jumpCd = true;
+    public void Jump() {
+        if (canJump) {
+            canJump = false;
+
+            player.velocity = new Vector3(player.velocity.x, 0f, player.velocity.z);
+            player.AddForce(Vector3.up * vault.Get("jumpHeight"), ForceMode.Impulse);
+
+            Invoke(nameof(ResetJump), jumpCd);
         }
         
     }
+
+    private void ResetJump() {
+        canJump = true;
+    }
+
     public void Grounded() { 
         player.AddForce(Move().normalized * vault.Get("movespeed") * Time.fixedDeltaTime);
         
