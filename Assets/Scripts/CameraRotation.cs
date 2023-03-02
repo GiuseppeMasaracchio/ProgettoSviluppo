@@ -4,17 +4,28 @@ using UnityEngine;
 
 public class CameraRotation : MonoBehaviour {
     private Vector2 screenPosition = Vector2.zero;
+    private Vector3 view;
     private Transform camHolder;
+    private Vault vault;
 
     void Awake() {
         camHolder = GameObject.Find("CameraHolder").transform;
+        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
     }
-    public Quaternion CamRot(float horizontalSens) {
-        return Quaternion.Euler(Mathf.Clamp(screenPosition.y * horizontalSens, -1000f, 2000f) * Time.fixedDeltaTime, screenPosition.x * horizontalSens * Time.fixedDeltaTime, 0f);
+    public float yCamRot() {
+        return screenPosition.y * vault.Get("sens") * Time.fixedDeltaTime;
+        //return Quaternion.Euler(Mathf.Clamp(screenPosition.y * vault.Get("sens"), -1000f, 2000f) * Time.fixedDeltaTime, 0f, 0f);
+    }
+
+    public float xCamRot() {
+        return screenPosition.x * vault.Get("sens") * Time.fixedDeltaTime;
+        //return Quaternion.Euler(0f, screenPosition.x * vault.Get("sens") * Time.fixedDeltaTime, 0f);
     }
 
     public void ScreenPosition(Vector2 mousePosition) {
-        this.screenPosition = mousePosition;
-        camHolder.rotation = CamRot(20f);
+        screenPosition = mousePosition;
+        view = new Vector3(yCamRot(), xCamRot(), 0f);
+        camHolder.eulerAngles += view;
+
     }
 }

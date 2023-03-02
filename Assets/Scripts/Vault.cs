@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class Vault : MonoBehaviour
 {
-    private float movespeed;
-    private float airborne;
-    private float sens;
+    public float movespeed;
+    public float airborne;
+    public float sens;
+    public string playerstate;
 
     void Awake() {
         movespeed = 400f;
         airborne = .8f;
-        sens = 20f;
+        sens = 80f;
+        playerstate = "Idle";
+
     }
-    public float Get(string var) {
-        switch (var) {
+
+    public void SetPlayerState(string state) {
+        playerstate = state;
+    }
+
+    public string GetPlayerState() {
+        return playerstate;
+    }
+
+    public float Get(string varname) {
+        switch (varname) {
             case "movespeed":
                 return movespeed;
             case "airborne":
@@ -26,8 +38,8 @@ public class Vault : MonoBehaviour
         }
     }
 
-    public void Set(string var, float value) {
-        switch (var) {
+    public void Set(string varname, float value) {
+        switch (varname) {
             case "movespeed":
                 movespeed = value;
                 break;

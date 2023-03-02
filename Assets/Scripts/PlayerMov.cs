@@ -9,6 +9,8 @@ public class PlayerMov : MonoBehaviour {
 
     void Awake() {
         move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
+        
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Start() {
@@ -16,7 +18,8 @@ public class PlayerMov : MonoBehaviour {
     }
 
     void Update() {
-        move.Grounded();
+        //move.Walk();  //Come parametro inserisco grounded (dal vault)
+        move.JumpCheck();
         
     }
 }

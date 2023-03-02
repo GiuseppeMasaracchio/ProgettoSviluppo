@@ -4,40 +4,37 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour {
-    //Reference to object
-    private Camera screenspace;
 
     //Reference to script
     private CameraRotation cam;
     private Movement move;
 
     void Awake() {
-        screenspace = GameObject.Find("Main Camera").GetComponent<Camera>();
         cam = GameObject.Find("ScriptsHolder").GetComponent<CameraRotation>();
         move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
-    }
-
-    void Start() {
-
+      
     }
 
     public void OnMove(InputValue input) {
-        move.Direction(input.Get<Vector2>());
-
+        //move.Direction(input.Get<Vector2>());
+        
+        Debug.Log(input.Get());
     }
 
     public void OnFire(InputValue input) {
+        if (input.Get() == null) { return; }
         Debug.Log(input.Get());
-
     }
 
     public void OnLook(InputValue input) {
-        Vector2 position = new Vector2(input.Get<Vector2>().x - (screenspace.pixelWidth / 2), input.Get<Vector2>().y - (screenspace.pixelHeight / 2));
-        cam.ScreenPosition(position);
-
+        //Debug.Log(input.Get<Vector2>().normalized);
+        cam.ScreenPosition(input.Get<Vector2>().normalized);
+    
     }
 
     public void OnJump(InputValue input) {
-        Debug.Log("Zaltato");
+        //if (input.Get<float>() == 1f) Debug.Log(input.Get<float>());
+        //Debug.Log(input.Get<float>());
+        move.JumpInput(input.Get<float>());
     }
 }
