@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "Fire",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "98ef10e3-02aa-4f34-803c-0027ddd00066",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -38,7 +38,11 @@
                     "id": "0131f21a-e908-42bd-91b5-6acb95acb1e4",
                     "expectedControlType": "Button",
                     "processors": "",
+<<<<<<< HEAD
                     "interactions": "Press,Hold(duration=0.3)",
+=======
+                    "interactions": "Press(pressPoint=1.401298E-45,behavior=2)",
+>>>>>>> bd7e1ba5bb6ba5198a5e8a19e9acda2db2b8b916
                     "initialStateCheck": false
                 }
             ],
@@ -192,7 +196,7 @@
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Touch",
+                    "groups": "Keyboard&Mouse;Touch",
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
