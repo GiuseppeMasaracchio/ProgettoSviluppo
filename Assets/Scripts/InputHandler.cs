@@ -16,20 +16,21 @@ public class InputHandler : MonoBehaviour {
     }
 
     public void OnMove(InputValue input) {
-        //move.Direction(input.Get<Vector2>());
-        
-        Debug.Log(input.Get());
+        move.Direction(input.Get<Vector2>());
+        //Debug.Log(input.Get<Vector2>());
+
     }
 
     public void OnFire(InputValue input) {
         if (input.Get() == null) { return; }
-        Debug.Log(input.Get());
+        //Debug.Log(input.Get());
     }
 
     public void OnLook(InputValue input) {
-        //Debug.Log(input.Get<Vector2>().normalized);
-        cam.ScreenPosition(input.Get<Vector2>().normalized);
-    
+        //if (input.Get<Vector2>() == Vector2.zero) { return; }
+        //Debug.Log(input.Get());
+        cam.DeltaToRaw(input.Get<Vector2>());
+
     }
 
     public void OnJump(InputValue input) {
@@ -37,4 +38,5 @@ public class InputHandler : MonoBehaviour {
         //Debug.Log(input.Get<float>());
         move.JumpInput(input.Get<float>());
     }
+
 }
