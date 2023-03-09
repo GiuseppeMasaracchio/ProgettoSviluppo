@@ -13,7 +13,7 @@ public class Vault : MonoBehaviour
     void Start() {
         movespeed = 400f;
         airborne = .8f;
-        sens = 80f;
+        sens = 50f;
         playerstate = "Default";
 
     }

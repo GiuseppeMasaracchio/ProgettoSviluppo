@@ -28,14 +28,13 @@ public class CameraRotation : MonoBehaviour {
         
     }
 
-    public void SetMouseInput() {
-        //mousedelta = new Vector2(Mathf.Ceil(mouseinput.x), Mathf.Ceil(mouseinput.y));
-        //DeltaToRaw(mouseinput);
+    public void SetMouseInput(Vector2 mouseinput) {
+        mousedelta = new Vector2(mouseinput.x, mouseinput.y);
         yaxis += xCamRot();
         xaxis -= yCamRot();
         xaxis = Mathf.Clamp(xaxis, -20f, 20f);
-        Debug.Log(mousedelta);
         CamRotation();
+        //Debug.Log(mousedelta);
     }
 
     public void CamRotation() {
@@ -44,26 +43,4 @@ public class CameraRotation : MonoBehaviour {
 
     }
 
-    public void DeltaToRaw(Vector2 mouseinput) {
-        if (mouseinput.x > 0f) {
-            mousedelta.x = 1f;
-        } else if (mouseinput.x < 0f) {
-            mousedelta.x = -1f; 
-        } else if (mouseinput.x == 0f) {
-            mousedelta.x = 0f;
-        }
-
-        if (mouseinput.y > 0f) {
-            mousedelta.y = 1f;
-        }
-        else if (mouseinput.y < 0f) {
-            mousedelta.y = -1f;
-        }
-        else if (mouseinput.y == 0f) {
-            mousedelta.y = 0f;
-        }
-
-        SetMouseInput();
-        //Debug.Log(mousedelta);
-    }
 }

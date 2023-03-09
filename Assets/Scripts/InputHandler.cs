@@ -28,8 +28,8 @@ public class InputHandler : MonoBehaviour {
 
     public void OnLook(InputValue input) {
         //if (input.Get<Vector2>() == Vector2.zero) { return; }
-        //Debug.Log(input.Get());
-        cam.DeltaToRaw(input.Get<Vector2>());
+        Debug.Log(input.Get<Vector2>());
+        cam.SetMouseInput(input.Get<Vector2>());
 
     }
 
