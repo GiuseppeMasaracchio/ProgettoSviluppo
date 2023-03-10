@@ -38,11 +38,7 @@
                     "id": "0131f21a-e908-42bd-91b5-6acb95acb1e4",
                     "expectedControlType": "Button",
                     "processors": "",
-<<<<<<< HEAD
-                    "interactions": "Press,Hold(duration=0.3)",
-=======
                     "interactions": "Press(pressPoint=1.401298E-45,behavior=2)",
->>>>>>> bd7e1ba5bb6ba5198a5e8a19e9acda2db2b8b916
                     "initialStateCheck": false
                 }
             ],
@@ -286,12 +282,12 @@
             "actions": [
                 {
                     "name": "Navigate",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "f77c0bb2-c391-48a6-ae57-ec5410c16ce9",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Submit",
@@ -313,7 +309,7 @@
                 },
                 {
                     "name": "Point",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "36b9f88a-e4b2-49b2-9fc1-5fe1aee2da1c",
                     "expectedControlType": "Vector2",
                     "processors": "",
