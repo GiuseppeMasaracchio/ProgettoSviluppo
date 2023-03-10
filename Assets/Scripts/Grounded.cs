@@ -6,16 +6,15 @@ public class Grounded : MonoBehaviour
 {
     private bool grounded;
     private Vault vault;
-    private Transform player;
+    private GameObject player;
 
     void Awake() {
         vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
-        player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Player");
     }
 
     public void isGrounded() {
-        grounded = Physics.Raycast(player.position, Vector3.down, 0.7f, LayerMask.GetMask("Ground"));
-        //Debug.Log(grounded);
+        grounded = Physics.Raycast(player.transform.position, Vector3.down, player.transform.localScale.y / 2 + 0.1f, LayerMask.GetMask("Ground"));
         vault.SetGrounded(grounded);
         
     } 

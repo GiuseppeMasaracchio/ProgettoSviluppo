@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour {
     public Vector3 Move() {
         direction = orientation.forward * input.y + orientation.right * input.x;
         return direction;
-        //return new Vector3(movement.forward * direction.x, 0f, direction.y);
+        
     }
 
     public void Direction(Vector2 dir) {
@@ -30,11 +30,12 @@ public class Movement : MonoBehaviour {
 
     public void Grounded() { 
         player.AddForce(Move() * vault.Get("movespeed") * Time.deltaTime);
-    
+        SpeedControl();
     }
 
     public void Airborne() {
         player.AddForce(Move() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime);
+        SpeedControl();
     }
 
     public void Walk() {
@@ -42,6 +43,15 @@ public class Movement : MonoBehaviour {
             Grounded();
         } else {
             Airborne();
+        }
+    }
+
+    public void SpeedControl() {
+        Vector3 flatvelocity = new Vector3(player.velocity.x, 0f, player.velocity.z); 
+        if (flatvelocity.magnitude > vault.Get("movespeed")) {
+            Vector3 limvelocity = flatvelocity.normalized * vault.Get("movespeed");
+            player.velocity = new Vector3(limvelocity.x, player.velocity.y, limvelocity.z);
+
         }
     }
 
@@ -60,6 +70,7 @@ public class Movement : MonoBehaviour {
         } else if (input.Equals(0f)) {
             jumpstate = false;
             jumpcd = true;
+
         } 
     }
 
@@ -84,9 +95,10 @@ public class Movement : MonoBehaviour {
         if (jumpcd) { return; }
 
         jumpcd = true;
+
         player.velocity.Set(player.velocity.x, 0f, player.velocity.z);
-        player.AddForce(Vector3.up * 1000f * Time.fixedDeltaTime, ForceMode.Impulse);
-        Debug.Log("Jumping");
-        Invoke(nameof(JumpCd), 2f);
+        player.AddForce(Vector3.up * vault.Get("jumpheight"), ForceMode.Impulse);
+
+        Invoke(nameof(JumpCd), 1f);
     }
 }

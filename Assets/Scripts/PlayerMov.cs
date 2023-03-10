@@ -15,6 +15,7 @@ public class PlayerMov : MonoBehaviour {
         gcheck = scriptsholder.GetComponent<Grounded>();
         
         Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     void Start() {
@@ -25,10 +26,6 @@ public class PlayerMov : MonoBehaviour {
         gcheck.isGrounded();
         move.GroundJumpCheck();
         move.Walk();  
-        
-    }
-
-    void FixedUpdate() {
         
     }
 }

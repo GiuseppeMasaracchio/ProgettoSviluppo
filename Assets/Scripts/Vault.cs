@@ -2,20 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Vault : MonoBehaviour
-{
-    public float movespeed;
-    public float airborne;
-    public float sens;
-    public string playerstate;
+public class Vault : MonoBehaviour {
+    public float movespeed = 1200f;
+    public float airborne = 0.8f;
+    public float sens = 40f;
+    public float jumpheight = 5f;
+    public string playerstate = "Default";
     public bool grounded;
 
     void Start() {
-        movespeed = 400f;
-        airborne = .8f;
-        sens = 50f;
-        playerstate = "Default";
-
+        
     }
 
     public void SetGrounded(bool grounded) {
@@ -42,6 +38,8 @@ public class Vault : MonoBehaviour
                 return airborne;
             case "sens":
                 return sens;
+            case "jumpheight":
+                return jumpheight;
             default:
                 return 0f;
         }
@@ -57,6 +55,9 @@ public class Vault : MonoBehaviour
                 break;
             case "sens":
                 sens = value;
+                break;
+            case "jumpheight":
+                jumpheight = value;
                 break;
             default:
                 Debug.Log("Vault internal error: invalid query");

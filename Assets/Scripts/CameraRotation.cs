@@ -16,6 +16,7 @@ public class CameraRotation : MonoBehaviour {
         camHolder = GameObject.Find("CameraHolder").transform;
         vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
         player = GameObject.Find("Player").transform;
+
     }
 
     public float yCamRot() {
@@ -32,9 +33,9 @@ public class CameraRotation : MonoBehaviour {
         mousedelta = new Vector2(mouseinput.x, mouseinput.y);
         yaxis += xCamRot();
         xaxis -= yCamRot();
-        xaxis = Mathf.Clamp(xaxis, -20f, 20f);
+        xaxis = Mathf.Clamp(xaxis, -20f, 80f);
         CamRotation();
-        //Debug.Log(mousedelta);
+       
     }
 
     public void CamRotation() {
