@@ -7,6 +7,8 @@ public class Vault : MonoBehaviour {
     public float airborne = 0.8f;
     public float sens = 40f;
     public float jumpheight = 5f;
+    public float jumpcd = 1f;
+
     public string playerstate = "Default";
     public bool grounded;
 
@@ -40,6 +42,8 @@ public class Vault : MonoBehaviour {
                 return sens;
             case "jumpheight":
                 return jumpheight;
+            case "jumpcd":
+                return jumpcd;
             default:
                 return 0f;
         }
@@ -58,6 +62,9 @@ public class Vault : MonoBehaviour {
                 break;
             case "jumpheight":
                 jumpheight = value;
+                break;
+            case "jumpcd":
+                jumpcd = value;
                 break;
             default:
                 Debug.Log("Vault internal error: invalid query");

@@ -13,7 +13,7 @@ public class Grounded : MonoBehaviour
         player = GameObject.Find("Player");
     }
 
-    public void isGrounded() {
+    public void SetGround() {
         grounded = Physics.Raycast(player.transform.position, Vector3.down, player.transform.localScale.y / 2 + 0.1f, LayerMask.GetMask("Ground"));
         vault.SetGrounded(grounded);
         

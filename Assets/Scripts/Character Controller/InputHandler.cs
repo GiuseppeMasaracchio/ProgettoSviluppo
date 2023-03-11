@@ -16,25 +16,27 @@ public class InputHandler : MonoBehaviour {
     }
 
     public void OnMove(InputValue input) {
-        move.Direction(input.Get<Vector2>());
+        move.SetMoveInput(input.Get<Vector2>());
 
+        //Debug.Log(input.Get<float>());
     }
 
     public void OnFire(InputValue input) {
         if (input.Get() == null) { return; }
-        //Debug.Log(input.Get());
 
+        //Debug.Log(input.Get<float>());
     }
 
     public void OnLook(InputValue input) {
         cam.SetMouseInput(input.Get<Vector2>());
 
+        //Debug.Log(input.Get<float>());
     }
 
     public void OnJump(InputValue input) {
-        move.JumpInput(input.Get<float>());
-        //Debug.Log(input.Get<float>());
+        move.SetJumpInput(input.Get<float>());
 
+        //Debug.Log(input.Get<float>());
     }
 
 }

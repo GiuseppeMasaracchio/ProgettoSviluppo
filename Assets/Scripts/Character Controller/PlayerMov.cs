@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMov : MonoBehaviour {
 
@@ -22,10 +21,14 @@ public class PlayerMov : MonoBehaviour {
         
     }
 
+    void FixedUpdate() {
+        
+    }
+
     void Update() {
-        gcheck.isGrounded();
-        move.GroundJumpCheck();
-        move.Walk();  
+        gcheck.SetGround();
+        move.JumpCheck();
+        move.Move();
         
     }
 }

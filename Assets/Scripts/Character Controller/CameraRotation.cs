@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraRotation : MonoBehaviour {
+    //Local Variables
     private Vector2 mousedelta = Vector2.zero;
     private float xaxis;
     private float yaxis;
 
-
+    //Scripts reference
     private Transform camHolder;
     private Transform player;
     private Vault vault;
 
     void Awake() {
+        //Initialize scripts
         camHolder = GameObject.Find("CameraHolder").transform;
         vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
         player = GameObject.Find("Player").transform;
