@@ -61,14 +61,13 @@ public class Movement : MonoBehaviour {
             return;
         }
         else {
-            player.velocity.Set(player.velocity.x, 0f, player.velocity.z);
             InputCheck();
         }
     }
 
     public void InputCheck() {
-        //Metodo che controlla l'input
-        if (!buttonstate) { 
+        //Metodo che controlla l'input 
+        if (!buttonstate) {
             return; 
         } else {
             Jump();
@@ -80,6 +79,7 @@ public class Movement : MonoBehaviour {
     }
 
     public void SetJumpInput(float input) {
+        //Metodo che setta lo stato dell'input
         if (input.Equals(1f)) {
             buttonstate = true;
             cdstate = false;
@@ -95,6 +95,7 @@ public class Movement : MonoBehaviour {
         } else {
             cdstate = true;
 
+            player.velocity = new Vector3(player.velocity.x, 0f, player.velocity.z);
             player.AddForce(Vector3.up * vault.Get("jumpheight"), ForceMode.Impulse);
 
             Invoke(nameof(ResetCd), vault.Get("jumpcd"));

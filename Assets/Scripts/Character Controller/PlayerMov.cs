@@ -27,6 +27,8 @@ public class PlayerMov : MonoBehaviour {
 
     void Update() {
         gcheck.SetGround();
+        gcheck.AdditionalGravity();
+
         move.JumpCheck();
         move.Move();
         
