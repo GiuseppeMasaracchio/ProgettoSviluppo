@@ -8,13 +8,22 @@ public class Vault : MonoBehaviour
     public float airborne;
     public float sens;
     public string playerstate;
+    public bool grounded;
 
-    void Awake() {
+    void Start() {
         movespeed = 400f;
         airborne = .8f;
-        sens = 80f;
-        playerstate = "Idle";
+        sens = 50f;
+        playerstate = "Default";
 
+    }
+
+    public void SetGrounded(bool grounded) {
+        this.grounded = grounded;
+    }
+
+    public bool GetGrounded() {
+        return grounded;
     }
 
     public void SetPlayerState(string state) {
@@ -48,6 +57,9 @@ public class Vault : MonoBehaviour
                 break;
             case "sens":
                 sens = value;
+                break;
+            default:
+                Debug.Log("Vault internal error: invalid query");
                 break;
         }
     }

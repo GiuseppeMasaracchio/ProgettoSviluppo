@@ -5,12 +5,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerMov : MonoBehaviour {
 
+    private GameObject scriptsholder;
     private Movement move;
-    
+    private Grounded gcheck;
+    private OptionsMenuScript optionsScript;
+
 
     void Awake() {
-        move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
-       
+        scriptsholder = GameObject.Find("ScriptsHolder");
+        move = scriptsholder.GetComponent<Movement>();
+        gcheck = scriptsholder.GetComponent<Grounded>();
+        optionsScript = scriptsholder.GetComponent<OptionsMenuScript>();
         
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -20,8 +25,14 @@ public class PlayerMov : MonoBehaviour {
     }
 
     void Update() {
-        //move.Walk();  //Come parametro inserisco grounded (dal vault)
-        move.JumpCheck();
+        gcheck.isGrounded();
+        move.GroundJumpCheck();
+        move.Walk();  
         
     }
+
+    void FixedUpdate() {
+        
+    }
+
 }

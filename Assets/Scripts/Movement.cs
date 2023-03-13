@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
-    private Vector2 direction = Vector2.zero;
+    private Vector2 input = Vector2.zero;
     private Rigidbody player;
+    private Transform orientation;
+    private Vector3 direction;
+
     private Vault vault;
     public bool jumpstate;
     public bool jumpcd = true;
@@ -12,28 +15,30 @@ public class Movement : MonoBehaviour {
     void Awake() {
         player = GameObject.Find("Player").GetComponent<Rigidbody>();
         vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
-        
+        orientation = GameObject.Find("Player").transform;
     }
 
     public Vector3 Move() {
-        return new Vector3(direction.x, 0f, direction.y);
+        direction = orientation.forward * input.y + orientation.right * input.x;
+        return direction;
+        //return new Vector3(movement.forward * direction.x, 0f, direction.y);
     }
 
     public void Direction(Vector2 dir) {
-        direction = dir;
+        input = dir;
     }
 
     public void Grounded() { 
-        player.AddForce(Move().normalized * vault.Get("movespeed") * Time.fixedDeltaTime);
+        player.AddForce(Move() * vault.Get("movespeed") * Time.deltaTime);
     
     }
 
     public void Airborne() {
-        player.AddForce(Move().normalized * vault.Get("movespeed") * vault.Get("airborne") * Time.fixedDeltaTime);
+        player.AddForce(Move() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime);
     }
 
-    public void Walk(bool grounded) {
-        if (grounded) {
+    public void Walk() {
+        if (vault.GetGrounded()) {
             Grounded();
         } else {
             Airborne();
@@ -58,6 +63,15 @@ public class Movement : MonoBehaviour {
         } 
     }
 
+    public void GroundJumpCheck() {
+        if (!vault.GetGrounded()) {
+            return;
+        }
+        else {
+            JumpCheck();
+        }
+    }
+
     public void JumpCheck() {
         if (!jumpstate) { 
             return; 
@@ -70,9 +84,9 @@ public class Movement : MonoBehaviour {
         if (jumpcd) { return; }
 
         jumpcd = true;
-
-        //player.AddForce(Vector3.up * 1000f * Time.fixedDeltaTime, ForceMode.Impulse);
+        player.velocity.Set(player.velocity.x, 0f, player.velocity.z);
+        player.AddForce(Vector3.up * 1000f * Time.fixedDeltaTime, ForceMode.Impulse);
         Debug.Log("Jumping");
-        Invoke(nameof(JumpCd), 1f);
+        Invoke(nameof(JumpCd), 2f);
     }
 }

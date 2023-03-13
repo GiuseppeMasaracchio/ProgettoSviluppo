@@ -20,9 +20,12 @@ public class OptionsMenuScript : MonoBehaviour
     public TMP_Dropdown resDrop;
     public GameObject modal;
 
-
+    //Temp
+    //private InputActionAsset pgActionMaps;
+    
     //Variables
     private Resolution[] res;
+    private bool isPaused = false;
 
 
 
@@ -30,6 +33,9 @@ public class OptionsMenuScript : MonoBehaviour
         mixer = FindObjectOfType<AudioMixer>();
         res = Screen.resolutions;
         SetResolutionDrop();
+
+
+        //pgActionMaps = GetComponent<InputActionAsset>();
     }
 
     public void SetResolutionDrop() {
@@ -60,21 +66,31 @@ public class OptionsMenuScript : MonoBehaviour
         Screen.fullScreen = full;
     }
 
-    public void OptionButton() {
-        StartCoroutine(OpenModal());   
+    public void OptionsModal() {
+        Pause();
     }
 
-    private IEnumerator OpenModal() {
-        if (modal != null) modal.SetActive(true);
 
-        yield return null;
+    public void Pause() {
+        if (!isPaused) {
+
+            isPaused = true;
+            
+            //if (modal != null) modal.SetActive(isPaused);
+            modal.SetActive(true);
+
+            //Funzione per stoppare il tempo
+            Time.timeScale = 0f;
+
+        } else {
+            isPaused = false;
+
+            modal.SetActive(isPaused);
+
+            Time.timeScale = 1f; // >0 per lo slow motion, 1 per portarlo alla normalità
+        }
     }
 
-    public void BackButton() {
-        modal.SetActive(false);
-        
-        StopCoroutine(OpenModal());
-    }
 
     public void QuitButton() {
         Debug.Log("Uscendo");
