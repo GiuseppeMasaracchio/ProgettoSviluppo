@@ -46,9 +46,7 @@ public class OptionsMenuScript : MonoBehaviour
         resDrop.ClearOptions();
         List<string> temp = new List<string>();
         for (int i = 0; i < res.Length; i++) {
-            string pesce = res[i].width + " x " + res[i].height;
-            temp.Add(pesce);
-
+            temp.Add(res[i].width + " x " + res[i].height);
         }
         resDrop.AddOptions(temp);
     }
@@ -73,10 +71,8 @@ public class OptionsMenuScript : MonoBehaviour
 
     public void Pause() {
         if (!isPaused) {
-
             isPaused = true;
-            
-            //if (modal != null) modal.SetActive(isPaused);
+
             modal.SetActive(true);
 
             //Funzione per stoppare il tempo
