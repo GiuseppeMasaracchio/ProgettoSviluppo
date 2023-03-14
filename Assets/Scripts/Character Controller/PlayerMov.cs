@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMov : MonoBehaviour {
 
@@ -18,16 +17,10 @@ public class PlayerMov : MonoBehaviour {
         optionsScript = scriptsholder.GetComponent<OptionsMenuScript>();
         
         Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     void Start() {
-        
-    }
-
-    void Update() {
-        gcheck.isGrounded();
-        move.GroundJumpCheck();
-        move.Walk();  
         
     }
 
@@ -35,4 +28,15 @@ public class PlayerMov : MonoBehaviour {
         
     }
 
+<<<<<<< HEAD:Assets/Scripts/PlayerMov.cs
+=======
+    void Update() {
+        gcheck.SetGround();
+        gcheck.AdditionalGravity();
+
+        move.JumpCheck();
+        move.Move();
+        
+    }
+>>>>>>> bf0f5fdc6559207ff5df62240a5c0ad139475b02:Assets/Scripts/Character Controller/PlayerMov.cs
 }

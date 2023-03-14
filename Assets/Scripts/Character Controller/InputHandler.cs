@@ -20,26 +20,32 @@ public class InputHandler : MonoBehaviour {
 
 
     public void OnMove(InputValue input) {
-        move.Direction(input.Get<Vector2>());
-        //Debug.Log(input.Get<Vector2>());
+        move.SetMoveInput(input.Get<Vector2>());
 
+        //Debug.Log(input.Get<float>());
     }
 
     public void OnFire(InputValue input) {
         if (input.Get() == null) { return; }
-        //Debug.Log(input.Get());
+
+        //Debug.Log(input.Get<float>());
     }
 
     public void OnLook(InputValue input) {
-        //if (input.Get<Vector2>() == Vector2.zero) { return; }
-        Debug.Log(input.Get<Vector2>());
         cam.SetMouseInput(input.Get<Vector2>());
 
+        //Debug.Log(input.Get<float>());
     }
 
     public void OnJump(InputValue input) {
+<<<<<<< HEAD:Assets/Scripts/InputHandler.cs
         if (input.Get() == null) return;
         move.JumpInput(input.Get<float>());
+=======
+        move.SetJumpInput(input.Get<float>());
+
+        //Debug.Log(input.Get<float>());
+>>>>>>> bf0f5fdc6559207ff5df62240a5c0ad139475b02:Assets/Scripts/Character Controller/InputHandler.cs
     }
 
     public void OnPause(InputValue input) {
