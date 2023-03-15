@@ -28,8 +28,7 @@ public class PlayerMov : MonoBehaviour {
         
     }
 
-<<<<<<< HEAD:Assets/Scripts/PlayerMov.cs
-=======
+
     void Update() {
         gcheck.SetGround();
         gcheck.AdditionalGravity();
@@ -38,5 +37,4 @@ public class PlayerMov : MonoBehaviour {
         move.Move();
         
     }
->>>>>>> bf0f5fdc6559207ff5df62240a5c0ad139475b02:Assets/Scripts/Character Controller/PlayerMov.cs
 }

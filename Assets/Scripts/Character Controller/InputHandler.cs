@@ -38,14 +38,10 @@ public class InputHandler : MonoBehaviour {
     }
 
     public void OnJump(InputValue input) {
-<<<<<<< HEAD:Assets/Scripts/InputHandler.cs
-        if (input.Get() == null) return;
-        move.JumpInput(input.Get<float>());
-=======
+
         move.SetJumpInput(input.Get<float>());
 
         //Debug.Log(input.Get<float>());
->>>>>>> bf0f5fdc6559207ff5df62240a5c0ad139475b02:Assets/Scripts/Character Controller/InputHandler.cs
     }
 
     public void OnPause(InputValue input) {

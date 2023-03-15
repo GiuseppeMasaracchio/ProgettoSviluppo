@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraRotation : MonoBehaviour {
-<<<<<<< HEAD:Assets/Scripts/CameraRotation.cs
 
 
     private Vector2 screenPosition = Vector2.zero;
     private Vector3 view;
-=======
-    //Local Variables
->>>>>>> bf0f5fdc6559207ff5df62240a5c0ad139475b02:Assets/Scripts/Character Controller/CameraRotation.cs
+
     private Vector2 mousedelta = Vector2.zero;
     private float xaxis;
     private float yaxis;
 
-<<<<<<< HEAD:Assets/Scripts/CameraRotation.cs
-=======
+
     //Scripts reference
->>>>>>> bf0f5fdc6559207ff5df62240a5c0ad139475b02:Assets/Scripts/Character Controller/CameraRotation.cs
     private Transform camHolder;
     private Transform player;
     private Vault vault;
