@@ -7,11 +7,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
-using TMPro.EditorUtilities;
+/*
+  using TMPro.EditorUtilities;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem.UI;
 using Unity.VisualScripting;
-
+*/
 
 public class OptionsMenuScript : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class OptionsMenuScript : MonoBehaviour
     public AudioMixer mixer;
     public TMP_Dropdown resDrop;
     public GameObject modal;
+    public PlayerInput pgInputMap; 
 
     //Temp
     //private InputActionAsset pgActionMaps;
@@ -29,13 +31,9 @@ public class OptionsMenuScript : MonoBehaviour
 
 
 
-    private void Start() {
-        mixer = FindObjectOfType<AudioMixer>();
+    private void Awake() {
         res = Screen.resolutions;
         SetResolutionDrop();
-
-
-        //pgActionMaps = GetComponent<InputActionAsset>();
     }
 
     public void SetResolutionDrop() {
@@ -70,7 +68,14 @@ public class OptionsMenuScript : MonoBehaviour
 
 
     public void Pause() {
+        Image background = modal.GetComponentInParent<Image>();
+
         if (!isPaused) {
+            pgInputMap.SwitchCurrentActionMap("UI");
+            Cursor.lockState = CursorLockMode.None;
+
+            background.enabled = true;
+
             isPaused = true;
 
             modal.SetActive(true);
@@ -79,9 +84,14 @@ public class OptionsMenuScript : MonoBehaviour
             Time.timeScale = 0f;
 
         } else {
+            pgInputMap.SwitchCurrentActionMap("Player");
+            Cursor.lockState = CursorLockMode.Locked;
+
+            background.enabled = false;
+
             isPaused = false;
 
-            modal.SetActive(isPaused);
+            modal.SetActive(false);
 
             Time.timeScale = 1f; // >0 per lo slow motion, 1 per portarlo alla normalità
         }

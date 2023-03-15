@@ -30,7 +30,7 @@ public class Grounded : MonoBehaviour
             acceleration = 0f;
             return acceleration; 
         } else {
-            acceleration += -9.81f * 8f * Time.deltaTime;
+            acceleration += -9.81f * 4f * Time.deltaTime;
             return acceleration;
         }
     }

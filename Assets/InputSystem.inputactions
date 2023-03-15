@@ -38,9 +38,8 @@
                     "id": "0131f21a-e908-42bd-91b5-6acb95acb1e4",
                     "expectedControlType": "Button",
                     "processors": "",
-<<<<<<< HEAD
                     "interactions": "Press(pressPoint=1.401298E-45,behavior=2)",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Pause",
@@ -50,10 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-=======
-                    "interactions": "",
-                    "initialStateCheck": true
->>>>>>> bf0f5fdc6559207ff5df62240a5c0ad139475b02
                 }
             ],
             "bindings": [
@@ -402,6 +397,15 @@
                     "type": "PassThrough",
                     "id": "2a525c7e-07b2-463d-af3c-c13a759eef80",
                     "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "51f59875-b320-4dc1-8e18-85bc4ef1fb5c",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -823,6 +827,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "956335da-9ac4-42e0-bfbd-76013bc1b15d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89842de0-7056-4cb4-9ec6-b7bb6dc79827",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
