@@ -22,6 +22,10 @@ public class CameraRotation : MonoBehaviour {
         player = GameObject.Find("Player").transform;
     }
 
+    void Update() {
+        camholder.position = player.position;    
+    }
+
     public float yCamRot() {
         return mousedelta.y * vault.Get("sens") * Time.deltaTime;
 
@@ -44,12 +48,13 @@ public class CameraRotation : MonoBehaviour {
     public void CamRotation() {
         camholder.rotation = Quaternion.Euler(xaxis, yaxis, 0f);
         assetforward.rotation = Quaternion.Euler(0f, yaxis, 0f);
-
+        //player.forward = assetforward.forward;
     }
 
 
     public void SetForwardAxis() {
-        player.rotation = Quaternion.Euler(0f, yaxis, 0f);
+        player.forward = assetforward.forward;
+        //player.rotation = Quaternion.Euler(0f, yaxis, 0f);
         //camHolder.rotation.Set(0f, 0f, 0f, 0f);
         //assetforward.rotation.Set(0f, 0f, 0f, 0f);
     }

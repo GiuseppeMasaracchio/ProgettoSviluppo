@@ -5,9 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
     private Vector2 moveinput = Vector2.zero;
     private Vector3 direction;
-    //private Quaternion camreset;
+
     private Rigidbody player;
-    private Transform camholder;
     private Transform orientation;
     private Transform asset;
     private Transform assetforward;
@@ -24,12 +23,16 @@ public class Movement : MonoBehaviour {
         orientation = GameObject.Find("Player").transform;
         asset = GameObject.Find("PlayerAsset").transform;
         assetforward = GameObject.Find("PlayerForward").transform;
-        camholder = GameObject.Find("CameraHolder").transform;
+
     }
 
     void Update() {
-        if (player.velocity != Vector3.zero) { return; }
-        vault.SetPlayerState("Default");
+        if (player.velocity != Vector3.zero) { 
+            orientation.forward = assetforward.forward;
+            return; 
+        } else {
+            vault.SetPlayerState("Idle");
+        }
     }
 
     //Movement related methods
@@ -40,22 +43,13 @@ public class Movement : MonoBehaviour {
 
     public void SetMoveInput(Vector2 input) {
         moveinput = input;
-
-        /*
-        if (moveinput.y == 1) {
-            camreset = robe;
-            orientation.rotation = camreset;
-            camholder.rotation = camreset;
-            
-        }
-        */
     }
 
     public void Grounded() {
         vault.SetPlayerState("Walking");
 
         if (Direction() == Vector3.zero) { return; }
-        asset.transform.forward = Direction();
+        asset.forward = Direction();
 
         player.AddForce(Direction() * vault.Get("movespeed") * Time.deltaTime);
         SpeedControl();
@@ -65,7 +59,7 @@ public class Movement : MonoBehaviour {
         vault.SetPlayerState("Airborne");
 
         if (Direction() == Vector3.zero) { return; }
-        asset.transform.forward = Direction();
+        asset.forward = Direction();
 
         player.AddForce(Direction() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime);
         SpeedControl();

@@ -17,7 +17,6 @@ public class InputHandler : MonoBehaviour {
 
     public void OnMove(InputValue input) {
         move.SetMoveInput(input.Get<Vector2>());
-
         //Debug.Log(input.Get());
     }
 
