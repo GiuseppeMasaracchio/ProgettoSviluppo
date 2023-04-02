@@ -4,18 +4,32 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
     private Vector2 moveinput = Vector2.zero;
-    private Rigidbody player;
-    private Transform orientation;
     private Vector3 direction;
+    //private Quaternion camreset;
+    private Rigidbody player;
+    private Transform camholder;
+    private Transform orientation;
+    private Transform asset;
+    private Transform assetforward;
+
     private bool buttonstate;
     public bool cdstate = true;
 
     private Vault vault;
 
     void Awake() {
+        vault = gameObject.GetComponent<Vault>();
+
         player = GameObject.Find("Player").GetComponent<Rigidbody>();
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
         orientation = GameObject.Find("Player").transform;
+        asset = GameObject.Find("PlayerAsset").transform;
+        assetforward = GameObject.Find("PlayerForward").transform;
+        camholder = GameObject.Find("CameraHolder").transform;
+    }
+
+    void Update() {
+        if (player.velocity != Vector3.zero) { return; }
+        vault.SetPlayerState("Default");
     }
 
     //Movement related methods
@@ -26,14 +40,33 @@ public class Movement : MonoBehaviour {
 
     public void SetMoveInput(Vector2 input) {
         moveinput = input;
+
+        /*
+        if (moveinput.y == 1) {
+            camreset = robe;
+            orientation.rotation = camreset;
+            camholder.rotation = camreset;
+            
+        }
+        */
     }
 
-    public void Grounded() { 
+    public void Grounded() {
+        vault.SetPlayerState("Walking");
+
+        if (Direction() == Vector3.zero) { return; }
+        asset.transform.forward = Direction();
+
         player.AddForce(Direction() * vault.Get("movespeed") * Time.deltaTime);
         SpeedControl();
     }
 
     public void Airborne() {
+        vault.SetPlayerState("Airborne");
+
+        if (Direction() == Vector3.zero) { return; }
+        asset.transform.forward = Direction();
+
         player.AddForce(Direction() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime);
         SpeedControl();
     }
@@ -95,6 +128,7 @@ public class Movement : MonoBehaviour {
         } else {
             cdstate = true;
 
+            vault.SetPlayerState("Jumping");
             player.velocity = new Vector3(player.velocity.x, 0f, player.velocity.z);
             player.AddForce(Vector3.up * vault.Get("jumpheight"), ForceMode.Impulse);
 

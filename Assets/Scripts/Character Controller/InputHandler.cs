@@ -12,18 +12,17 @@ public class InputHandler : MonoBehaviour {
     void Awake() {
         cam = GameObject.Find("ScriptsHolder").GetComponent<CameraRotation>();
         move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
-      
+        
     }
 
     public void OnMove(InputValue input) {
         move.SetMoveInput(input.Get<Vector2>());
 
-        //Debug.Log(input.Get<float>());
+        //Debug.Log(input.Get());
     }
 
     public void OnFire(InputValue input) {
         if (input.Get() == null) { return; }
-
         //Debug.Log(input.Get<float>());
     }
 

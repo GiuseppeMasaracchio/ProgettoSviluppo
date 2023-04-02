@@ -36,7 +36,7 @@ public class Grounded : MonoBehaviour
     }
 
     public void AdditionalGravity() {
-        if (rb.velocity.y > 0f) {
+        if (rb.velocity.y >= 0f) {
             return; 
         } else {
             rb.AddForce(Vector3.up * SetAcceleration(), ForceMode.Acceleration);

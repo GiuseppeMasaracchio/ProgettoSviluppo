@@ -9,11 +9,15 @@ public class Vault : MonoBehaviour {
     public float jumpheight = 5f;
     public float jumpcd = 1f;
 
-    public string playerstate = "Default";
+    public string playerstate = "Idle";
     public bool grounded;
 
     void Start() {
         
+    }
+
+    void Update() {
+        //Debug.Log(playerstate);
     }
 
     public void SetGrounded(bool grounded) {

@@ -9,16 +9,17 @@ public class CameraRotation : MonoBehaviour {
     private float yaxis;
 
     //Scripts reference
-    private Transform camHolder;
+    private Transform camholder;
+    private Transform assetforward;
     private Transform player;
     private Vault vault;
 
     void Awake() {
         //Initialize scripts
-        camHolder = GameObject.Find("CameraHolder").transform;
+        camholder = GameObject.Find("CameraHolder").transform;
         vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
+        assetforward = GameObject.Find("PlayerForward").transform;
         player = GameObject.Find("Player").transform;
-
     }
 
     public float yCamRot() {
@@ -41,9 +42,15 @@ public class CameraRotation : MonoBehaviour {
     }
 
     public void CamRotation() {
-        camHolder.rotation = Quaternion.Euler(xaxis, yaxis, 0f);
-        player.rotation = Quaternion.Euler(0f, yaxis, 0f);
+        camholder.rotation = Quaternion.Euler(xaxis, yaxis, 0f);
+        assetforward.rotation = Quaternion.Euler(0f, yaxis, 0f);
 
     }
 
+
+    public void SetForwardAxis() {
+        player.rotation = Quaternion.Euler(0f, yaxis, 0f);
+        //camHolder.rotation.Set(0f, 0f, 0f, 0f);
+        //assetforward.rotation.Set(0f, 0f, 0f, 0f);
+    }
 }
