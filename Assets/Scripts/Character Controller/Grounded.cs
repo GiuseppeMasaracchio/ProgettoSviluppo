@@ -7,22 +7,19 @@ using UnityEngine;
 public class Grounded : MonoBehaviour
 {
     [SerializeField] private GameObject entity;
+
     private CapsuleCollider entitycollider;
-
     private Rigidbody rb;
-
-    private bool grounded;
-    private bool check;
 
     private Vector3 startcapsule;
     private Vector3 endcapsule;
 
+    private bool grounded;
     private float acceleration;
-    private float cap;
-
-    private RaycastHit hitinfo;
 
     private Vault vault;
+    
+    private float cap = -49.05f;
 
     void Awake() {
         vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
@@ -30,26 +27,12 @@ public class Grounded : MonoBehaviour
         entitycollider = entity.GetComponent<CapsuleCollider>();
     }
 
-    void Start() {
-        cap = -9.81f * 5f;
-            
-    }
-
     public void SetGround() {
-        //grounded = Physics.Raycast(entity.transform.position, Vector3.down, entity.transform.localScale.y / 2 + 0.3f, LayerMask.GetMask("Ground"));
-        /*
-        check = Physics.SphereCast(entity.transform.position - (Vector3.up * .5f), .6f, Vector3.down, out hitinfo, Mathf.Infinity);
-        if (check) { 
-            grounded = false; 
-        } else {
-            grounded = true; 
-        } */
         startcapsule = entitycollider.center + entity.transform.position + Vector3.up * .1f;
         endcapsule = entitycollider.center + entity.transform.position + Vector3.down * .2f;
         grounded = Physics.CheckCapsule(startcapsule, endcapsule, .38f, LayerMask.GetMask("Ground"));
-
+        if (grounded) { rb.velocity.Set(rb.velocity.x, 0f, rb.velocity.z); }
         vault.SetGrounded(grounded);
-        Debug.Log(grounded);
     } 
 
     private float SetAcceleration() {
@@ -57,8 +40,9 @@ public class Grounded : MonoBehaviour
             acceleration = 0f;
             return acceleration; 
         } else {
-            acceleration += -9.81f * 8f * Time.deltaTime;
-            return Mathf.Clamp(acceleration, cap, 0f);
+            acceleration += -9.81f * 15f * Time.deltaTime;
+            acceleration = Mathf.Clamp(acceleration, cap, 0f);
+            return acceleration;
         }
     }
 
