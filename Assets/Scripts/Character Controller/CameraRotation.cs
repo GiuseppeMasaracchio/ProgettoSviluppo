@@ -23,7 +23,11 @@ public class CameraRotation : MonoBehaviour {
     }
 
     void Update() {
-        camholder.position = player.position;    
+        camholder.position = player.position;
+        yaxis += xCamRot();
+        xaxis -= yCamRot();
+        xaxis = Mathf.Clamp(xaxis, -20f, 80f);
+        CamRotation();
     }
 
     public float yCamRot() {
@@ -38,24 +42,15 @@ public class CameraRotation : MonoBehaviour {
 
     public void SetMouseInput(Vector2 mouseinput) {
         mousedelta = new Vector2(mouseinput.x, mouseinput.y);
-        yaxis += xCamRot();
-        xaxis -= yCamRot();
-        xaxis = Mathf.Clamp(xaxis, -20f, 80f);
-        CamRotation();
+        //yaxis += xCamRot();
+        //xaxis -= yCamRot();
+        //xaxis = Mathf.Clamp(xaxis, -20f, 80f);
+        //CamRotation();
        
     }
 
     public void CamRotation() {
         camholder.rotation = Quaternion.Euler(xaxis, yaxis, 0f);
         assetforward.rotation = Quaternion.Euler(0f, yaxis, 0f);
-        //player.forward = assetforward.forward;
-    }
-
-
-    public void SetForwardAxis() {
-        player.forward = assetforward.forward;
-        //player.rotation = Quaternion.Euler(0f, yaxis, 0f);
-        //camHolder.rotation.Set(0f, 0f, 0f, 0f);
-        //assetforward.rotation.Set(0f, 0f, 0f, 0f);
     }
 }

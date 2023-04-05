@@ -27,11 +27,9 @@ public class Movement : MonoBehaviour {
     }
 
     void Update() {
-        if (player.velocity != Vector3.zero) { 
+        if (moveinput != Vector2.zero) { 
             orientation.forward = assetforward.forward;
             return; 
-        } else {
-            vault.SetPlayerState("Idle");
         }
     }
 
@@ -46,8 +44,6 @@ public class Movement : MonoBehaviour {
     }
 
     public void Grounded() {
-        vault.SetPlayerState("Walking");
-
         if (Direction() == Vector3.zero) { return; }
         asset.forward = Direction();
 
@@ -56,8 +52,6 @@ public class Movement : MonoBehaviour {
     }
 
     public void Airborne() {
-        vault.SetPlayerState("Airborne");
-
         if (Direction() == Vector3.zero) { return; }
         asset.forward = Direction();
 
@@ -122,7 +116,6 @@ public class Movement : MonoBehaviour {
         } else {
             cdstate = true;
 
-            vault.SetPlayerState("Jumping");
             player.velocity = new Vector3(player.velocity.x, 0f, player.velocity.z);
             player.AddForce(Vector3.up * vault.Get("jumpheight"), ForceMode.Impulse);
 

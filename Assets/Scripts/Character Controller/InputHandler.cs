@@ -28,7 +28,7 @@ public class InputHandler : MonoBehaviour {
     public void OnLook(InputValue input) {
         cam.SetMouseInput(input.Get<Vector2>());
 
-        //Debug.Log(input.Get<float>());
+        //Debug.Log(input.Get<Vector2>());
     }
 
     public void OnJump(InputValue input) {
