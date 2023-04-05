@@ -5,13 +5,17 @@ using UnityEngine;
 public class Vault : MonoBehaviour {
     public float movespeed = 1200f;
     public float airborne = 0.8f;
-    public float sens = 40f;
+    public float sens = 80f;
     public float jumpheight = 5f;
     public float jumpcd = 1f;
 
-    public string playerstate = "Default";
+    public string playerstate = "Idle";
     public bool grounded;
 
+
+    void Update() {
+        //Debug.Log(playerstate);    
+    }
 
     public void SetGrounded(bool grounded) {
         this.grounded = grounded;

@@ -18,15 +18,6 @@ public class PlayerMov : MonoBehaviour {
 
     }
 
-    void Start() {
-        
-    }
-
-    void FixedUpdate() {
-        
-    }
-
-
     void Update() {
         gcheck.SetGround();
         gcheck.AdditionalGravity();

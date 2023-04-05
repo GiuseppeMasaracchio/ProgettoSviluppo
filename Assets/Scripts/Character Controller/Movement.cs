@@ -4,18 +4,33 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
     private Vector2 moveinput = Vector2.zero;
+    private Vector3 direction;
+
     private Rigidbody player;
     private Transform orientation;
-    private Vector3 direction;
+    private Transform asset;
+    private Transform assetforward;
+
     private bool buttonstate;
     public bool cdstate = true;
 
     private Vault vault;
 
     void Awake() {
+        vault = gameObject.GetComponent<Vault>();
+
         player = GameObject.Find("Player").GetComponent<Rigidbody>();
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
         orientation = GameObject.Find("Player").transform;
+        asset = GameObject.Find("PlayerAsset").transform;
+        assetforward = GameObject.Find("PlayerForward").transform;
+
+    }
+
+    void Update() {
+        if (moveinput != Vector2.zero) { 
+            orientation.forward = assetforward.forward;
+            return; 
+        }
     }
 
     //Movement related methods
@@ -28,12 +43,18 @@ public class Movement : MonoBehaviour {
         moveinput = input;
     }
 
-    public void Grounded() { 
+    public void Grounded() {
+        if (Direction() == Vector3.zero) { return; }
+        asset.forward = Direction();
+
         player.AddForce(Direction() * vault.Get("movespeed") * Time.deltaTime);
         SpeedControl();
     }
 
     public void Airborne() {
+        if (Direction() == Vector3.zero) { return; }
+        asset.forward = Direction();
+
         player.AddForce(Direction() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime);
         SpeedControl();
     }
