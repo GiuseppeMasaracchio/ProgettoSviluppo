@@ -12,9 +12,6 @@ public class Vault : MonoBehaviour {
     public string playerstate = "Default";
     public bool grounded;
 
-    void Start() {
-        
-    }
 
     public void SetGrounded(bool grounded) {
         this.grounded = grounded;
