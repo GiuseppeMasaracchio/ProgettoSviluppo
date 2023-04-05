@@ -6,7 +6,11 @@ public class StateSetter : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform entity;
+
+    private Vector2 horizontalvel;
+
     private bool approaching;
+    private bool jump;
 
     private Vault vault;
 
@@ -15,17 +19,14 @@ public class StateSetter : MonoBehaviour
     }
 
     void Update() {
-        //Debug.Log(rb.position);
-        if (rb.velocity.y == 0f) { 
-            vault.SetPlayerState("Idle"); 
+        if (rb.velocity.y == 0f) {
+            DetectWalking();
         }
         if (rb.velocity.y < -1f) { 
             vault.SetPlayerState("Airborne");
             ApproachingGround();
         }
-        if (rb.velocity.y > 1f) { vault.SetPlayerState("Jumping"); }
-        if (rb.velocity.x != 0f) { vault.SetPlayerState("Walking"); }
-        if (rb.velocity.z != 0f) { vault.SetPlayerState("Walking"); }
+        if (jump) { vault.SetPlayerState("Jumping"); }
     }
 
     private void ApproachingGround() {
@@ -33,6 +34,24 @@ public class StateSetter : MonoBehaviour
         if (approaching) { 
             vault.SetPlayerState("Approaching");
             return;
+        }
+    }
+
+    private void DetectWalking() {
+        horizontalvel = new Vector2(rb.velocity.x, rb.velocity.z);
+        if (horizontalvel != Vector2.zero) { 
+            vault.SetPlayerState("Walking"); 
+        } else {
+            vault.SetPlayerState("Idle");
+        }
+        
+    }
+
+    public void DetectJump(float input) {
+        if (input == 1f) { 
+            jump = true; 
+        } else {
+            jump = false;
         }
     }
 }

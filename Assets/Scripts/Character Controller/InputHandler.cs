@@ -9,6 +9,7 @@ public class InputHandler : MonoBehaviour {
     //Reference to script
     private CameraRotation cam;
     private Movement move;
+    private StateSetter state;
     private OptionsMenuScript options;
     private GameObject scriptsHolder;
     private PlayerCombat cms;
@@ -16,7 +17,7 @@ public class InputHandler : MonoBehaviour {
 
     void Awake() {
         scriptsHolder = GameObject.Find("ScriptsHolder");
-
+        state = GameObject.Find("ScriptsHolder").GetComponent<StateSetter>();
         cam = scriptsHolder.GetComponent<CameraRotation>();
         move = scriptsHolder.GetComponent<Movement>();
         options = scriptsHolder.GetComponent<OptionsMenuScript>();
@@ -42,6 +43,9 @@ public class InputHandler : MonoBehaviour {
 
         move.SetJumpInput(input.Get<float>());
 
+        state.DetectJump(input.Get<float>());
+
+        //Debug.Log(input.Get<float>());
     }
 
     public void OnPause(InputValue input) {
