@@ -9,8 +9,8 @@ public class StateSetter : MonoBehaviour
 
     private Vector2 horizontalvel;
 
-    private bool approaching;
-    private bool jump;
+    private bool isApproaching;
+    private bool isJumping;
 
     private Vault vault;
 
@@ -23,16 +23,18 @@ public class StateSetter : MonoBehaviour
             DetectWalking();
         }
         if (rb.velocity.y < -1f) { 
-            vault.SetPlayerState("Airborne");
             ApproachingGround();
         }
-        if (jump) { vault.SetPlayerState("Jumping"); }
+        if (isJumping) { vault.SetPlayerState("Jumping"); }
     }
 
     private void ApproachingGround() {
-        approaching = Physics.Raycast(entity.transform.position, Vector3.down, 1.5f);
-        if (approaching) { 
+        isApproaching = Physics.Raycast(entity.transform.position, Vector3.down, 1.5f, LayerMask.GetMask("Ground"));
+        if (isApproaching) { 
             vault.SetPlayerState("Approaching");
+            return;
+        } else {
+            vault.SetPlayerState("Airborne");
             return;
         }
     }
@@ -47,11 +49,11 @@ public class StateSetter : MonoBehaviour
         
     }
 
-    public void DetectJump(float input) {
-        if (input == 1f) { 
-            jump = true; 
+    public void DetectJump(bool input) {
+        if (input) { 
+            isJumping = true; 
         } else {
-            jump = false;
+            isJumping = false;
         }
     }
 }

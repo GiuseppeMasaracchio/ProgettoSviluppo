@@ -14,10 +14,12 @@ public class Movement : MonoBehaviour {
     private bool buttonstate;
     public bool cdstate = true;
 
+    private StateSetter state;
     private Vault vault;
 
     void Awake() {
         vault = gameObject.GetComponent<Vault>();
+        state = GameObject.Find("ScriptsHolder").GetComponent<StateSetter>();
 
         player = GameObject.Find("Player").GetComponent<Rigidbody>();
         orientation = GameObject.Find("Player").transform;
@@ -47,7 +49,7 @@ public class Movement : MonoBehaviour {
         if (Direction() == Vector3.zero) { return; }
         asset.forward = Direction();
 
-        player.AddForce(Direction() * vault.Get("movespeed") * Time.deltaTime);
+        player.AddForce(Direction() * vault.Get("movespeed") * Time.deltaTime, ForceMode.Force);
         SpeedControl();
     }
 
@@ -55,7 +57,7 @@ public class Movement : MonoBehaviour {
         if (Direction() == Vector3.zero) { return; }
         asset.forward = Direction();
 
-        player.AddForce(Direction() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime);
+        player.AddForce(Direction() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime, ForceMode.Force);
         SpeedControl();
     }
 
@@ -103,22 +105,22 @@ public class Movement : MonoBehaviour {
         //Metodo che setta lo stato dell'input
         if (input.Equals(1f)) {
             buttonstate = true;
+            state.DetectJump(buttonstate);
             cdstate = false;
         } else if (input.Equals(0f)) {
             buttonstate = false;
+            state.DetectJump(buttonstate);
             cdstate = true;
         } 
     }
 
     public void Jump() {
-        if (cdstate) { 
+        if (cdstate) {
             return; 
         } else {
             cdstate = true;
-
             player.velocity = new Vector3(player.velocity.x, 0f, player.velocity.z);
             player.AddForce(Vector3.up * vault.Get("jumpheight"), ForceMode.Impulse);
-
             Invoke(nameof(ResetCd), vault.Get("jumpcd"));
         }
     }

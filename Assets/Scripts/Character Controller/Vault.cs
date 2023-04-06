@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Vault : MonoBehaviour {
-    public float movespeed = 1200f;
-    public float airborne = 0.85f;
-    public float sens = 80f;
-    public float jumpheight = 5f;
-    public float jumpcd = 1f;
+    public float movespeed = 2400f;
+    public float airborne = 0.8f;
+    public float sens = 100f;
+    public float jumpheight = 12f;
+    public float jumpcd = 2f;
 
     public string playerstate = "Idle";
     public bool grounded;
@@ -17,7 +17,7 @@ public class Vault : MonoBehaviour {
     }
 
     void Update() {
-        Debug.Log(playerstate);    
+        //Debug.Log(playerstate);    
     }
 
     public void SetGrounded(bool grounded) {
