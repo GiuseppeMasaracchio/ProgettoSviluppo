@@ -17,7 +17,8 @@ public class Vault : MonoBehaviour {
     }
 
     void Update() {
-        //Debug.Log(playerstate);    
+        //Debug.Log(grounded);
+        Debug.Log(playerstate);    
     }
 
     public void SetGrounded(bool grounded) {
