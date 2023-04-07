@@ -8,9 +8,6 @@ public class StateSetter : MonoBehaviour {
 
     private Vector2 horizontalvel;
 
-    //private Vector3 entitycenter;
-    //private Vector3 entityhalfdim;
-
     private bool isApproaching;
     private bool isJumping;
 
@@ -21,13 +18,6 @@ public class StateSetter : MonoBehaviour {
     }
 
     void Update() {
-        //entityhalfdim = new Vector3(entity.transform.localScale.x / 4.2f, entity.transform.localScale.y / 2f, entity.transform.localScale.z / 4.2f);
-        //entitycenter = entity.transform.position - Vector3.up * .1f;
-        /*
-        if (rb.velocity.y == 0f) {
-            DetectWalking();
-        } */
-
         if (vault.GetGrounded()) {
             DetectWalking();
         }
@@ -39,9 +29,6 @@ public class StateSetter : MonoBehaviour {
     }
 
     private void ApproachingGround() {
-        //isApproaching = Physics.Raycast(entity.transform.position, Vector3.down, 1.5f, LayerMask.GetMask("Ground"));
-        //isApproaching = Physics.BoxCast(entitycenter, entityhalfdim, Vector3.down, entity.transform.rotation, 1.5f, LayerMask.GetMask("Ground"));
-        //isApproaching
         if (isApproaching) {
             vault.SetPlayerState("Approaching");
             return;

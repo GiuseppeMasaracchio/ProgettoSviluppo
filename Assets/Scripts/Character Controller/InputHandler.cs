@@ -23,6 +23,7 @@ public class InputHandler : MonoBehaviour {
 
     public void OnFire(InputValue input) {
         if (input.Get() == null) { return; }
+
         //Debug.Log(input.Get<float>());
     }
 
