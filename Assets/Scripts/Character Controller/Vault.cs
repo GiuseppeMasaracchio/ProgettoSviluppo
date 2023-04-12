@@ -30,6 +30,7 @@ public class Vault : MonoBehaviour {
     }
 
     public void SetPlayerState(string state) {
+        if (state == playerstate) { return; }
         playerstate = state;
     }
 

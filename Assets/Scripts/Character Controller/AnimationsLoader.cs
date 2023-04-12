@@ -10,7 +10,6 @@ public class AnimationsLoader : MonoBehaviour {
     private Vector2 target = Vector2.zero;
     
     private Vector2 lerpvalue = Vector2.zero;
-    private Vector2 iterator = Vector2.zero;
 
     private Vector2 idle = Vector2.zero;
     private Vector2 walking = new Vector2(0f, 1f);
@@ -60,19 +59,6 @@ public class AnimationsLoader : MonoBehaviour {
         current.y = animator.GetFloat("yAxis");
 
         target = animation;
-
-        if (current.x > target.x) {
-            iterator.x -= .11f * animationspeed * Time.deltaTime;
-        } else if (current.x < target.x) {
-            iterator.x += .11f * animationspeed * Time.deltaTime;
-        }
-
-        if (current.y > target.y) {
-            iterator.y -= .11f * animationspeed * Time.deltaTime;
-        } else if (current.y < target.y) {
-            iterator.y += .11f * animationspeed * Time.deltaTime;
-        }
-
         lerpvalue = Vector2.Lerp(current, target, animationspeed);
 
         animator.SetFloat("xAxis", lerpvalue.x);

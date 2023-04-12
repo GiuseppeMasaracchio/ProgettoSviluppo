@@ -18,6 +18,7 @@ public class StateSetter : MonoBehaviour {
     }
 
     void Update() {
+
         if (vault.GetGrounded()) {
             DetectWalking();
         }

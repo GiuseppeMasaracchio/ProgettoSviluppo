@@ -18,7 +18,7 @@ public class PlayerMov : MonoBehaviour {
     }
 
     void Update() {
-        physics.AdditionalGravity();
+        //physics.AdditionalGravity();
 
         move.JumpCheck();
         move.Move();

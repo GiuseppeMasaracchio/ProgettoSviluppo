@@ -5,10 +5,8 @@ using UnityEngine;
 public class Grounded : MonoBehaviour
 {
     private Vault vault;
-    private Rigidbody rb;
 
     void Awake() {
-        rb = GameObject.Find("Player").GetComponent<Rigidbody>();
         vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
     }
 
@@ -16,7 +14,6 @@ public class Grounded : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Ground") {
-            rb.velocity.Set(rb.velocity.x, 0.1f, rb.velocity.z);
             vault.SetGrounded(true);
         }
     }
