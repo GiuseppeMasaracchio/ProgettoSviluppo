@@ -58,7 +58,7 @@ public class CameraRotation : MonoBehaviour {
     private void VerticalSmoothCam() {
         camycurrent = camholder.position.y;
         camytarget = player.position.y;
-        camylerp = Mathf.Lerp(camycurrent, camytarget, .1f);
+        camylerp = Mathf.Lerp(camycurrent, camytarget, .05f);
         if (camycurrent < camytarget) {
             camholder.position = new Vector3(player.position.x, camylerp, player.position.z);
         } else {
