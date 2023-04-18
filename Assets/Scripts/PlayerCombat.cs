@@ -2,18 +2,29 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    public bool canAttack = false;
+    private bool canAttack, isAttacking;
+    private StateSetter _stateSetter;
+
+    private void Awake() {
+        _stateSetter = GameObject.Find("ScriptsHolder").GetComponent<StateSetter>();
+    }
     public void Attack() {
-        canAttack = true;
-        Invoke(nameof(ResetCd), 1.5f);
+        _stateSetter.DetectAttack(true);
+        Invoke(nameof(ResetCd), 0.7f);
     }
 
     private void ResetCd() {
-        canAttack = false;
+        canAttack = true;
+        isAttacking = false;
+        _stateSetter.DetectAttack(false);
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (canAttack) {
+
+        if (canAttack && !isAttacking) {
+            isAttacking = true;
+            canAttack = false;
+
             var foe = other.GetComponentInChildren<CombatModuleScript>();
             if(foe != null)
                 foe.TakeDmg(1);

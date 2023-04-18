@@ -6,21 +6,20 @@ public class PlayerMov : MonoBehaviour {
 
     private GameObject scriptsholder;
     private Movement move;
-    private Grounded gcheck;
+    private MorePhysics physics;
 
 
     void Awake() {
         scriptsholder = GameObject.Find("ScriptsHolder");
         move = scriptsholder.GetComponent<Movement>();
-        gcheck = scriptsholder.GetComponent<Grounded>();
+        physics = scriptsholder.GetComponent<MorePhysics>();
         
         Cursor.lockState = CursorLockMode.Locked;
 
     }
 
     void Update() {
-        gcheck.SetGround();
-        gcheck.AdditionalGravity();
+        physics.AdditionalGravity();
 
         move.JumpCheck();
         move.Move();

@@ -17,12 +17,12 @@ public class CameraRotation : MonoBehaviour {
     private Transform camholder;
     private Transform assetforward;
     private Transform player;
-    private Vault vault;
+    //private Vault vault;
 
     void Awake() {
         //Initialize scripts
         camholder = GameObject.Find("CameraHolder").transform;
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
+        //vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
         assetforward = GameObject.Find("PlayerForward").transform;
         player = GameObject.Find("Player").transform;
     }
@@ -36,12 +36,12 @@ public class CameraRotation : MonoBehaviour {
     }
 
     public float yCamRot() {
-        return mousedelta.y * vault.Get("sens") * Time.deltaTime;
+        return mousedelta.y * Vault.Get("sens") * Time.deltaTime;
 
     }
 
     public float xCamRot() {
-        return mousedelta.x * vault.Get("sens") * Time.deltaTime;
+        return mousedelta.x * Vault.Get("sens") * Time.deltaTime;
         
     }
 

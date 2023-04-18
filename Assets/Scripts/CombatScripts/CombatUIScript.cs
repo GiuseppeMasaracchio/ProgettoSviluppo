@@ -15,6 +15,7 @@ public class CombatUIScript : MonoBehaviour
     private Canvas personalCanvas;
 
     private void Awake() {
+        camTransform = Camera.main.transform;
         healthbar = GetComponent<Slider>();
         cms = GetComponentInParent<CombatModuleScript>();
         personalCanvas = GetComponentInParent<Canvas>();

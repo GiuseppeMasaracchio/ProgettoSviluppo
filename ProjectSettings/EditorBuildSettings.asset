@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: 6f9165e44f04c7947af033b4e02df633
+  - enabled: 1
+    path: Assets/Scenes/MasaScene/MasaScene.unity
+    guid: 271a5da5baf27764bbd2473241b0415c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 18835aa98591c3d44aef34a51986db68, type: 2}

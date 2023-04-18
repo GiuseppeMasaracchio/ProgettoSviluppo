@@ -43,8 +43,6 @@ public class InputHandler : MonoBehaviour {
 
         move.SetJumpInput(input.Get<float>());
 
-        state.DetectJump(input.Get<float>());
-
         //Debug.Log(input.Get<float>());
     }
 

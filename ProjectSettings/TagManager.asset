@@ -7,6 +7,9 @@ TagManager:
   - Obstacle
   - Modal
   - Enemy
+  - Ground
+  - Death
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

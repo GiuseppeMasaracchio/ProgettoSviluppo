@@ -1,6 +1,5 @@
 using UnityEngine.AI;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CombatModuleScript : MonoBehaviour, ICombat
 {
@@ -15,24 +14,16 @@ public class CombatModuleScript : MonoBehaviour, ICombat
         currentHp = maxHp;
     }
 
-    private void Update() {
-        
-        if (currentHp <= 0) Death();
-        
-    }
-
-
-  
+   
     public void TakeDmg(int dmg) {
         currentHp -= dmg;
+        if (currentHp <= 0) Death();
+
         if (transform.CompareTag("Enemy")) {
-            Debug.Log("Enemy ha preso danno");
-
             GetComponentInParent<NavMeshAgent>().enabled = false;
-
             Invoke(nameof(EnableNav), 1f);
         }
-        rb.AddExplosionForce(5f, transform.position + Vector3.forward, 4f, 4f, ForceMode.Impulse);
+        rb.AddExplosionForce(10f, transform.position + Vector3.forward, 5f, 5f, ForceMode.VelocityChange);
     }
 
     private void EnableNav() {
@@ -47,7 +38,7 @@ public class CombatModuleScript : MonoBehaviour, ICombat
         if (transform.tag == "Player") {
             Time.timeScale = 0f;
             GameObject.Destroy(transform.parent.gameObject, 1f); //1s per far attivare le animazioni e puzzi
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            GameMaster.Instance.Respawn();
             Time.timeScale = 1f;
         }
 

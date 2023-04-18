@@ -1,18 +1,11 @@
 //Devo capre cosa togliere senza fare danno soz
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
-/*
-  using TMPro.EditorUtilities;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem.UI;
-using Unity.VisualScripting;
-*/
 
 public class OptionsMenuScript : MonoBehaviour
 {
@@ -22,8 +15,6 @@ public class OptionsMenuScript : MonoBehaviour
     public GameObject modal;
     public PlayerInput pgInputMap; 
 
-    //Temp
-    //private InputActionAsset pgActionMaps;
     
     //Variables
     private Resolution[] res;
@@ -34,6 +25,8 @@ public class OptionsMenuScript : MonoBehaviour
     private void Awake() {
         res = Screen.resolutions;
         SetResolutionDrop();
+
+        //if (GameMaster.Instance.GetSceneIndex() != 0) pgInputMap = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
     }
 
     public void SetResolutionDrop() {
@@ -63,16 +56,19 @@ public class OptionsMenuScript : MonoBehaviour
     }
 
     public void OptionsModal() {
+        //if (GameMaster.Instance.GetSceneIndex() == 0) GetComponentInChildren<TMP_Text>().text = "OPTIONS";
         Pause();
     }
 
 
     public void Pause() {
         Image background = modal.GetComponentInParent<Image>();
-
+        
         if (!isPaused) {
-            pgInputMap.SwitchCurrentActionMap("UI");
-            Cursor.lockState = CursorLockMode.None;
+            if(pgInputMap != null) {
+                pgInputMap.SwitchCurrentActionMap("UI");
+                Cursor.lockState = CursorLockMode.None;
+            }
 
             background.enabled = true;
 
@@ -84,8 +80,10 @@ public class OptionsMenuScript : MonoBehaviour
             Time.timeScale = 0f;
 
         } else {
-            pgInputMap.SwitchCurrentActionMap("Player");
-            Cursor.lockState = CursorLockMode.Locked;
+            if (pgInputMap != null) {
+                pgInputMap.SwitchCurrentActionMap("Player");
+                Cursor.lockState = CursorLockMode.Locked;
+            }
 
             background.enabled = false;
 
@@ -104,7 +102,6 @@ public class OptionsMenuScript : MonoBehaviour
     }
 
     public void PlayButton() {
-        //To do impostare scene
-        //SceneManager.LoadScene(1);
+        
     }
 }

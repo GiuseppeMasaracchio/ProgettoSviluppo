@@ -1,39 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Assertions.Comparers;
+using UnityEngine.Playables;
 
-public class Vault : MonoBehaviour {
-    public float movespeed = 1200f;
-    public float airborne = 0.85f;
-    public float sens = 80f;
-    public float jumpheight = 5f;
-    public float jumpcd = 1f;
+public static class Vault {
+    private static float movespeed = 2400f;
+    private static float airborne = 0.8f;
+    private static float sens = 100f;
+    private static float jumpheight = 12f;
+    private static float jumpcd = 2f;
 
-    public string playerstate = "Idle";
-    public bool grounded;
+    private static string playerstate = "Idle";
+    private static bool grounded;
+
+    private static Vector3 checkpointPosition;
 
 
-    void Update() {
-        Debug.Log(playerstate);    
+   
+  
+    public static Vector3 GetCheckpoint() {
+        return checkpointPosition;
+    }
+    public static void SetCheckpoint(Vector3 input) {
+        checkpointPosition = input;
+    }
+    public static void SetGrounded(bool input) {
+        grounded = input;
     }
 
-    public void SetGrounded(bool grounded) {
-        this.grounded = grounded;
-    }
-
-    public bool GetGrounded() {
+    public static bool GetGrounded() {
         return grounded;
     }
 
-    public void SetPlayerState(string state) {
+    public static void SetPlayerState(string state) {
         playerstate = state;
     }
 
-    public string GetPlayerState() {
+    public static string GetPlayerState() {
         return playerstate;
     }
 
-    public float Get(string varname) {
+    public static float Get(string varname) {
         switch (varname) {
             case "movespeed":
                 return movespeed;
@@ -50,7 +61,7 @@ public class Vault : MonoBehaviour {
         }
     }
 
-    public void Set(string varname, float value) {
+    public static void Set(string varname, float value) {
         switch (varname) {
             case "movespeed":
                 movespeed = value;

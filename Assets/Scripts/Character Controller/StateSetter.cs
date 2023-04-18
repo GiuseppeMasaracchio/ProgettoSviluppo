@@ -2,56 +2,76 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateSetter : MonoBehaviour
-{
+public class StateSetter : MonoBehaviour {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform entity;
 
     private Vector2 horizontalvel;
 
-    private bool approaching;
-    private bool jump;
+    private bool isApproaching;
+    private bool isJumping;
+    private bool isAttacking;
 
-    private Vault vault;
+    //private Vault vault;
 
     void Awake() {
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();    
+        //vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
     }
 
     void Update() {
-        if (rb.velocity.y == 0f) {
+        //if (Vault.GetGrounded()) {
+        if (GenericsVault<bool>.GetPlayerInfo(true)) { 
             DetectWalking();
         }
-        if (rb.velocity.y < -1f) { 
-            vault.SetPlayerState("Airborne");
+
+        if (rb.velocity.y < -1f) {
             ApproachingGround();
         }
-        if (jump) { vault.SetPlayerState("Jumping"); }
+        //if (isJumping) { Vault.SetPlayerState("Jumping"); }
+        if (isJumping) { GenericsVault<string>.SetPlayerInfo("Jumping"); }
+
+        //if (isAttacking) Vault.SetPlayerState("Attacking");
+        if (isJumping) { GenericsVault<string>.SetPlayerInfo("Attacking"); }
+
     }
 
     private void ApproachingGround() {
-        approaching = Physics.Raycast(entity.transform.position, Vector3.down, 1.5f);
-        if (approaching) { 
-            vault.SetPlayerState("Approaching");
+        if (isApproaching) {
+            //Vault.SetPlayerState("Approaching");
+            GenericsVault<string>.SetPlayerInfo("Approaching");
+            return;
+        } else {
+            //Vault.SetPlayerState("Airborne");
+            GenericsVault<string>.SetPlayerInfo("Airborne");
             return;
         }
     }
 
     private void DetectWalking() {
         horizontalvel = new Vector2(rb.velocity.x, rb.velocity.z);
-        if (horizontalvel != Vector2.zero) { 
-            vault.SetPlayerState("Walking"); 
+        if (horizontalvel != Vector2.zero) {
+            //Vault.SetPlayerState("Walking");
+            GenericsVault<string>.SetPlayerInfo("Walking");
         } else {
-            vault.SetPlayerState("Idle");
+            //Vault.SetPlayerState("Idle");
+            GenericsVault<string>.SetPlayerInfo("Idle");
         }
-        
+
     }
 
-    public void DetectJump(float input) {
-        if (input == 1f) { 
-            jump = true; 
+    public void DetectJump(bool input) {
+        if (input) {
+            isJumping = true;
         } else {
-            jump = false;
+            isJumping = false;
         }
+    }
+
+    public void DetectAttack(bool input) {
+        if (input == isAttacking) return;
+        isAttacking = input;
+    }
+    public void SetApproaching(bool info) {
+        isApproaching = info;
     }
 }

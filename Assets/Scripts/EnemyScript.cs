@@ -15,6 +15,7 @@ public class EnemyScript : MonoBehaviour
 
     //Variabili
     private bool canAttack = true;
+    private bool isAttacking = false;
     private bool isJumping = false;
     
     private void Awake() {
@@ -38,6 +39,8 @@ public class EnemyScript : MonoBehaviour
 
     private void ResetCd() {
         canAttack = true;
+
+        isAttacking = false;
     }
 
     public void EnemyJump(Collider pgCol) {
@@ -79,13 +82,11 @@ public class EnemyScript : MonoBehaviour
 
     //Provvisorio
     private void OnCollisionEnter(Collision collision) {
-        if(collision.collider == pg && canAttack) {
+        if(collision.collider == pg && canAttack && !isAttacking) {
             canAttack = false;
+            isAttacking = true;
 
             collision.collider.GetComponentInChildren<CombatModuleScript>().TakeDmg(1);
-
-            //Lo facciamo saltare via
-            rb.AddExplosionForce(50f, transform.position + Vector3.forward, 15f, 0f, ForceMode.Impulse);
 
             Invoke(nameof(ResetCd), 1f);
         }
