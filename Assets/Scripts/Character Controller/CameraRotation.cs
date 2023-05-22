@@ -16,14 +16,14 @@ public class CameraRotation : MonoBehaviour {
     private Transform camholder;
     private Transform assetforward;
     private Transform player;
-    private Vault vault;
 
     void Awake() {
         //Initialize scripts
         camholder = GameObject.Find("CameraHolder").transform;
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
         assetforward = GameObject.Find("PlayerForward").transform;
         player = GameObject.Find("Player").transform;
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update() {
@@ -40,17 +40,17 @@ public class CameraRotation : MonoBehaviour {
     }
 
     private float yCamRot() {
-        return mousedelta.y * vault.Get("sens") * Time.deltaTime;
+        return mousedelta.y * Vault.Get("sens") * Time.deltaTime;
 
     }
 
     private float xCamRot() {
-        return mousedelta.x * vault.Get("sens") * Time.deltaTime;
+        return mousedelta.x * Vault.Get("sens") * Time.deltaTime;
         
     }
 
 
-    public void CamRotation() {
+    private void CamRotation() {
         camholder.rotation = Quaternion.Euler(xaxis, yaxis, 0f);
         assetforward.rotation = Quaternion.Euler(0f, yaxis, 0f);
     }
@@ -58,7 +58,7 @@ public class CameraRotation : MonoBehaviour {
     private void VerticalSmoothCam() {
         camycurrent = camholder.position.y;
         camytarget = player.position.y;
-        camylerp = Mathf.Lerp(camycurrent, camytarget, .05f);
+        camylerp = Mathf.Lerp(camycurrent, camytarget, .025f);
         if (camycurrent < camytarget) {
             camholder.position = new Vector3(player.position.x, camylerp, player.position.z);
         } else {

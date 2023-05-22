@@ -11,30 +11,31 @@ public class StateSetter : MonoBehaviour {
     private bool isApproaching;
     private bool isJumping;
 
-    private Vault vault;
+    //private Vault vault;
 
     void Awake() {
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
+        //vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
     }
 
     void Update() {
 
-        if (vault.GetGrounded()) {
+        if (Vault.GetGrounded()) {
             DetectWalking();
         }
 
         if (rb.velocity.y < -1f) {
+            isJumping = false;
             ApproachingGround();
         }
-        if (isJumping) { vault.SetPlayerState("Jumping"); }
+        if (isJumping) { Vault.SetPlayerState("Jumping"); }
     }
 
     private void ApproachingGround() {
         if (isApproaching) {
-            vault.SetPlayerState("Approaching");
+            Vault.SetPlayerState("Approaching");
             return;
         } else {
-            vault.SetPlayerState("Airborne");
+            Vault.SetPlayerState("Airborne");
             return;
         }
     }
@@ -42,9 +43,9 @@ public class StateSetter : MonoBehaviour {
     private void DetectWalking() {
         horizontalvel = new Vector2(rb.velocity.x, rb.velocity.z);
         if (horizontalvel != Vector2.zero) {
-            vault.SetPlayerState("Walking");
+            Vault.SetPlayerState("Walking");
         } else {
-            vault.SetPlayerState("Idle");
+            Vault.SetPlayerState("Idle");
         }
 
     }

@@ -8,12 +8,12 @@ public class InputHandler : MonoBehaviour {
     //Reference to script
     private CameraRotation cam;
     private Movement move;
-    private Vault vault;
+    //private Vault vault;
 
     void Awake() {
         cam = GameObject.Find("ScriptsHolder").GetComponent<CameraRotation>();
         move = GameObject.Find("ScriptsHolder").GetComponent<Movement>();
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
+        //vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
     }
 
     public void OnMove(InputValue input) {
@@ -24,7 +24,7 @@ public class InputHandler : MonoBehaviour {
 
     public void OnFire(InputValue input) {
         if (input.Get() == null) { return; }
-        vault.SetPlayerState("Attacking");
+        //vault.SetPlayerState("Attacking");
         //Debug.Log(input.Get<float>());
     }
 

@@ -2,52 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Vault : MonoBehaviour {
-    public float movespeed = 2400f;
-    public float airborne = 0.8f;
-    public float sens = 100f;
-    public float jumpheight = 12f;
-    public float jumpcd = 2f;
+public static class Vault {
+    private static float movespeed = 2000f;
+    private static float sens = 100f;
+    private static float jumpcd = 3f;
 
-    public string playerstate = "Idle";
-    public bool grounded;
+    private static string playerstate = "Idle";
+    private static bool isGrounded;
 
-    void Start() {
-        
+    public static void SetGrounded(bool grounded) {
+        isGrounded = grounded;
     }
 
-    void Update() {
-        //Debug.Log(grounded);
-        //Debug.Log(playerstate);    
+    public static bool GetGrounded() {
+        return isGrounded;
     }
 
-    public void SetGrounded(bool grounded) {
-        this.grounded = grounded;
-    }
-
-    public bool GetGrounded() {
-        return grounded;
-    }
-
-    public void SetPlayerState(string state) {
+    public static void SetPlayerState(string state) {
         if (state == playerstate) { return; }
         playerstate = state;
     }
 
-    public string GetPlayerState() {
+    public static string GetPlayerState() {
         return playerstate;
     }
 
-    public float Get(string varname) {
+    public static float Get(string varname) {
         switch (varname) {
             case "movespeed":
                 return movespeed;
-            case "airborne":
-                return airborne;
             case "sens":
                 return sens;
-            case "jumpheight":
-                return jumpheight;
             case "jumpcd":
                 return jumpcd;
             default:
@@ -55,25 +40,19 @@ public class Vault : MonoBehaviour {
         }
     }
 
-    public void Set(string varname, float value) {
+    public static void Set(string varname, float value) {
         switch (varname) {
             case "movespeed":
                 movespeed = value;
                 break;
-            case "airborne":
-                airborne = value;
-                break;
             case "sens":
                 sens = value;
-                break;
-            case "jumpheight":
-                jumpheight = value;
                 break;
             case "jumpcd":
                 jumpcd = value;
                 break;
             default:
-                Debug.Log("Vault internal error: invalid query");
+                Debug.LogError("Vault internal error: invalid query");
                 break;
         }
     }

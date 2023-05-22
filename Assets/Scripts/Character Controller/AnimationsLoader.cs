@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimationsLoader : MonoBehaviour {
     private Animator animator;
-    private Vault vault;
+    //private Vault vault;
 
     private Vector2 current = Vector2.zero;
     private Vector2 target = Vector2.zero;
@@ -25,12 +25,11 @@ public class AnimationsLoader : MonoBehaviour {
 
     void Awake() {
         animator = GameObject.Find("PlayerAsset").GetComponent<Animator>();
-        vault = GameObject.Find("ScriptsHolder").GetComponent<Vault>();
     }
 
 
     void Update() {
-        state = vault.GetPlayerState();
+        state = Vault.GetPlayerState();
 
         switch(state) {
             case "Idle":

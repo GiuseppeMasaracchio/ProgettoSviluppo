@@ -15,10 +15,8 @@ public class Movement : MonoBehaviour {
     public bool cdstate = true;
 
     private StateSetter state;
-    private Vault vault;
 
     void Awake() {
-        vault = gameObject.GetComponent<Vault>();
         state = GameObject.Find("ScriptsHolder").GetComponent<StateSetter>();
 
         player = GameObject.Find("Player").GetComponent<Rigidbody>();
@@ -29,58 +27,53 @@ public class Movement : MonoBehaviour {
     }
 
     void Update() {
-        if (moveinput != Vector2.zero) { 
+        if (moveinput != Vector2.zero) {
             orientation.forward = assetforward.forward;
             return; 
         }
     }
 
     //Movement related methods
+    public void SetMoveInput(Vector2 input) {
+        moveinput = input;
+    }
+
     public Vector3 Direction() {
         direction = orientation.forward * moveinput.y + orientation.right * moveinput.x;
         return direction;
     }
 
-    public void SetMoveInput(Vector2 input) {
-        moveinput = input;
-    }
 
-    public void Grounded() {
+    public void Walk() {
         if (Direction() == Vector3.zero) { return; }
         asset.forward = Direction();
-
-        player.AddForce(Direction() * vault.Get("movespeed") * Time.deltaTime, ForceMode.Force);
+        player.Run(this);
         SpeedControl();
-    }
-
-    public void Airborne() {
-        if (Direction() == Vector3.zero) { return; }
-        asset.forward = Direction();
-
-        player.AddForce(Direction() * vault.Get("movespeed") * vault.Get("airborne") * Time.deltaTime, ForceMode.Force);
-        SpeedControl();
-    }
-
-    public void Move() {
-        if (vault.GetGrounded()) {
-            Grounded();
-        } else {
-            Airborne();
-        }
     }
 
     public void SpeedControl() {
         Vector3 flatvelocity = new Vector3(player.velocity.x, 0f, player.velocity.z); 
-        if (flatvelocity.magnitude > vault.Get("movespeed")) {
-            Vector3 limvelocity = flatvelocity.normalized * vault.Get("movespeed");
+        if (flatvelocity.magnitude > Vault.Get("movespeed")) {
+            Vector3 limvelocity = flatvelocity.normalized * Vault.Get("movespeed");
             player.velocity = new Vector3(limvelocity.x, player.velocity.y, limvelocity.z);
         }
     }
 
     //Jump related methods
+    public void SetJumpInput(float input) {
+        //Metodo che setta lo stato dell'input
+        if (input.Equals(1f)) {
+            buttonstate = true;
+            cdstate = false;
+        } else if (input.Equals(0f)) {
+            buttonstate = false;
+            cdstate = true;
+        } 
+    }
+
     public void JumpCheck() {
         //Metodo che viene eseguito nell'update del player
-        if (!vault.GetGrounded()) {
+        if (!Vault.GetGrounded()) {
             return;
         }
         else {
@@ -97,31 +90,19 @@ public class Movement : MonoBehaviour {
         }
     }
 
-    public void ResetCd() {
-        cdstate = false;
-    }
-
-    public void SetJumpInput(float input) {
-        //Metodo che setta lo stato dell'input
-        if (input.Equals(1f)) {
-            buttonstate = true;
-            state.DetectJump(buttonstate);
-            cdstate = false;
-        } else if (input.Equals(0f)) {
-            buttonstate = false;
-            state.DetectJump(buttonstate);
-            cdstate = true;
-        } 
-    }
-
     public void Jump() {
         if (cdstate) {
             return; 
         } else {
             cdstate = true;
-            player.velocity = new Vector3(player.velocity.x, -1f, player.velocity.z);
-            player.AddForce(Vector3.up * vault.Get("jumpheight"), ForceMode.Impulse);
-            Invoke(nameof(ResetCd), vault.Get("jumpcd"));
+
+            player.Jump();
+            state.DetectJump(true);
+            Invoke(nameof(ResetCd), Vault.Get("jumpcd"));
         }
+    }
+
+    public void ResetCd() {
+        cdstate = false;
     }
 }
