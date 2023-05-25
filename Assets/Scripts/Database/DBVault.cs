@@ -5,7 +5,7 @@ using UnityEngine;
 using Mono.Data.Sqlite;
 
 public static class DBVault {
-    //Ambient vars
+    //Env vars
     private static string path = "Data Source=file:DB.db";
     private static IDbConnection dbcon;
     private static IDbCommand dbcmd;
@@ -28,7 +28,7 @@ public static class DBVault {
 
 
     //Getters
-    public static int GetActiveSlotIdx() {
+    private static int GetActiveSlotIdx() {
         OpenConnection();
 
         query = "SELECT Slot_ID FROM Slot WHERE Runtime = 1;";
@@ -44,7 +44,7 @@ public static class DBVault {
         return retrieve;
     }
 
-    public static object GetDataByIdx(int idx, string table, string column) {
+    private static object GetDataByIdx(int idx, string table, string column) {
         OpenConnection();
 
         query = "SELECT * FROM " + table + " WHERE " + table + "_ID = " + idx + ";";
@@ -58,7 +58,64 @@ public static class DBVault {
 
         CloseConnection();
         return retrieve;
+    } //DEPRECATED
+
+    private static object[] GetMinScore() {
+        OpenConnection();
+
+        query = "SELECT * FROM Highscore WHERE highscore = (SELECT MIN(highscore) FROM Highscore)";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+        object[] minscore = new object[2];
+        while (reader.Read()) {
+            minscore = new object[] { reader["Highscore_ID"], reader["name"], reader["Highscore"]};
+        }
+
+        CloseConnection();
+        return minscore;
     }
+
+    private static int GetHighscoreCount() {
+        OpenConnection();
+
+        query = "SELECT COUNT(Highscore_ID) FROM Highscore";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+        int count = new int();
+
+        while (reader.Read()) {
+            count = reader.GetInt32(reader.GetOrdinal("COUNT(Highscore_ID)"));
+        }
+
+        CloseConnection();
+        return count;
+    }
+    
+    ////Public methods
+
+    public static object[] GetActiveData() {
+        int activeSlot = GetActiveSlotIdx();
+        OpenConnection();
+
+        query = "SELECT * FROM Slot WHERE Slot_ID = " + activeSlot + ";";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+        object[] retrieve = new object[5];
+
+        while (reader.Read()) {
+            retrieve = new object[] {
+                reader["Slot_ID"],
+                reader["Name"],
+                reader["Powerups"],
+                reader["Score"],
+                reader["CurrentHp"],
+                reader["Runtime"]
+            };
+        }
+
+        CloseConnection();
+        return retrieve;
+    } 
 
     public static List<object[]> GetHighscore() {
         OpenConnection();
@@ -80,16 +137,99 @@ public static class DBVault {
         return highscore;
     }
 
-
-    //Setters
-    public static void UpdateValueByIdx(int idx, string table, string column, int value) {
+    public static object[] GetActiveCheckpoint() {
+        int activeslot = GetActiveSlotIdx();
         OpenConnection();
 
-        query = "UPDATE " + table + " SET " + column + " = " + value + " WHERE " + table + "_ID = " + idx + ";";
+        query = "SELECT * FROM Checkpoint WHERE Slot_ID = '" + activeslot + "';";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+        object[] retrieve = new object[2];
+
+        while (reader.Read()) {
+            retrieve = new object[] { reader["Slot_ID"], reader["Level_idx"], reader["CP_idx"]};
+        }
+
+        CloseConnection();
+        return retrieve;
+
+    } 
+
+
+    //Setters
+    private static void UpdateValueByIdx(int idx, string table, string column, object value) {
+        OpenConnection();
+
+        query = "UPDATE " + table + " SET " + column + " = '" + value + "' WHERE " + table + "_ID = " + idx + ";";
         dbcmd.CommandText = query;
         reader = dbcmd.ExecuteReader();
 
         CloseConnection();
+    } 
+
+    private static void UpdateSlotByIdx(int idx, object[] value) {
+        OpenConnection();
+
+        query = "UPDATE Slot SET Name = '" + value[0] + 
+            "', Powerups = '" + value[1] +
+            "', Score = '" + value[2] +
+            "', CurrentHp = '" + value[3] +
+            "' WHERE Slot_ID = " + idx + ";";  //La capienza dell'array non considera id e runtime come campi del nuovo array
+
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    } 
+ 
+    private static void InsertHighscore(int idx, string name, int score) {
+        OpenConnection();
+
+        query = "INSERT INTO Highscore VALUES('" + idx + "', '" + name + "', '" + score + "');";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    }
+
+    private static void UpdateHighscore(string name, int score) {
+        object[] minscore = GetMinScore();
+
+        if (score > (int)minscore[2]) {
+            UpdateValueByIdx((int)minscore[0], "Highscore", "name", name);
+            UpdateValueByIdx((int)minscore[0], "Highscore", "Highscore", score);
+        } else {
+            return;
+        }
+    }
+
+    private static void UpdateCheckpoint(int activeslot, object[] cpinfo) {
+        OpenConnection();
+
+        query = "UPDATE Checkpoint SET Level_idx = '" + cpinfo[0] + 
+            "', CP_idx = '" + cpinfo[1] + 
+            "' WHERE Slot_ID = '" + activeslot + "';";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    } 
+
+    ////Public methods
+
+    public static void DisposeActiveSlot() {
+        int activeslot = GetActiveSlotIdx();
+        UpdateValueByIdx(activeslot, "Slot", "Runtime", 0);
+    }
+
+    public static void SetActiveSlot(int idx) {
+        int activeslot = GetActiveSlotIdx();
+        if (activeslot == 0) {
+            UpdateValueByIdx(activeslot, "Slot", "Runtime", 1);
+        } else {
+            UpdateValueByIdx(activeslot, "Slot", "Runtime", 0);
+            UpdateValueByIdx(idx, "Slot", "Runtime", 1);
+        }
     }
 
     public static void InsertValue(string table, string column, int value) {
@@ -102,6 +242,34 @@ public static class DBVault {
         CloseConnection();
     }
 
+    public static void UpdateActiveSlot(string column, object value) {
+        int activeslot = GetActiveSlotIdx();
+
+        UpdateValueByIdx(activeslot, "Slot", column, value);
+
+    }  //SINGLE
+
+    public static void UpdateActiveSlot(object[] value) {
+        int activeslot = GetActiveSlotIdx();
+
+        UpdateSlotByIdx(activeslot, value);
+    } //MULTI //OVERLOAD
+
+    public static void SetHighscore(string name, int score) {
+        int count = GetHighscoreCount();
+
+        if (count <= 4) {
+            InsertHighscore(count + 1, name, score);
+        } else {
+            UpdateHighscore(name, score);
+        }
+    }
+
+    public static void SetCheckpoint(object[] checkpoint) {
+        int activeslot = GetActiveSlotIdx();
+        UpdateCheckpoint(activeslot, checkpoint);
+    }
+
     public static void InitDB() {
         OpenConnection();
 
@@ -109,20 +277,13 @@ public static class DBVault {
         query += "CREATE TABLE Checkpoint (Slot_ID int PRIMARY KEY, Level_idx int, CP_idx int, foreign key(Slot_ID) references Slot(Slot_ID)); \n";
         query += "CREATE TABLE Highscore (Highscore_ID int PRIMARY Key, Name varchar(10), Highscore int); \n";
 
-        query += "INSERT INTO Slot VALUES('1', 'Test_1', '0', '0', '3', '0'); \n";
-        query += "INSERT INTO Slot VALUES('2', 'Test_2', '0', '0', '3', '0'); \n";
-        query += "INSERT INTO Slot VALUES('3', 'Test_3', '0', '0', '3', '0'); \n";
+        query += "INSERT INTO Slot VALUES('1', 'Slot 1', '0', '0', '3', '0'); \n";
+        query += "INSERT INTO Slot VALUES('2', 'Slot 2', '0', '0', '3', '0'); \n";
+        query += "INSERT INTO Slot VALUES('3', 'Slot 3', '0', '0', '3', '0'); \n";
 
         query += "INSERT INTO Checkpoint VALUES('1', '0', '0'); \n";
         query += "INSERT INTO Checkpoint VALUES('2', '0', '0'); \n";
         query += "INSERT INTO Checkpoint VALUES('3', '0', '0'); \n";
-
-        query += "INSERT INTO Highscore VALUES('1', 'Dev_1', '0'); \n";
-        query += "INSERT INTO Highscore VALUES('2', 'Dev_2', '0'); \n";
-        query += "INSERT INTO Highscore VALUES('3', 'Dev_2', '0'); \n";
-        query += "INSERT INTO Highscore VALUES('4', 'Dev_1', '0'); \n";
-        query += "INSERT INTO Highscore VALUES('5', 'Dev_1', '0');";
-
 
         dbcmd.CommandText = query;
         reader = dbcmd.ExecuteReader();
@@ -131,11 +292,61 @@ public static class DBVault {
     }
 
 
-    //DROP
-    public static void DropTable(string table) {
+    //DROP//DELETE
+    private static void DropTable(string table) {
         OpenConnection();
 
         query = "DROP TABLE " + table + ";";
+
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    }
+
+    private static void DeleteFromTableByIdx(string table, int idx) {
+        OpenConnection();
+
+        query = "DELETE FROM " + table + " WHERE " + table + "_ID = " + idx + ";";
+
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+
+    }
+
+    private static void DeleteFromTable(string table) {
+        OpenConnection();
+
+        query = "DELETE FROM " + table + ";";
+
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+
+    }
+
+
+    //DEVTOOLS
+    public static void InitCP() {
+        OpenConnection();
+
+        query += "INSERT INTO Checkpoint VALUES('1', '0', '0'); \n";
+        query += "INSERT INTO Checkpoint VALUES('2', '0', '0'); \n";
+        query += "INSERT INTO Checkpoint VALUES('3', '0', '0'); \n";
+
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    }
+
+    private static void InitHS() {
+        OpenConnection();
+
+        query = "CREATE TABLE Highscore (Highscore_ID int PRIMARY Key, Name varchar(10), Highscore int); \n";
 
         dbcmd.CommandText = query;
         reader = dbcmd.ExecuteReader();
