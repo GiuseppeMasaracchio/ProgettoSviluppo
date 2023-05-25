@@ -213,7 +213,28 @@ public static class DBVault {
         reader = dbcmd.ExecuteReader();
 
         CloseConnection();
-    } 
+    }
+
+    private static void InitDB() {
+        OpenConnection();
+
+        query = "CREATE TABLE Slot (Slot_ID int PRIMARY Key, Name varchar(10), Powerups int, Score int, CurrentHp int, Runtime int); \n";
+        query += "CREATE TABLE Checkpoint (Slot_ID int PRIMARY KEY, Level_idx int, CP_idx int, foreign key(Slot_ID) references Slot(Slot_ID)); \n";
+        query += "CREATE TABLE Highscore (Highscore_ID int PRIMARY Key, Name varchar(10), Highscore int); \n";
+
+        query += "INSERT INTO Slot VALUES('1', 'Slot 1', '0', '0', '3', '0'); \n";
+        query += "INSERT INTO Slot VALUES('2', 'Slot 2', '0', '0', '3', '0'); \n";
+        query += "INSERT INTO Slot VALUES('3', 'Slot 3', '0', '0', '3', '0'); \n";
+
+        query += "INSERT INTO Checkpoint VALUES('1', '0', '0'); \n";
+        query += "INSERT INTO Checkpoint VALUES('2', '0', '0'); \n";
+        query += "INSERT INTO Checkpoint VALUES('3', '0', '0'); \n";
+
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    }
 
     ////Public methods
 
@@ -225,7 +246,7 @@ public static class DBVault {
     public static void SetActiveSlot(int idx) {
         int activeslot = GetActiveSlotIdx();
         if (activeslot == 0) {
-            UpdateValueByIdx(activeslot, "Slot", "Runtime", 1);
+            UpdateValueByIdx(idx, "Slot", "Runtime", 1);
         } else {
             UpdateValueByIdx(activeslot, "Slot", "Runtime", 0);
             UpdateValueByIdx(idx, "Slot", "Runtime", 1);
@@ -270,27 +291,6 @@ public static class DBVault {
         UpdateCheckpoint(activeslot, checkpoint);
     }
 
-    public static void InitDB() {
-        OpenConnection();
-
-        query = "CREATE TABLE Slot (Slot_ID int PRIMARY Key, Name varchar(10), Powerups int, Score int, CurrentHp int, Runtime int); \n";
-        query += "CREATE TABLE Checkpoint (Slot_ID int PRIMARY KEY, Level_idx int, CP_idx int, foreign key(Slot_ID) references Slot(Slot_ID)); \n";
-        query += "CREATE TABLE Highscore (Highscore_ID int PRIMARY Key, Name varchar(10), Highscore int); \n";
-
-        query += "INSERT INTO Slot VALUES('1', 'Slot 1', '0', '0', '3', '0'); \n";
-        query += "INSERT INTO Slot VALUES('2', 'Slot 2', '0', '0', '3', '0'); \n";
-        query += "INSERT INTO Slot VALUES('3', 'Slot 3', '0', '0', '3', '0'); \n";
-
-        query += "INSERT INTO Checkpoint VALUES('1', '0', '0'); \n";
-        query += "INSERT INTO Checkpoint VALUES('2', '0', '0'); \n";
-        query += "INSERT INTO Checkpoint VALUES('3', '0', '0'); \n";
-
-        dbcmd.CommandText = query;
-        reader = dbcmd.ExecuteReader();
-
-        CloseConnection();
-    }
-
 
     //DROP//DELETE
     private static void DropTable(string table) {
@@ -314,7 +314,7 @@ public static class DBVault {
 
         CloseConnection();
 
-    }
+    } //DEPRECATED
 
     private static void DeleteFromTable(string table) {
         OpenConnection();
@@ -330,12 +330,34 @@ public static class DBVault {
 
 
     //DEVTOOLS
-    public static void InitCP() {
+    public static void ResetDB() {
+        ResetSlotCPByIdx(1);
+        ResetSlotCPByIdx(2);
+        ResetSlotCPByIdx(3);
+        DeleteFromTable("Highscore");
+    }
+
+    public static void ReBuildDB() {
+        DropTable("Slot");
+        DropTable("Checkpoint");
+        DropTable("Highscore");
+
+        InitDB();
+    }
+
+    private static void ResetSlotCPByIdx(int idx) {
         OpenConnection();
 
-        query += "INSERT INTO Checkpoint VALUES('1', '0', '0'); \n";
-        query += "INSERT INTO Checkpoint VALUES('2', '0', '0'); \n";
-        query += "INSERT INTO Checkpoint VALUES('3', '0', '0'); \n";
+        query = "UPDATE Slot SET Name = 'Slot 1', " +
+            "Powerups = '0', " +
+            "Score = '0', " +
+            "CurrentHp = '3', " +
+            "Runtime = '0' " +
+            "WHERE Slot_ID = '" + idx + "'; \n";
+
+        query += "UPDATE Checkpoint SET Level_idx = '0', " +
+            "CP_idx = '0' " +
+            "WHERE Slot_ID = '" + idx + "'; \n";
 
         dbcmd.CommandText = query;
         reader = dbcmd.ExecuteReader();

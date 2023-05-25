@@ -18,11 +18,6 @@ public class Starter : MonoBehaviour {
     void Start() {
         text.text = null;
 
-
-        //DBVault.DropTable("Slot");
-        //DBVault.DropTable("Highscore");
-        //DBVault.DropTable("Checkpoint");
-
         //DBVault.InitCP();
         //DBVault.InitDB();
         //DBVault.InitHS();
@@ -63,8 +58,10 @@ public class Starter : MonoBehaviour {
         //DBVault.UpdateActiveSlot("Powerups", 1);
         //DBVault.UpdateActiveSlot(newvalue);
 
-        //DBVault.SetActiveSlot(3);
-        
+        DBVault.SetActiveSlot(1);
+
+        //DBVault.ReBuildDB();
+
         activedata = DBVault.GetActiveData();
         
         if (activedata[0] != null) {
