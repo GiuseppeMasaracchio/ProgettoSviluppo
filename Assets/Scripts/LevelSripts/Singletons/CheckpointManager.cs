@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CheckpointManager : MonoBehaviour
 {
-    public static CheckpointManager _instance;
-    public static CheckpointManager Instance { get; private set; }
 
     [SerializeField] private bool isCheckpointActive = false;
 
@@ -16,7 +14,6 @@ public class CheckpointManager : MonoBehaviour
             return;
         }
 
-        Instance = this;
 
 
         if (isCheckpointActive) ChangeSpawn();

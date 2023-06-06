@@ -119,7 +119,7 @@ public class Movement : MonoBehaviour {
             return; 
         } else {
             cdstate = true;
-            player.velocity = new Vector3(player.velocity.x, 0f, player.velocity.z);
+            player.velocity = new Vector3(player.velocity.x, -1f, player.velocity.z);
             player.AddForce(Vector3.up * Vault.Get("jumpheight"), ForceMode.Impulse);
             Invoke(nameof(ResetCd), Vault.Get("jumpcd"));
         }
