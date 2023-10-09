@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Data;
 using System.Collections.Generic;
-using UnityEngine;
 using Mono.Data.Sqlite;
 
 public static class DBVault {
@@ -75,7 +73,9 @@ public static class DBVault {
         return minscore;
     }
 
-    private static int GetHighscoreCount() {
+    ////Public methods
+
+    public static int GetHighscoreCount() {
         OpenConnection();
 
         query = "SELECT COUNT(Highscore_ID) FROM Highscore";
@@ -90,8 +90,6 @@ public static class DBVault {
         CloseConnection();
         return count;
     }
-    
-    ////Public methods
 
     public static object[] GetActiveData() {
         int activeSlot = GetActiveSlotIdx();
@@ -253,16 +251,6 @@ public static class DBVault {
         }
     }
 
-    public static void InsertValue(string table, string column, int value) {
-        OpenConnection();
-
-        query = "INSERT INTO " + table + "( " + column + ") VALUES(" + value + ");";
-        dbcmd.CommandText = query;
-        reader = dbcmd.ExecuteReader();
-
-        CloseConnection();
-    }
-
     public static void UpdateActiveSlot(string column, object value) {
         int activeslot = GetActiveSlotIdx();
 
@@ -345,10 +333,11 @@ public static class DBVault {
         InitDB();
     }
 
-    private static void ResetSlotCPByIdx(int idx) {
+    public static void ResetSlotCPByIdx(int idx) {
         OpenConnection();
 
-        query = "UPDATE Slot SET Name = 'Slot 1', " +
+        query = "UPDATE Slot SET Name = 'Slot " + 
+            idx + "', " +
             "Powerups = '0', " +
             "Score = '0', " +
             "CurrentHp = '3', " +
@@ -374,5 +363,5 @@ public static class DBVault {
         reader = dbcmd.ExecuteReader();
 
         CloseConnection();
-    }
+    } //DEPRECATED
 }

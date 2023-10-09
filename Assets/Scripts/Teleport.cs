@@ -15,8 +15,10 @@ public class Teleport : MonoBehaviour
         //Debug.Log(player);    
     }
 
+    
     private void OnTriggerEnter(Collider other) {
-        player.AddForce(player.transform.forward * -25f, ForceMode.Acceleration);
+        player.AddForce(player.transform.forward * -25f, ForceMode.Impulse);
         //player.position = checkpoint;
     }
+ 
 }

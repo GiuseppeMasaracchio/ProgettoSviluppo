@@ -36,9 +36,9 @@
                     "name": "Jump",
                     "type": "Value",
                     "id": "0131f21a-e908-42bd-91b5-6acb95acb1e4",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Analog",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(pressPoint=0.2)",
                     "initialStateCheck": true
                 }
             ],

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class Starter : MonoBehaviour {
@@ -9,10 +10,13 @@ public class Starter : MonoBehaviour {
     private object[] activedata;
     private object[] checkpoint;
     private object[] newcp;
+    private Text test;
+
 
 
     private void Awake() {
         text = GameObject.Find("Highscore").GetComponent<TMP_Text>();
+        
     }
 
     void Start() {
@@ -50,7 +54,7 @@ public class Starter : MonoBehaviour {
         data = DBVault.GetHighscore();
 
         for (int i = 0; i < DBVault.GetHighscoreCount(); i++) {
-            text.text += (i+1) + ". " + data[i][1] + ": " + data[i][2]\n";
+            text.text += (i+1) + ". " + data[i][1] + ": " + data[i][2] + "\n";
         }
         */
 
@@ -58,16 +62,22 @@ public class Starter : MonoBehaviour {
         //DBVault.UpdateActiveSlot("Powerups", 1);
         //DBVault.UpdateActiveSlot(newvalue);
 
-        DBVault.SetActiveSlot(1);
-
         //DBVault.ReBuildDB();
 
+        //DBVault.ResetDB();
+
+        //DBVault.DisposeActiveSlot();
+
+        //DBVault.UpdateActiveSlot("Powerups", 1);
+
+        //DBVault.SetActiveSlot(1);
+        /*
         activedata = DBVault.GetActiveData();
         
         if (activedata[0] != null) {
             text.text = activedata[0] + " - " + activedata[1] + " - " + activedata[2] + " - " + activedata[3] + " - " + activedata[4] + " - " + activedata[5];
         }
-        
+        */
 
         /*
         newcp = new object[] { 1, 2};
