@@ -43,7 +43,7 @@ public class JumpState : BaseState {
     private void HandleJump(Rigidbody rb) {
         //Jump Logic
         rb.velocity.Set(rb.velocity.x, 0f, rb.velocity.z);
-        rb.AddForce(Vector3.up * 200f * 9.81f, ForceMode.Acceleration);
+        rb.AddForce(Vector3.up * Ctx.JumpSpeed * 9.81f, ForceMode.Force);
         ResetJump();
     }
     private void ResetJump() {

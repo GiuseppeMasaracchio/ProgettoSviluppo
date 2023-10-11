@@ -51,7 +51,16 @@ public class TPCharacterController : MonoBehaviour
     private float xaxis;
     private float yaxis;
 
-    [Range(2f, 50f)]public float gravity;
+    private float gravity = 3.14f;
+
+    [SerializeField]
+    [Range(0.1f, 10f)] float gravityMultiplier;
+
+    [SerializeField]
+    [Range(0.1f, 2f)] float gravitySpeed;
+
+    [SerializeField]
+    [Range(0.1f, 80f)] float jumpSpeed;
 
     //Input vars
     private Vector2 camInput;
@@ -61,7 +70,9 @@ public class TPCharacterController : MonoBehaviour
     private bool dashInput;
 
     //Constructors
-    public float Gravity { get { return gravity; } }
+    public float Gravity { get { return gravity; } set { gravity = value; } }
+    public float GravityMultiplier { get { return gravityMultiplier; } }
+    public float GravitySpeed { get { return gravitySpeed; } }
     public Vector2 CamInput { get { return camInput; } }
     public Vector2 MoveInput { get { return moveInput; } }
     public bool JumpInput { get { return jumpInput; } set { jumpInput = value; } }
@@ -70,6 +81,7 @@ public class TPCharacterController : MonoBehaviour
 
     public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
+    public float JumpSpeed { get { return jumpSpeed; } set { jumpSpeed = value; } }
 
     public int CurrentHp { get { return currentHp; } set { currentHp = value; } }
     public int PowerUps { get { return powerUps; } set { powerUps = value; } }
@@ -117,7 +129,7 @@ public class TPCharacterController : MonoBehaviour
         _currentSubState.EnterState();
 
         _devUI = GameObject.Find("DevToolUI").GetComponent<DevToolUI>();
-
+        
         //activeData = DBVault.GetActiveData();
         //Debug.Log(activeData[(int)ActiveData.Name]);
 
@@ -143,7 +155,7 @@ public class TPCharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame

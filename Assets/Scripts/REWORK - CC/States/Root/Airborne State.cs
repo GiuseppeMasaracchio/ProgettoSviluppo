@@ -10,17 +10,15 @@ public class AirborneState : BaseState {
     public override void EnterState() {
         //Enter logic
 
+        Ctx.MoveSpeed = 2000f;
+
         if (Ctx.IsFalling) {
             InitializeJumpCount();
         }
     }
     public override void UpdateState() {
         //Update logic
-
-        if (Ctx.MoveSpeed > 2000) {            
-            Ctx.MoveSpeed = Mathf.Lerp(Ctx.MoveSpeed, 2000, 1f);
-        }
-
+        
         if (!Ctx.IsJumping) {
             Ctx.IsFalling = true;
         }

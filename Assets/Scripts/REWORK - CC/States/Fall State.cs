@@ -25,7 +25,7 @@ public class FallState : BaseState, IPhysics, IWalk {
     }
     public override void ExitState() {
         //Exit logic
-
+        Ctx.Gravity = 3.14f;
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -48,7 +48,10 @@ public class FallState : BaseState, IPhysics, IWalk {
     }
     public void HandleGravity(Rigidbody rb) {
         //Gravity logic
-        rb.AddForce(Vector3.up * (-9.81f / 2) * Ctx.Gravity, ForceMode.Acceleration);
+        if (Ctx.Gravity < (3.14f * Ctx.GravityMultiplier)) {
+            Ctx.Gravity = Ctx.Gravity + Ctx.GravitySpeed;
+        }
+        rb.AddForce(Vector3.up * -Ctx.Gravity, ForceMode.Force);
     }
     public void HandleWalk() {
         if (Direction() == Vector3.zero) { return; }

@@ -9,7 +9,8 @@ public class GroundedState : BaseState {
     public override void EnterState() {
         //Enter logic
 
-        Ctx.JumpCount = 2;       
+        Ctx.MoveSpeed = 2200f;
+        Ctx.JumpCount = 2;
     }
     public override void UpdateState() {
         //Update logic
@@ -18,11 +19,7 @@ public class GroundedState : BaseState {
             Ctx.IsIdle = true;
         }
         else Ctx.IsIdle = false;
-
-        if (Ctx.MoveSpeed < 2200) {
-            Ctx.MoveSpeed = Mathf.Lerp(Ctx.MoveSpeed, 2200, 1f);
-        }
-
+        
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
