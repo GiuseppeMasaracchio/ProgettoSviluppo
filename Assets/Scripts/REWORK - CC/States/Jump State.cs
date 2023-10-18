@@ -9,6 +9,8 @@ public class JumpState : BaseState {
     public override void EnterState() {
         //Enter logic
 
+        //Ctx.AttackCollider.enabled = true;
+        Ctx.Gravity = 9.81f;
         Ctx.JumpCount--;
         Ctx.JumpInput = false;        
         Ctx.AnimHandler.Play(AnimHandler.Jump());
@@ -22,7 +24,7 @@ public class JumpState : BaseState {
     }
     public override void ExitState() {
         //Exit logic
-        
+        //Ctx.AttackCollider.enabled = false;
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -43,7 +45,7 @@ public class JumpState : BaseState {
     private void HandleJump(Rigidbody rb) {
         //Jump Logic
         rb.velocity.Set(rb.velocity.x, 0f, rb.velocity.z);
-        rb.AddForce(Vector3.up * Ctx.JumpSpeed * 9.81f, ForceMode.Force);
+        rb.AddForce(Vector3.up * Ctx.JumpHeight, ForceMode.Impulse);
         ResetJump();
     }
     private void ResetJump() {

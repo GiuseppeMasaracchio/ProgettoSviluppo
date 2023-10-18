@@ -38,7 +38,16 @@
                     "id": "0131f21a-e908-42bd-91b5-6acb95acb1e4",
                     "expectedControlType": "Analog",
                     "processors": "",
-                    "interactions": "Press(pressPoint=0.2)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Lock",
+                    "type": "Value",
+                    "id": "69f9e60c-a0f1-4efe-8049-6c7505350a6c",
+                    "expectedControlType": "Analog",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": true
                 }
             ],
@@ -282,6 +291,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fea933e9-65ec-4ad1-8586-01a53935ccf9",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class AirborneState : BaseState {
+public class AirborneState : BaseState, IPhysics {
     public AirborneState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         IsRootState = true; //SOLO SU GROUNDED, AIRBORNE E DEAD (ROOT STATES)
     }
@@ -22,12 +19,12 @@ public class AirborneState : BaseState {
         if (!Ctx.IsJumping) {
             Ctx.IsFalling = true;
         }
-
+        HandleGravity(Ctx.PlayerRb);
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
-        
+        Ctx.Gravity = 9.81f;
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -43,5 +40,12 @@ public class AirborneState : BaseState {
         if (Ctx.JumpCount > 0 && Ctx.JumpCount < 2) {
             Ctx.JumpCount--;
         }
+    }
+    public void HandleGravity(Rigidbody rb) {
+        //Gravity logic
+        if (Ctx.Gravity < (9.81f * Ctx.GravityMultiplier)) {
+            Ctx.Gravity = Ctx.Gravity + Ctx.GravitySpeed;
+        }
+        rb.AddForce(Vector3.up * -Ctx.Gravity * Time.deltaTime, ForceMode.VelocityChange);
     }
 }

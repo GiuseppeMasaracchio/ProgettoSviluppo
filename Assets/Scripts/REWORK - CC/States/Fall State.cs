@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FallState : BaseState, IPhysics, IWalk {
@@ -19,13 +17,13 @@ public class FallState : BaseState, IPhysics, IWalk {
             Ctx.Player.transform.forward = Ctx.PlayerForward.transform.forward;
         }
 
-        HandleGravity(Ctx.PlayerRb);
+        //HandleGravity(Ctx.PlayerRb);
         HandleWalk();
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
-        Ctx.Gravity = 3.14f;
+        
     }
     public override void CheckSwitchStates() {
         //Switch logic

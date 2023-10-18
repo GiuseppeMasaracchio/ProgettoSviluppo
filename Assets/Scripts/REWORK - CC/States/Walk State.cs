@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class WalkState : BaseState, IWalk {
@@ -16,7 +13,6 @@ public class WalkState : BaseState, IWalk {
     }
     public override void UpdateState() {
         //Update logic
-
         if (Ctx.MoveInput != Vector2.zero) {
             Ctx.Player.transform.forward = Ctx.PlayerForward.transform.forward;
         }

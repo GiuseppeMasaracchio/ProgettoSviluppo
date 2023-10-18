@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,6 +27,7 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _forward;
     Rigidbody _playerRb;
     Animator _animator;
+    SphereCollider _attackCollider;
 
     //State vars
     private bool isDead = false;
@@ -42,6 +45,8 @@ public class TPCharacterController : MonoBehaviour
     //Context vars
     private int jumpCount = 2;
     private float moveSpeed;
+    private float camycurrent;
+    private float camytarget;
 
     private object[] activeData;
     private int currentHp;
@@ -50,17 +55,24 @@ public class TPCharacterController : MonoBehaviour
 
     private float xaxis;
     private float yaxis;
+    private float _currentSens;
 
-    private float gravity = 3.14f;
-
-    [SerializeField]
-    [Range(0.1f, 10f)] float gravityMultiplier;
+    private float gravity = 9.81f;
 
     [SerializeField]
-    [Range(0.1f, 2f)] float gravitySpeed;
+    [Range(1f, 100f)] float gravityMultiplier;
 
     [SerializeField]
-    [Range(0.1f, 80f)] float jumpSpeed;
+    [Range(0.1f, 10f)] float gravitySpeed;
+
+    [SerializeField]
+    [Range(0.1f, 80f)] float jumpHeight;
+
+    [SerializeField]
+    [Range(0.1f, 800f)] float _sens;
+    
+    [SerializeField]
+    [Range(0.01f, 5f)] float _sensRatio;
 
     //Input vars
     private Vector2 camInput;
@@ -70,9 +82,11 @@ public class TPCharacterController : MonoBehaviour
     private bool dashInput;
 
     //Constructors
+    public float CurrentSens { get { return _currentSens; } }
     public float Gravity { get { return gravity; } set { gravity = value; } }
     public float GravityMultiplier { get { return gravityMultiplier; } }
     public float GravitySpeed { get { return gravitySpeed; } }
+
     public Vector2 CamInput { get { return camInput; } }
     public Vector2 MoveInput { get { return moveInput; } }
     public bool JumpInput { get { return jumpInput; } set { jumpInput = value; } }
@@ -81,7 +95,7 @@ public class TPCharacterController : MonoBehaviour
 
     public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
-    public float JumpSpeed { get { return jumpSpeed; } set { jumpSpeed = value; } }
+    public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
 
     public int CurrentHp { get { return currentHp; } set { currentHp = value; } }
     public int PowerUps { get { return powerUps; } set { powerUps = value; } }
@@ -105,6 +119,7 @@ public class TPCharacterController : MonoBehaviour
     public GameObject PlayerForward { get { return _forward; } }
     public Rigidbody PlayerRb { get { return _playerRb; } }
     public Animator Animator { get { return _animator; } }
+    public SphereCollider AttackCollider { get { return _attackCollider; } set { _attackCollider = value; } }
 
     public BaseState CurrentRootState { get { return _currentRootState; } set { _currentRootState = value; } }
     public BaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
@@ -118,7 +133,8 @@ public class TPCharacterController : MonoBehaviour
 
         _animator = GameObject.Find("PlayerAsset").GetComponent<Animator>();
         _playerRb = _player.GetComponent<Rigidbody>();
-        
+        _attackCollider = _player.GetComponentInChildren<SphereCollider>();
+
         _animHandler = _player.AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
 
@@ -160,13 +176,10 @@ public class TPCharacterController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        UpdateCamera(_cam, _player, _forward, camInput, 10f);
-
-        _currentRootState.UpdateState();
-        _currentSubState.UpdateState();
+        UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
 
         _devUI.UpdateText(this);
-
+        
         if (isGrounded) {
             isFalling = false;
             isAirborne = false;
@@ -174,11 +187,23 @@ public class TPCharacterController : MonoBehaviour
             isAirborne = true;
         }
 
-        if (_playerRb.velocity.y < -.6f) {
+        if (_playerRb.velocity.y < -5f) {
             isFalling = true;
         }
     }
-
+    void FixedUpdate() {
+        _currentRootState.UpdateState();
+        _currentSubState.UpdateState();
+    } 
+    
+    //Input Callbacks
+    public void OnControlsChanged(PlayerInput input) {
+        if (input.currentControlScheme == "Gamepad") {
+            _currentSens = _sens;
+        } else if (input.currentControlScheme == "Keyboard&Mouse") {
+            _currentSens = _sens * _sensRatio;
+        }
+    }
     public void OnMove(InputValue input) {
         moveInput = input.Get<Vector2>();
 
@@ -192,6 +217,13 @@ public class TPCharacterController : MonoBehaviour
     public void OnLook(InputValue input) {
         camInput = input.Get<Vector2>();
     }
+    public void OnJump(InputValue input) {
+        if (input.Get() != null) {
+            SetUpJump();
+        } else {
+            jumpInput = false;
+        }
+    }
     public void OnFire(InputValue input) {
         if (input.Get() != null) {
             //attackInput = true; //Ricordati di settare la reset condition
@@ -199,13 +231,6 @@ public class TPCharacterController : MonoBehaviour
             //Debug.Log(isAttacking); //Ho cambiato la value type su InputActionAsset, da float ad Analog (1, null)
         } else {
             //isAttacking = false;
-        }
-    }
-    public void OnJump(InputValue input) {
-        if (input.Get() != null) {
-            SetUpJump();
-        } else {
-            jumpInput = false;
         }
     }
     public void OnDash(InputValue input) {
@@ -218,6 +243,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }
 
+    //SetUp Methods
     private void SetUpJump() {
         if (!jumpInput) {
             jumpInput = true;
@@ -243,15 +269,15 @@ public class TPCharacterController : MonoBehaviour
     private void CalculateCamMotion(Vector2 mouseInput, float sens) {
         yaxis += mouseInput.x * sens * Time.deltaTime;
         xaxis -= mouseInput.y * sens * Time.deltaTime;
-        xaxis = Mathf.Clamp(xaxis, -20f, 80f);
+        xaxis = Mathf.Clamp(xaxis, -30f, 60f);
     }
     private void CamRotation(GameObject cam, GameObject forward) {
         cam.transform.rotation = Quaternion.Euler(xaxis, yaxis, 0f);
         forward.transform.rotation = Quaternion.Euler(0f, yaxis, 0f);
     }
     private void VerticalSmoothCam(GameObject cam, GameObject player) {
-        float camycurrent = cam.transform.position.y;
-        float camytarget = player.transform.position.y;
+        camycurrent = cam.transform.position.y;
+        camytarget = player.transform.position.y;
         float camylerp = Mathf.Lerp(camycurrent, camytarget, .025f);
         if (camycurrent < camytarget) {
             cam.transform.position = new Vector3(player.transform.position.x, camylerp, player.transform.position.z);
@@ -259,5 +285,5 @@ public class TPCharacterController : MonoBehaviour
         else {
             cam.transform.position = player.transform.position;
         }
-    }
+    }   
 }

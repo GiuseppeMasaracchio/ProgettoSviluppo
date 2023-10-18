@@ -8,10 +8,12 @@ public class Grounded : MonoBehaviour
         if (other.tag == "Ground") {
             _ctx.IsGrounded = true;
         }
+        Debug.Log("Entering " + other.name);
     }   
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Ground") {
             _ctx.IsGrounded = false;
         }
+        Debug.Log("Exiting " + other.name);
     }
 }

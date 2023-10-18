@@ -8,12 +8,11 @@ public class IdleState : BaseState {
     }
     public override void EnterState() {
         //Enter logic
-
+                
         Ctx.AnimHandler.Play(AnimHandler.Idle());
     }
     public override void UpdateState() {
         //Update logic
-
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
