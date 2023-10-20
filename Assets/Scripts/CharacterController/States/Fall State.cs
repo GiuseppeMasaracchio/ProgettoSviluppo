@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class WalkState : BaseState, IWalk {
-    public WalkState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
+public class FallState : BaseState, IWalk {
+    public FallState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {
         //Enter logic
-
-        if (Ctx.IsGrounded) {            
-            Ctx.AnimHandler.Play(AnimHandler.Walk());
+        if (!Ctx.IsGrounded) {
+            Ctx.IsIdle = false;
+            Ctx.AnimHandler.Play(AnimHandler.Fall());
         }
     }
     public override void UpdateState() {
@@ -18,40 +18,35 @@ public class WalkState : BaseState, IWalk {
         }
 
         HandleWalk();
-
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
-
+        
     }
     public override void CheckSwitchStates() {
         //Switch logic
 
-        if (Ctx.IsIdle) {
+        if (Ctx.IsWalking && Ctx.IsGrounded) {
+            SwitchState(StateHandler.Walk());
+        }
+        else if (Ctx.IsIdle && Ctx.IsGrounded) {
             SwitchState(StateHandler.Idle());
-        } 
-        else if (Ctx.IsAttacking) {
-            SwitchState(StateHandler.Attack());
-        } 
-        else if (Ctx.IsDashing) {
-            SwitchState(StateHandler.Dash());
-        } 
-        else if (Ctx.IsJumping) {
-            SwitchState(StateHandler.Jump());
-        } 
-        else if (Ctx.IsFalling && Ctx.IsAirborne) {
-            Ctx.JumpCount--;
-            SwitchState(StateHandler.Fall());
-        } 
+        }
         else if (Ctx.IsDamaged) {
             SwitchState(StateHandler.Damage());
+        }
+        else if (Ctx.IsJumping) {
+            SwitchState(StateHandler.Jump());
+        }
+        else if (Ctx.IsDashing) {
+            SwitchState(StateHandler.Dash());
         }
     }
     public void HandleWalk() {
         if (Direction() == Vector3.zero) { return; }
         Ctx.Asset.transform.forward = Direction();
-        Ctx.PlayerRb.AddForce(Direction() * Ctx.MoveSpeed * Time.deltaTime, ForceMode.Force);
+        Ctx.PlayerRb.AddForce(Direction() * Ctx.MoveSpeed * .9f * Time.deltaTime, ForceMode.Force);
         SpeedControl();
     }
     private Vector3 Direction() {

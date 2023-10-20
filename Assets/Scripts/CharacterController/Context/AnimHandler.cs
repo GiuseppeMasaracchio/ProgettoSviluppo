@@ -6,7 +6,7 @@ enum Anim {
     dead,
     idle,
     walk,
-    attack,
+    attack1,
     jump,
     fall,
     dash,
@@ -21,7 +21,7 @@ public class AnimHandler : MonoBehaviour{
         //animList[Anim.dead] = new Vector2(x, y);                      //0
         animList[Anim.idle] = new Vector2(0f, 0f);                       //1
         animList[Anim.walk] = new Vector2(0f, 1f);                       //2
-        animList[Anim.attack] = new Vector2(-1f, 1f);                    //3
+        animList[Anim.attack1] = new Vector2(-1f, 1f);                    //3
         animList[Anim.jump] = new Vector2(-.33f, -.33f);                 //4
         animList[Anim.fall] = new Vector2(-.66f, -.66f);                 //5
         //animList[Anim.dash] = new DashState(_context, this);             //6
@@ -29,15 +29,16 @@ public class AnimHandler : MonoBehaviour{
     }
 
     private void Awake() {
-        _animator = GameObject.Find("PlayerAsset").GetComponent<Animator>();
+        _animator = gameObject.GetComponent<Animator>();
+        
     }
 
     public void Play(Vector2 clip) {
         //StartCoroutine(LoadClip(clip));
         _animator.SetFloat("xAxis", clip.x);
         _animator.SetFloat("yAxis", clip.y);
-    }
-    
+        
+    }    
     
     IEnumerator LoadClip(Vector2 target) {
         //Debug.Log("Starting Coroutine");
@@ -70,8 +71,8 @@ public class AnimHandler : MonoBehaviour{
     public Vector2 Walk() {
         return animList[Anim.walk];
     }
-    public Vector2 Attack() {
-        return animList[Anim.attack];
+    public Vector2 Attack1() {
+        return animList[Anim.attack1];
     }
     public Vector2 Jump() {
         return animList[Anim.jump];

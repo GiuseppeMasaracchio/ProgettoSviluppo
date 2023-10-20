@@ -1,15 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class FallState : BaseState, IPhysics, IWalk {
-    public FallState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
+public class JumpState : BaseState, IWalk {
+    public JumpState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {
         //Enter logic
-        if (Ctx.IsAirborne) {
-            Ctx.IsIdle = false;
-            Ctx.AnimHandler.Play(AnimHandler.Fall());
-        }
+
+        //Ctx.AttackCollider.enabled = true;
+        Ctx.Gravity = 9.81f;
+        Ctx.JumpCount--;
+        Ctx.JumpInput = false;        
+        Ctx.AnimHandler.Play(AnimHandler.Jump());
+
+        HandleJump(Ctx.PlayerRb);
     }
     public override void UpdateState() {
         //Update logic
@@ -17,22 +23,18 @@ public class FallState : BaseState, IPhysics, IWalk {
             Ctx.Player.transform.forward = Ctx.PlayerForward.transform.forward;
         }
 
-        //HandleGravity(Ctx.PlayerRb);
         HandleWalk();
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
-        
+        //Ctx.AttackCollider.enabled = false;
     }
     public override void CheckSwitchStates() {
         //Switch logic
-
-        if (Ctx.IsWalking && Ctx.IsGrounded) {
-            SwitchState(StateHandler.Walk());
-        }
-        else if (Ctx.IsIdle) {
-            SwitchState(StateHandler.Idle());
+        
+        if (Ctx.IsFalling) {
+            SwitchState(StateHandler.Fall());
         }
         else if (Ctx.IsDamaged) {
             SwitchState(StateHandler.Damage());
@@ -43,13 +45,19 @@ public class FallState : BaseState, IPhysics, IWalk {
         else if (Ctx.IsDashing) {
             SwitchState(StateHandler.Dash());
         }
-    }
-    public void HandleGravity(Rigidbody rb) {
-        //Gravity logic
-        if (Ctx.Gravity < (3.14f * Ctx.GravityMultiplier)) {
-            Ctx.Gravity = Ctx.Gravity + Ctx.GravitySpeed;
+        else if (Ctx.IsAttacking) {
+            SwitchState(StateHandler.Attack());
         }
-        rb.AddForce(Vector3.up * -Ctx.Gravity, ForceMode.Force);
+    }
+    private void HandleJump(Rigidbody rb) {
+        //Jump Logic
+        rb.velocity.Set(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(Vector3.up * Ctx.JumpHeight, ForceMode.Impulse);
+        ResetJump();
+    }
+    private void ResetJump() {
+        Ctx.JumpInput = false;
+        Ctx.IsJumping = false;
     }
     public void HandleWalk() {
         if (Direction() == Vector3.zero) { return; }

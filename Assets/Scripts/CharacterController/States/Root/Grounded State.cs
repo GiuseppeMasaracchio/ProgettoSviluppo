@@ -9,6 +9,8 @@ public class GroundedState : BaseState {
     public override void EnterState() {
         //Enter logic
 
+        Ctx.IsFalling = false;
+        //Ctx.IsJumping = false;
         Ctx.MoveSpeed = 2200f;
         Ctx.JumpCount = 2;
     }
@@ -28,7 +30,7 @@ public class GroundedState : BaseState {
     }
     public override void CheckSwitchStates() {
         //Switch logic
-        if (Ctx.IsAirborne) {
+        if (!Ctx.IsGrounded) {
             SwitchState(StateHandler.Airborne());
         }
         else if (Ctx.IsDead) {

@@ -6,9 +6,11 @@ using UnityEngine;
 public class Teleport : MonoBehaviour
 {
     private Rigidbody player;
+    private GameObject playerAsset;
 
     void Awake() {
         player = GameObject.Find("Player").GetComponent<Rigidbody>();
+        playerAsset = GameObject.Find("PlayerAsset");
     }
 
     void Update() {
@@ -17,7 +19,7 @@ public class Teleport : MonoBehaviour
 
     
     private void OnTriggerEnter(Collider other) {
-        player.AddForce(player.transform.forward * -25f, ForceMode.Impulse);
+        player.AddForce(playerAsset.transform.forward * -20f, ForceMode.Impulse);
         //player.position = checkpoint;
     }
  

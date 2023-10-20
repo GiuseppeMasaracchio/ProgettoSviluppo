@@ -8,7 +8,7 @@ public class AttackState : BaseState {
     }
     public override void EnterState() {
         //Enter logic
-        Ctx.AnimHandler.Play(AnimHandler.Attack());
+        Ctx.AnimHandler.Play(AnimHandler.Attack1());
     }
     public override void UpdateState() {        
         Ctx.IsIdle = false;

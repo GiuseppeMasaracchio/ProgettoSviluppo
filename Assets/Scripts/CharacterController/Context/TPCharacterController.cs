@@ -135,7 +135,7 @@ public class TPCharacterController : MonoBehaviour
         _playerRb = _player.GetComponent<Rigidbody>();
         _attackCollider = _player.GetComponentInChildren<SphereCollider>();
 
-        _animHandler = _player.AddComponent<AnimHandler>();
+        _animHandler = GameObject.Find("PlayerAsset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
 
         _currentRootState = StateHandler.Airborne();
@@ -171,7 +171,7 @@ public class TPCharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //Time.timeScale = Time.timeScale * 0.5f;
     }
 
     // Update is called once per frame
@@ -180,6 +180,7 @@ public class TPCharacterController : MonoBehaviour
 
         _devUI.UpdateText(this);
         
+        /*
         if (isGrounded) {
             isFalling = false;
             isAirborne = false;
@@ -190,6 +191,7 @@ public class TPCharacterController : MonoBehaviour
         if (_playerRb.velocity.y < -5f) {
             isFalling = true;
         }
+        */
     }
     void FixedUpdate() {
         _currentRootState.UpdateState();
@@ -210,7 +212,7 @@ public class TPCharacterController : MonoBehaviour
         if (moveInput == Vector2.zero) {
             isWalking = false;
         }
-        else { 
+        else {
             isWalking = true;
         }
     }

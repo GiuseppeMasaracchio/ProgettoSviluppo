@@ -37,7 +37,8 @@ public class IdleState : BaseState {
         else if (Ctx.IsDamaged) {
             SwitchState(StateHandler.Damage());
         }
-        else if (Ctx.IsFalling) {
+        else if (Ctx.IsFalling && !Ctx.IsGrounded) {
+            Ctx.JumpCount--;
             SwitchState(StateHandler.Fall());
         }
     }   

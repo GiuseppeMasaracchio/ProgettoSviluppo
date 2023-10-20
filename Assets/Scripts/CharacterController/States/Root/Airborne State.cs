@@ -15,10 +15,15 @@ public class AirborneState : BaseState, IPhysics {
     }
     public override void UpdateState() {
         //Update logic
+        if (Ctx.PlayerRb.velocity.y < 3.65f) {
+            Ctx.IsFalling = true;
+        }
         
+        /*
         if (!Ctx.IsJumping) {
             Ctx.IsFalling = true;
         }
+        */
         HandleGravity(Ctx.PlayerRb);
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
