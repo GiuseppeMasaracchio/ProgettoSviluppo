@@ -25,8 +25,8 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _asset;
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
-    Rigidbody _playerRb;
     Animator _animator;
+    Rigidbody _playerRb;
     SphereCollider _attackCollider;
 
     //State vars
@@ -131,11 +131,11 @@ public class TPCharacterController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
 
-        _animator = GameObject.Find("PlayerAsset").GetComponent<Animator>();
+        _animator = _asset.GetComponentInChildren<Animator>();
         _playerRb = _player.GetComponent<Rigidbody>();
-        _attackCollider = _player.GetComponentInChildren<SphereCollider>();
+        //_attackCollider = _player.GetComponentInChildren<SphereCollider>();
 
-        _animHandler = GameObject.Find("PlayerAsset").AddComponent<AnimHandler>();
+        _animHandler = GameObject.Find("Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
 
         _currentRootState = StateHandler.Airborne();
