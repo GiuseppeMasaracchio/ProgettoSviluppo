@@ -8,6 +8,8 @@ public class DevToolUI : MonoBehaviour {
     private TMP_Text _moveSpeedText;
     private TMP_Text _gravityText;
     private TMP_Text _sensText;
+    private TMP_Text _currentClip;
+    private TMP_Text _targetClip;
 
     void Awake() {
         _rootText = GameObject.Find("RootState").GetComponent<TMP_Text>();
@@ -16,6 +18,8 @@ public class DevToolUI : MonoBehaviour {
         _moveSpeedText = GameObject.Find("MoveSpeed").GetComponent<TMP_Text>();
         _gravityText = GameObject.Find("Gravity").GetComponent<TMP_Text>();
         _sensText = GameObject.Find("CurrentSens").GetComponent<TMP_Text>();
+        _currentClip = GameObject.Find("CurrentClip").GetComponent<TMP_Text>();
+        _targetClip = GameObject.Find("TargetClip").GetComponent<TMP_Text>();
     }
     public void UpdateText(TPCharacterController _ctx) {
         _rootText.text = _ctx.CurrentRootState.ToString();
@@ -24,5 +28,7 @@ public class DevToolUI : MonoBehaviour {
         _moveSpeedText.text = _ctx.MoveSpeed.ToString();
         _gravityText.text = _ctx.Gravity.ToString();
         _sensText.text = _ctx.CurrentSens.ToString();
+        _currentClip.text = _ctx.AnimHandler.CurrentClip.ToString();
+        _targetClip.text = _ctx.AnimHandler.TargetClip.ToString();
     }
 }

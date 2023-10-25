@@ -15,18 +15,23 @@ enum Anim {
 
 public class AnimHandler : MonoBehaviour{
     Animator _animator;
+    Vector2 currentclip;
+    Vector2 targetclip;
 
     Dictionary<Anim, Vector2> animList = new Dictionary<Anim, Vector2>(10);
     public AnimHandler() {
-        //animList[Anim.dead] = new Vector2(x, y);                      //0
-        animList[Anim.idle] = new Vector2(0f, 0f);                       //1
-        animList[Anim.walk] = new Vector2(0f, 1f);                       //2
-        animList[Anim.attack1] = new Vector2(-1f, 1f);                    //3
-        animList[Anim.jump] = new Vector2(-.33f, -.33f);                 //4
-        animList[Anim.fall] = new Vector2(-.66f, -.66f);                 //5
-        //animList[Anim.dash] = new DashState(_context, this);             //6
-        //animList[Anim.damage] = new DamageState(_context, this);         //7
+        animList[Anim.dead] = new Vector2(.99f, .99f);                    //0
+        animList[Anim.idle] = new Vector2(0f, 0f);                        //1
+        animList[Anim.walk] = new Vector2(0f, .99f);                      //2
+        animList[Anim.attack1] = new Vector2(-.99f, .99f);                //3
+        animList[Anim.jump] = new Vector2(-.33f, -.33f);                  //4
+        animList[Anim.fall] = new Vector2(-.66f, -.66f);                  //5
+        animList[Anim.dash] = new Vector2(.99f, 0f);                      //6
+        animList[Anim.damage] = new Vector2(.99f, 0f);                    //7
     }
+
+    public Vector2 CurrentClip { get { return currentclip; } }
+    public Vector2 TargetClip { get { return targetclip; } }
 
     private void Awake() {
         _animator = gameObject.GetComponent<Animator>();
@@ -34,29 +39,26 @@ public class AnimHandler : MonoBehaviour{
     }
 
     public void Play(Vector2 clip) {
-        //StartCoroutine(LoadClip(clip));
-        _animator.SetFloat("xAxis", clip.x);
-        _animator.SetFloat("yAxis", clip.y);
-        
+        if (clip != currentclip) {
+            targetclip = clip;
+            StartCoroutine(LoadClip());
+        }        
     }    
     
-    IEnumerator LoadClip(Vector2 target) {
-        //Debug.Log("Starting Coroutine");
-        float currentx = _animator.GetFloat("xAxis");
-        float currenty = _animator.GetFloat("yAxis");
-        Vector2 current = new Vector2(currentx, currenty);
-
-        while (Vector2.Distance(current, target) != 0) {
-            Vector2 lerpvalue = Vector2.Lerp(current, target, .12f);
+    IEnumerator LoadClip() {
+        //Debug.Log("Initializing Coroutine");
+        
+        while (currentclip - targetclip != Vector2.zero) {
+            //Debug.Log("Doing Coroutine");
+            Vector2 lerpvalue = Vector2.Lerp(currentclip, targetclip, .12f);
 
             _animator.SetFloat("xAxis", lerpvalue.x);
             _animator.SetFloat("yAxis", lerpvalue.y);
 
-            current = lerpvalue;
+            currentclip = lerpvalue;
             yield return null;
         }
-
-        //StopCoroutine(LoadClip(target));
+        yield break;
     }
 
     public Vector2 Dead() {
