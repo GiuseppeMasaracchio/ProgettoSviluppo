@@ -1,30 +1,24 @@
+using System.Collections;
 using UnityEngine;
 
-public class AirborneState : BaseState, IPhysics {
+public class AirborneState : BaseState, IContextInit, IPhysics {
     public AirborneState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         IsRootState = true; //SOLO SU GROUNDED, AIRBORNE E DEAD (ROOT STATES)
     }
     public override void EnterState() {
         //Enter logic
-
-        Ctx.MoveSpeed = 2000f;
-
-        if (Ctx.IsFalling) {
-            InitializeJumpCount();
-        }
+        InitializeContext();
     }
     public override void UpdateState() {
         //Update logic
-        if (Ctx.PlayerRb.velocity.y < 3.65f) {
+        if (Ctx.PlayerRb.velocity.y < -1f) {
             Ctx.IsFalling = true;
         }
-        
-        /*
-        if (!Ctx.IsJumping) {
-            Ctx.IsFalling = true;
+
+        if (!Ctx.IsDashing || !Ctx.IsAttacking) {
+            HandleGravity(Ctx.PlayerRb);
         }
-        */
-        HandleGravity(Ctx.PlayerRb);
+
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
@@ -41,9 +35,13 @@ public class AirborneState : BaseState, IPhysics {
             SwitchState(StateHandler.Dead());
         }
     }
-    public void InitializeJumpCount() {
-        if (Ctx.JumpCount > 0 && Ctx.JumpCount < 2) {
-            Ctx.JumpCount--;
+    public void InitializeContext() {
+        if (Ctx.MoveSpeed > 600) {
+            Ctx.StartCoroutine("InitializeMoveSpeed");
+        }
+
+        if (Ctx.IsFalling) {
+            InitializeJumpCount();
         }
     }
     public void HandleGravity(Rigidbody rb) {
@@ -52,5 +50,10 @@ public class AirborneState : BaseState, IPhysics {
             Ctx.Gravity = Ctx.Gravity + Ctx.GravitySpeed;
         }
         rb.AddForce(Vector3.up * -Ctx.Gravity * Time.deltaTime, ForceMode.VelocityChange);
+    }    
+    private void InitializeJumpCount() {
+        if (Ctx.JumpCount > 0 && Ctx.JumpCount < 2) {
+            Ctx.JumpCount--;
+        }
     }
 }

@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using UnityEngine;
 using System.Data;
 using System.Collections.Generic;
 using Mono.Data.Sqlite;
@@ -10,20 +13,17 @@ public static class DBVault {
     private static IDataReader reader;
     private static string query;
 
-
     //Connection Handlers
     private static void OpenConnection() {
         dbcon = new SqliteConnection(path);
         dbcon.Open();
         dbcmd = dbcon.CreateCommand();
     }
-
     private static void CloseConnection() {
         reader.Dispose();
         dbcmd.Dispose();
         dbcon.Close();
     }
-
 
     //Getters
     private static int GetActiveSlotIdx() {
@@ -41,7 +41,6 @@ public static class DBVault {
         CloseConnection();
         return retrieve;
     }
-
     private static object GetDataByIdx(int idx, string table, string column) {
         OpenConnection();
 
@@ -57,7 +56,6 @@ public static class DBVault {
         CloseConnection();
         return retrieve;
     } //DEPRECATED
-
     private static object[] GetMinScore() {
         OpenConnection();
 
@@ -74,7 +72,6 @@ public static class DBVault {
     }
 
     ////Public methods
-
     public static int GetHighscoreCount() {
         OpenConnection();
 
@@ -90,7 +87,6 @@ public static class DBVault {
         CloseConnection();
         return count;
     }
-
     public static object[] GetActiveData() {
         int activeSlot = GetActiveSlotIdx();
         OpenConnection();
@@ -114,7 +110,6 @@ public static class DBVault {
         CloseConnection();
         return retrieve;
     } 
-
     public static List<object[]> GetHighscore() {
         OpenConnection();
 
@@ -123,10 +118,9 @@ public static class DBVault {
         reader = dbcmd.ExecuteReader();
 
         List<object[]> highscore = new List<object[]>();
-        highscore.Capacity = 0;
-
+        highscore.Capacity = 5;
+        
         while (reader.Read()) {
-            highscore.Capacity++;
             object[] array = new object[] { reader["Highscore_ID"], reader["name"], reader["highscore"]};
             highscore.Add(array);
         }
@@ -134,7 +128,6 @@ public static class DBVault {
         CloseConnection();
         return highscore;
     }
-
     public static object[] GetActiveCheckpoint() {
         int activeslot = GetActiveSlotIdx();
         OpenConnection();
@@ -153,7 +146,6 @@ public static class DBVault {
 
     } 
 
-
     //Setters
     private static void UpdateValueByIdx(int idx, string table, string column, object value) {
         OpenConnection();
@@ -164,7 +156,6 @@ public static class DBVault {
 
         CloseConnection();
     } 
-
     private static void UpdateSlotByIdx(int idx, object[] value) {
         OpenConnection();
 
@@ -178,8 +169,7 @@ public static class DBVault {
         reader = dbcmd.ExecuteReader();
 
         CloseConnection();
-    } 
- 
+    }  
     private static void InsertHighscore(int idx, string name, int score) {
         OpenConnection();
 
@@ -189,7 +179,6 @@ public static class DBVault {
 
         CloseConnection();
     }
-
     private static void UpdateHighscore(string name, int score) {
         object[] minscore = GetMinScore();
 
@@ -200,7 +189,6 @@ public static class DBVault {
             return;
         }
     }
-
     private static void UpdateCheckpoint(int activeslot, object[] cpinfo) {
         OpenConnection();
 
@@ -212,7 +200,6 @@ public static class DBVault {
 
         CloseConnection();
     }
-
     private static void InitDB() {
         OpenConnection();
 
@@ -235,12 +222,10 @@ public static class DBVault {
     }
 
     ////Public methods
-
     public static void DisposeActiveSlot() {
         int activeslot = GetActiveSlotIdx();
         UpdateValueByIdx(activeslot, "Slot", "Runtime", 0);
     }
-
     public static void SetActiveSlot(int idx) {
         int activeslot = GetActiveSlotIdx();
         if (activeslot == 0) {
@@ -250,20 +235,17 @@ public static class DBVault {
             UpdateValueByIdx(idx, "Slot", "Runtime", 1);
         }
     }
-
     public static void UpdateActiveSlot(string column, object value) {
         int activeslot = GetActiveSlotIdx();
 
         UpdateValueByIdx(activeslot, "Slot", column, value);
 
     }  //SINGLE
-
     public static void UpdateActiveSlot(object[] value) {
         int activeslot = GetActiveSlotIdx();
 
         UpdateSlotByIdx(activeslot, value);
     } //MULTI //OVERLOAD
-
     public static void SetHighscore(string name, int score) {
         int count = GetHighscoreCount();
 
@@ -273,12 +255,10 @@ public static class DBVault {
             UpdateHighscore(name, score);
         }
     }
-
     public static void SetCheckpoint(object[] checkpoint) {
         int activeslot = GetActiveSlotIdx();
         UpdateCheckpoint(activeslot, checkpoint);
     }
-
 
     //DROP//DELETE
     private static void DropTable(string table) {
@@ -291,7 +271,6 @@ public static class DBVault {
 
         CloseConnection();
     }
-
     private static void DeleteFromTableByIdx(string table, int idx) {
         OpenConnection();
 
@@ -303,7 +282,6 @@ public static class DBVault {
         CloseConnection();
 
     } //DEPRECATED
-
     private static void DeleteFromTable(string table) {
         OpenConnection();
 
@@ -316,7 +294,6 @@ public static class DBVault {
 
     }
 
-
     //DEVTOOLS
     public static void ResetDB() {
         ResetSlotCPByIdx(1);
@@ -324,7 +301,6 @@ public static class DBVault {
         ResetSlotCPByIdx(3);
         DeleteFromTable("Highscore");
     }
-
     public static void ReBuildDB() {
         DropTable("Slot");
         DropTable("Checkpoint");
@@ -332,7 +308,6 @@ public static class DBVault {
 
         InitDB();
     }
-
     public static void ResetSlotCPByIdx(int idx) {
         OpenConnection();
 
@@ -353,7 +328,6 @@ public static class DBVault {
 
         CloseConnection();
     }
-
     private static void InitHS() {
         OpenConnection();
 

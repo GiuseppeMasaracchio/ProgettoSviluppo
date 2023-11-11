@@ -51,12 +51,13 @@ public class Starter : MonoBehaviour {
         //DBVault.DeleteFromTable("Highscore");
 
         /*
+        */
+        
         data = DBVault.GetHighscore();
 
         for (int i = 0; i < DBVault.GetHighscoreCount(); i++) {
             text.text += (i+1) + ". " + data[i][1] + ": " + data[i][2] + "\n";
         }
-        */
 
         //object[] newvalue = new object[] { "Dev_1", 0, 0, 3};
         //DBVault.UpdateActiveSlot("Powerups", 1);

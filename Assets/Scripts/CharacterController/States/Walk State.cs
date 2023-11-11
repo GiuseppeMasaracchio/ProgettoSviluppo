@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class WalkState : BaseState, IWalk {
+public class WalkState : BaseState, IContextInit, IWalk {
     public WalkState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {
         //Enter logic
+        InitializeContext();
 
         if (Ctx.IsGrounded) {            
             Ctx.AnimHandler.Play(AnimHandler.Walk());
@@ -47,6 +48,9 @@ public class WalkState : BaseState, IWalk {
         else if (Ctx.IsDamaged) {
             SwitchState(StateHandler.Damage());
         }
+    }
+    public void InitializeContext() {
+        //Set Context Vars
     }
     public void HandleWalk() {
         if (Direction() == Vector3.zero) { return; }

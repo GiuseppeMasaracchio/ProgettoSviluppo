@@ -106,13 +106,13 @@ BlendTree:
     m_Motion: {fileID: 8992522252433359312, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
     m_Threshold: 0
     m_Position: {x: -0.99, y: 0.99}
-    m_TimeScale: 0.7
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: xAxis
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 5522812681064789136, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
-    m_Threshold: 0.125
+    m_Threshold: 0.071428575
     m_Position: {x: 0, y: 0.99}
     m_TimeScale: 0.9
     m_CycleOffset: 0
@@ -120,7 +120,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: -3100369314251171874, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
-    m_Threshold: 0.25
+    m_Threshold: 0.14285715
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.85
     m_CycleOffset: 0
@@ -128,17 +128,41 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 9060002271864667994, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
-    m_Threshold: 0.375
+    m_Threshold: 0.21428572
     m_Position: {x: -0.33, y: -0.33}
-    m_TimeScale: 0.6
+    m_TimeScale: 0.8
     m_CycleOffset: 0
     m_DirectBlendParameter: xAxis
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 5539831331247536789, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
-    m_Threshold: 0.5
+    m_Threshold: 0.2857143
     m_Position: {x: -0.66, y: -0.66}
     m_TimeScale: 0.3
+    m_CycleOffset: 0
+    m_DirectBlendParameter: xAxis
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -1572175639079452663, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
+    m_Threshold: 0.35714287
+    m_Position: {x: 0.99, y: -0.99}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: xAxis
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -8444228808809566427, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
+    m_Threshold: 0.42857143
+    m_Position: {x: 0.99, y: 0}
+    m_TimeScale: 0.8
+    m_CycleOffset: 0
+    m_DirectBlendParameter: xAxis
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -4590755170745445147, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
+    m_Threshold: 0.5
+    m_Position: {x: 0.99, y: 0.99}
+    m_TimeScale: 0.8
     m_CycleOffset: 0
     m_DirectBlendParameter: xAxis
     m_Mirror: 0

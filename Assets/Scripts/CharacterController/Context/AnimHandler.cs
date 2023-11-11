@@ -27,7 +27,7 @@ public class AnimHandler : MonoBehaviour{
         animList[Anim.jump] = new Vector2(-.33f, -.33f);                  //4
         animList[Anim.fall] = new Vector2(-.66f, -.66f);                  //5
         animList[Anim.dash] = new Vector2(.99f, 0f);                      //6
-        animList[Anim.damage] = new Vector2(.99f, 0f);                    //7
+        animList[Anim.damage] = new Vector2(.99f, -.99f);                 //7
     }
 
     public Vector2 CurrentClip { get { return currentclip; } }
@@ -50,7 +50,7 @@ public class AnimHandler : MonoBehaviour{
         
         while (currentclip - targetclip != Vector2.zero) {
             //Debug.Log("Doing Coroutine");
-            Vector2 lerpvalue = Vector2.Lerp(currentclip, targetclip, .12f);
+            Vector2 lerpvalue = Vector2.Lerp(currentclip, targetclip, .18f);
 
             _animator.SetFloat("xAxis", lerpvalue.x);
             _animator.SetFloat("yAxis", lerpvalue.y);

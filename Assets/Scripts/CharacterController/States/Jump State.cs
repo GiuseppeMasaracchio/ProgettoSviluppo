@@ -2,27 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpState : BaseState, IWalk {
+public class JumpState : BaseState, IContextInit, IWalk {
     public JumpState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {
         //Enter logic
-
-        //Ctx.AttackCollider.enabled = true;
-        Ctx.Gravity = 9.81f;
-        Ctx.JumpCount--;
-        Ctx.JumpInput = false;        
+        InitializeContext();
+        
         Ctx.AnimHandler.Play(AnimHandler.Jump());
 
         HandleJump(Ctx.PlayerRb);
     }
     public override void UpdateState() {
         //Update logic
+
         if (Ctx.MoveInput != Vector2.zero) {
             Ctx.Player.transform.forward = Ctx.PlayerForward.transform.forward;
         }
-
+        
         HandleWalk();
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
@@ -48,11 +46,31 @@ public class JumpState : BaseState, IWalk {
         else if (Ctx.IsAttacking) {
             SwitchState(StateHandler.Attack());
         }
+        else if (Ctx.IsGrounded && Ctx.IsWalking) {
+            SwitchState(StateHandler.Walk());
+        }
+        else if (Ctx.IsGrounded && Ctx.IsIdle) {
+            SwitchState(StateHandler.Idle());
+        }
+
+    }
+    public void InitializeContext() {
+        Ctx.MoveSpeed = 1760;
+        Ctx.Gravity = 9.81f;
+
+        Ctx.IsGrounded = false;
+
+        Ctx.JumpCount--;
+        Ctx.JumpInput = false;
+        Ctx.IsFalling = false;
+
+        Ctx.IsDashing = false;
+        Ctx.IsAttacking = false;
     }
     private void HandleJump(Rigidbody rb) {
         //Jump Logic
-        rb.velocity.Set(rb.velocity.x, 0f, rb.velocity.z);
-        rb.AddForce(Vector3.up * Ctx.JumpHeight, ForceMode.Impulse);
+        rb.velocity.Set(rb.velocity.x, -1f, rb.velocity.z);        
+        rb.AddForce(Vector3.up * Ctx.JumpHeight * 3.14f, ForceMode.VelocityChange);
         ResetJump();
     }
     private void ResetJump() {
@@ -62,7 +80,7 @@ public class JumpState : BaseState, IWalk {
     public void HandleWalk() {
         if (Direction() == Vector3.zero) { return; }
         Ctx.Asset.transform.forward = Direction();
-        Ctx.PlayerRb.AddForce(Direction() * Ctx.MoveSpeed * .9f * Time.deltaTime, ForceMode.Force);
+        Ctx.PlayerRb.AddForce(Direction() * Ctx.MoveSpeed * Time.deltaTime, ForceMode.Force);
         SpeedControl();
     }
     private Vector3 Direction() {

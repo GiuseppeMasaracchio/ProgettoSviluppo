@@ -32,4 +32,16 @@ public abstract class BaseState {
             _ctx.CurrentSubState.EnterState();
         }
     }
+    protected void GravityOff() {
+        _ctx.PlayerRb.useGravity = false;
+        if (!_ctx.IsGrounded) {
+            _ctx.Gravity = 0f;
+        }
+    }
+    protected void GravityOn() {
+        _ctx.PlayerRb.useGravity = true;
+        if (!_ctx.IsGrounded) {
+            _ctx.Gravity = 9.81f;
+        }
+    }
 }

@@ -1,22 +1,23 @@
 using UnityEngine;
 
-public class FallState : BaseState, IWalk {
+public class FallState : BaseState, IContextInit, IWalk {
     public FallState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {
         //Enter logic
         if (!Ctx.IsGrounded) {
-            Ctx.IsIdle = false;
+            InitializeContext();
             Ctx.AnimHandler.Play(AnimHandler.Fall());
         }
     }
     public override void UpdateState() {
         //Update logic
+        /*
         if (Ctx.MoveInput != Vector2.zero) {
             Ctx.Player.transform.forward = Ctx.PlayerForward.transform.forward;
         }
-
+        */
         HandleWalk();
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
@@ -42,11 +43,17 @@ public class FallState : BaseState, IWalk {
         else if (Ctx.IsDashing) {
             SwitchState(StateHandler.Dash());
         }
+        else if (Ctx.IsAttacking) {
+            SwitchState(StateHandler.Attack());
+        }
+    }
+    public void InitializeContext() {
+        Ctx.IsIdle = false;
     }
     public void HandleWalk() {
         if (Direction() == Vector3.zero) { return; }
         Ctx.Asset.transform.forward = Direction();
-        Ctx.PlayerRb.AddForce(Direction() * Ctx.MoveSpeed * .9f * Time.deltaTime, ForceMode.Force);
+        Ctx.PlayerRb.AddForce(Direction() * Ctx.MoveSpeed * Time.deltaTime, ForceMode.Force);
         SpeedControl();
     }
     private Vector3 Direction() {

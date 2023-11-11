@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageState : BaseState {
+public class DamageState : BaseState, IContextInit {
     public DamageState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {
         //Enter logic
-        
+        InitializeContext();
     }
     public override void UpdateState() {
         //Update logic
@@ -30,5 +30,8 @@ public class DamageState : BaseState {
         else if (Ctx.IsFalling) {
             SwitchState(StateHandler.Fall());
         }
-    }    
+    }
+    public void InitializeContext() {
+        //
+    }
 }

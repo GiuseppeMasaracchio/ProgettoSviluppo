@@ -16,6 +16,8 @@ public class TPCharacterController : MonoBehaviour
     //State reference
     BaseState _currentRootState;
     BaseState _currentSubState;
+    
+    //Custom Components
     StateHandler _stateHandler;
     AnimHandler _animHandler;
     DevToolUI _devUI;
@@ -33,7 +35,6 @@ public class TPCharacterController : MonoBehaviour
     private bool isDead = false;
     private bool isIdle = false;
     private bool isGrounded = false;
-    private bool isAirborne = false;
     private bool isDamaged = false;
     private bool isWalking = false;
     private bool isJumping = false;
@@ -43,8 +44,12 @@ public class TPCharacterController : MonoBehaviour
     private bool isApproaching = false;
 
     //Context vars
+    private bool canDash = true;
+    private bool canAttack = true;
+    private int dashCount = 1;
+    private int attackCount = 1; //Per eventuale sistema di combo
     private int jumpCount = 2;
-    private float moveSpeed;
+    private int moveSpeed = 1760;
     private float camycurrent;
     private float camytarget;
 
@@ -90,11 +95,15 @@ public class TPCharacterController : MonoBehaviour
     public Vector2 CamInput { get { return camInput; } }
     public Vector2 MoveInput { get { return moveInput; } }
     public bool JumpInput { get { return jumpInput; } set { jumpInput = value; } }
-    public bool AttackInput { get { return attackInput; } }
-    public bool DashInput { get { return dashInput; } }
+    public bool AttackInput { get { return attackInput; } set { attackInput = value; } }
+    public bool DashInput { get { return dashInput; } set { dashInput = value; } }
 
+    public int DashCount { get { return dashCount; } set { dashCount = value; } }
     public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
-    public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
+    public int AttackCount { get { return attackCount; } set { attackCount = value; } }
+    public int MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
+    public bool CanDash { get { return canDash; } set { canDash = value; } }
+    public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
     public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
 
     public int CurrentHp { get { return currentHp; } set { currentHp = value; } }
@@ -104,7 +113,6 @@ public class TPCharacterController : MonoBehaviour
     public bool IsDead { get { return isDead; } set { isDead = value; } }
     public bool IsIdle { get { return isIdle; } set { isIdle = value; } }
     public bool IsGrounded { get { return isGrounded; } set { isGrounded = value; } }
-    public bool IsAirborne { get { return isAirborne; } set { isAirborne = value; } }
     public bool IsDamaged { get { return isDamaged; } set { isDamaged = value; } }
     public bool IsWalking { get { return isWalking; } set { isWalking = value; } }
     public bool IsJumping { get { return isJumping; } set { isJumping = value; } }
@@ -171,7 +179,8 @@ public class TPCharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Time.timeScale = Time.timeScale * 0.5f;
+        //Slow-mo
+        //Time.timeScale = Time.timeScale * 0.08f;
     }
 
     // Update is called once per frame
@@ -179,19 +188,6 @@ public class TPCharacterController : MonoBehaviour
         UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
 
         _devUI.UpdateText(this);
-        
-        /*
-        if (isGrounded) {
-            isFalling = false;
-            isAirborne = false;
-        } else {
-            isAirborne = true;
-        }
-
-        if (_playerRb.velocity.y < -5f) {
-            isFalling = true;
-        }
-        */
     }
     void FixedUpdate() {
         _currentRootState.UpdateState();
@@ -226,22 +222,18 @@ public class TPCharacterController : MonoBehaviour
             jumpInput = false;
         }
     }
-    public void OnFire(InputValue input) {
+    public void OnAttack(InputValue input) {        
         if (input.Get() != null) {
-            //attackInput = true; //Ricordati di settare la reset condition
-            //isAttacking = true;
-            //Debug.Log(isAttacking); //Ho cambiato la value type su InputActionAsset, da float ad Analog (1, null)
+            SetUpAttack();
         } else {
-            //isAttacking = false;
+            attackInput = false;
         }
     }
     public void OnDash(InputValue input) {
         if (input.Get() != null) {
-            //dashInput = true; //Ricordati di settare la reset condition
-            //isDashing = true;
-            //Debug.Log(isDashing); //Ho cambiato la value type su InputActionAsset, da float ad Analog (1, null)
+            SetUpDash();
         } else {
-            //isDashing = false;
+            dashInput = false;
         }
     }
 
@@ -251,16 +243,56 @@ public class TPCharacterController : MonoBehaviour
             jumpInput = true;
             SetJumpState();
         } else {
-            isJumping = false;
+            return;
+            //isJumping = false;
+        }
+    }
+    private void SetUpDash() {
+        if (!dashInput) {
+            dashInput = true;
+            SetDashState();
+        }
+        else {
+            return;
+            //isDashing = false;
+        }
+    }
+    private void SetUpAttack() {
+        if (!attackInput) {
+            attackInput = true;
+            SetAttackState();
+        }
+        else {
+            return;
+            //isAttacking = false;
         }
     }
     private void SetJumpState() {
-        if (jumpCount == 0) {
+        if (jumpCount <= 0) {
             return;
         } else {
             isJumping = true;
         }
     }
+    private void SetDashState() {
+        if (!canDash) {
+            return;
+        }
+        else {
+            isDashing = true;
+            canDash = false;
+        }
+    }
+    private void SetAttackState() {
+        if (attackCount <= 0) {
+            return;
+        }
+        else {
+            isAttacking = true;
+        }
+    }   
+
+    //Camera Methods
     private void UpdateCamera(GameObject cam, GameObject player, GameObject forward, Vector2 mouseInput, float sens) {
         VerticalSmoothCam(cam, player);
 
@@ -287,5 +319,44 @@ public class TPCharacterController : MonoBehaviour
         else {
             cam.transform.position = player.transform.position;
         }
-    }   
+    }
+
+    //Coroutine
+    public IEnumerator InitializeMoveSpeed() {
+        while (moveSpeed > 600) {
+            moveSpeed = moveSpeed - 10;
+            yield return null;
+        }
+        yield break;
+    }
+    public IEnumerator ResetAttack() {
+        canAttack = false;
+        yield return new WaitForSeconds(.2f);
+
+        isAttacking = false;
+        yield return new WaitForSeconds(.1f);
+
+        canAttack = true;
+        if (isGrounded) {
+            attackCount = 1;
+        }
+        yield break;
+    }
+    public IEnumerator ResetDash() {
+        yield return new WaitForSeconds(.4f);
+
+        isDashing = false;
+
+        if (isGrounded) {
+            yield return new WaitForSeconds(.6f);
+            canDash = true;
+            yield break;
+        }
+
+        yield return new WaitForSeconds(2f);
+        canDash = true;
+
+        yield break;
+    }
+    //
 }

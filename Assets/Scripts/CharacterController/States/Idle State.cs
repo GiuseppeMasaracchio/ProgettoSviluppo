@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : BaseState {
+public class IdleState : BaseState, IContextInit {
     public IdleState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {
         //Enter logic
-                
+        InitializeContext();
         Ctx.AnimHandler.Play(AnimHandler.Idle());
     }
     public override void UpdateState() {
@@ -38,8 +38,12 @@ public class IdleState : BaseState {
             SwitchState(StateHandler.Damage());
         }
         else if (Ctx.IsFalling && !Ctx.IsGrounded) {
-            Ctx.JumpCount--;
+            //Ctx.JumpCount--;
             SwitchState(StateHandler.Fall());
         }
-    }   
+    }
+    public void InitializeContext() {
+        //Set Context Vars
+
+    }
 }
