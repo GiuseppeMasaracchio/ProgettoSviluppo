@@ -59,8 +59,14 @@ public class WalkState : BaseState, IContextInit, IWalk {
         SpeedControl();
     }
     private Vector3 Direction() {
-        Vector3 direction = Ctx.Player.transform.forward * Ctx.MoveInput.y + Ctx.Player.transform.right * Ctx.MoveInput.x;
-        return direction;
+        if (!Ctx.OnSlope) {
+            Vector3 direction = Ctx.Player.transform.forward * Ctx.MoveInput.y + Ctx.Player.transform.right * Ctx.MoveInput.x;
+            return direction;
+        } else {
+            Vector3 direction = Ctx.Player.transform.forward * Ctx.MoveInput.y + Ctx.Player.transform.right * Ctx.MoveInput.x;
+            Vector3 slopeDirection = Vector3.ProjectOnPlane(direction, Ctx.SurfaceNormal);
+            return slopeDirection;
+        }
     }
     private void SpeedControl() {
         Vector3 flatvelocity = new Vector3(Ctx.PlayerRb.velocity.x, 0f, Ctx.PlayerRb.velocity.z);

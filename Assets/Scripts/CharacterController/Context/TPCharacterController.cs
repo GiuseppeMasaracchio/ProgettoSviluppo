@@ -44,12 +44,15 @@ public class TPCharacterController : MonoBehaviour
     private bool isApproaching = false;
 
     //Context vars
+    private Vector3 surfaceNormal;
+    private bool onSlope;
     private bool canDash = true;
     private bool canAttack = true;
+    private bool canJump = true;
     private int dashCount = 1;
     private int attackCount = 1; //Per eventuale sistema di combo
     private int jumpCount = 2;
-    private int moveSpeed = 1760;
+    private int moveSpeed = 1760;    
     private float camycurrent;
     private float camytarget;
 
@@ -79,6 +82,9 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField]
     [Range(0.01f, 5f)] float _sensRatio;
 
+    [SerializeField]
+    [Range(0f, 35f)] float slopeAngle;
+
     //Input vars
     private Vector2 camInput;
     private Vector2 moveInput;
@@ -98,12 +104,15 @@ public class TPCharacterController : MonoBehaviour
     public bool AttackInput { get { return attackInput; } set { attackInput = value; } }
     public bool DashInput { get { return dashInput; } set { dashInput = value; } }
 
+    public Vector3 SurfaceNormal { get { return surfaceNormal; } }
+    public bool OnSlope { get { return onSlope; } }
     public int DashCount { get { return dashCount; } set { dashCount = value; } }
     public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
     public int AttackCount { get { return attackCount; } set { attackCount = value; } }
     public int MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
     public bool CanDash { get { return canDash; } set { canDash = value; } }
     public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
+    public bool CanJump { get { return canJump; } set { canJump = value; } }
     public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
 
     public int CurrentHp { get { return currentHp; } set { currentHp = value; } }
@@ -180,7 +189,7 @@ public class TPCharacterController : MonoBehaviour
     void Start()
     {
         //Slow-mo
-        //Time.timeScale = Time.timeScale * 0.08f;
+        //Time.timeScale = Time.timeScale * 0.1f;
     }
 
     // Update is called once per frame
@@ -204,13 +213,18 @@ public class TPCharacterController : MonoBehaviour
     }
     public void OnMove(InputValue input) {
         moveInput = input.Get<Vector2>();
-
+        //Debug.Log(moveInput);
+        /*
         if (moveInput == Vector2.zero) {
             isWalking = false;
-        }
-        else {
+            return;
+        } 
+
+        if (isGrounded) {
             isWalking = true;
+            return;
         }
+        */
     }
     public void OnLook(InputValue input) {
         camInput = input.Get<Vector2>();
@@ -268,7 +282,9 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetJumpState() {
-        if (jumpCount <= 0) {
+        if (jumpCount <= 0) { return; }
+        
+        if (!canJump) {
             return;
         } else {
             isJumping = true;
@@ -291,6 +307,12 @@ public class TPCharacterController : MonoBehaviour
             isAttacking = true;
         }
     }   
+    private void SetSlope(float angle, Vector3 _surfaceNormal) {
+        if (angle < slopeAngle) {
+            onSlope = true;
+            surfaceNormal = _surfaceNormal;
+        }
+    }
 
     //Camera Methods
     private void UpdateCamera(GameObject cam, GameObject player, GameObject forward, Vector2 mouseInput, float sens) {
@@ -358,5 +380,27 @@ public class TPCharacterController : MonoBehaviour
 
         yield break;
     }
-    //
+    public IEnumerator ResetJump() {
+        canJump = true;
+
+        yield return new WaitForSeconds(.2f);
+        isJumping = false;
+
+        yield break;
+    }
+
+    //Collision Callbacks
+    private void OnCollisionStay(Collision collision) {
+        if (collision.collider.tag == "Slope") {
+            float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
+            //Debug.Log(angle);
+            SetSlope(angle, collision.GetContact(0).normal);            
+        }
+    }
+    private void OnCollisionExit(Collision collision) {
+        if (collision.collider.tag == "Slope") {
+            onSlope = false;
+            //Debug.Log("Bye from slope");
+        }
+    }
 }

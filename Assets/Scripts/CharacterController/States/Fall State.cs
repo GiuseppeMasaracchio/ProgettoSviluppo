@@ -37,7 +37,7 @@ public class FallState : BaseState, IContextInit, IWalk {
         else if (Ctx.IsDamaged) {
             SwitchState(StateHandler.Damage());
         }
-        else if (Ctx.IsJumping) {
+        else if (Ctx.JumpInput && Ctx.CanJump && Ctx.IsJumping) {
             SwitchState(StateHandler.Jump());
         }
         else if (Ctx.IsDashing) {

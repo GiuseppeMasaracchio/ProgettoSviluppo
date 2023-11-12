@@ -13,7 +13,7 @@ public class AirborneState : BaseState, IContextInit, IPhysics {
         //Update logic
         if (Ctx.PlayerRb.velocity.y < -1f) {
             Ctx.IsFalling = true;
-        }
+        } 
 
         if (!Ctx.IsDashing || !Ctx.IsAttacking) {
             HandleGravity(Ctx.PlayerRb);

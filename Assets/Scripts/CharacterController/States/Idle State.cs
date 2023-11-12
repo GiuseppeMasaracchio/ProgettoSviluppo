@@ -31,7 +31,7 @@ public class IdleState : BaseState, IContextInit {
         else if (Ctx.IsDashing) {
             SwitchState(StateHandler.Dash());
         }
-        else if (Ctx.IsJumping) {
+        else if (Ctx.CanJump && Ctx.IsJumping) {
             SwitchState(StateHandler.Jump());
         }
         else if (Ctx.IsDamaged) {

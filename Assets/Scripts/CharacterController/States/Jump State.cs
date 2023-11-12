@@ -8,14 +8,17 @@ public class JumpState : BaseState, IContextInit, IWalk {
     }
     public override void EnterState() {
         //Enter logic
+        //Debug.Log("Hi from Jump State");
         InitializeContext();
         
         Ctx.AnimHandler.Play(AnimHandler.Jump());
 
         HandleJump(Ctx.PlayerRb);
+        Ctx.StartCoroutine("ResetJump");
     }
     public override void UpdateState() {
         //Update logic
+        Ctx.IsGrounded = false;
 
         if (Ctx.MoveInput != Vector2.zero) {
             Ctx.Player.transform.forward = Ctx.PlayerForward.transform.forward;
@@ -26,7 +29,6 @@ public class JumpState : BaseState, IContextInit, IWalk {
     }
     public override void ExitState() {
         //Exit logic
-        //Ctx.AttackCollider.enabled = false;
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -36,10 +38,10 @@ public class JumpState : BaseState, IContextInit, IWalk {
         }
         else if (Ctx.IsDamaged) {
             SwitchState(StateHandler.Damage());
-        }
-        else if (Ctx.IsJumping) {
+        }        
+        else if (Ctx.JumpInput && Ctx.CanJump && Ctx.IsJumping) {
             SwitchState(StateHandler.Jump());
-        }
+        }        
         else if (Ctx.IsDashing) {
             SwitchState(StateHandler.Dash());
         }
@@ -58,20 +60,21 @@ public class JumpState : BaseState, IContextInit, IWalk {
         Ctx.MoveSpeed = 1760;
         Ctx.Gravity = 9.81f;
 
-        Ctx.IsGrounded = false;
-
         Ctx.JumpCount--;
         Ctx.JumpInput = false;
+        Ctx.CanJump = false;
         Ctx.IsFalling = false;
 
         Ctx.IsDashing = false;
         Ctx.IsAttacking = false;
+        Ctx.IsWalking = false;
+        Ctx.IsIdle = false;
     }
     private void HandleJump(Rigidbody rb) {
         //Jump Logic
         rb.velocity.Set(rb.velocity.x, -1f, rb.velocity.z);        
         rb.AddForce(Vector3.up * Ctx.JumpHeight * 3.14f, ForceMode.VelocityChange);
-        ResetJump();
+        //ResetJump();
     }
     private void ResetJump() {
         Ctx.JumpInput = false;
