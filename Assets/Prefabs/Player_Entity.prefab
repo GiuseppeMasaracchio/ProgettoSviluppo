@@ -380,6 +380,7 @@ MonoBehaviour:
   jumpHeight: 10
   _sens: 69
   _sensRatio: 0.2
+  slopeAngle: 31
 --- !u!64 &1372600659582594188
 MeshCollider:
   m_ObjectHideFlags: 0

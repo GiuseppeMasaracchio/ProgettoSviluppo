@@ -308,7 +308,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }   
     private void SetSlope(float angle, Vector3 _surfaceNormal) {
-        if (angle < slopeAngle) {
+        if (angle <= slopeAngle) {
             onSlope = true;
             surfaceNormal = _surfaceNormal;
         }
@@ -393,7 +393,7 @@ public class TPCharacterController : MonoBehaviour
     private void OnCollisionStay(Collision collision) {
         if (collision.collider.tag == "Slope") {
             float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
-            //Debug.Log(angle);
+            Debug.Log(angle);
             SetSlope(angle, collision.GetContact(0).normal);            
         }
     }
