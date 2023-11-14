@@ -20,17 +20,12 @@ public class GroundedState : BaseState, IContextInit {
 
         if (!Ctx.IsAttacking && !Ctx.IsDashing && !Ctx.IsJumping && !(Ctx.MoveInput == Vector2.zero)) {
             Ctx.IsWalking = true;
-            Ctx.IsIdle = false;
-        } else {
+            Ctx.IsIdle = false;            
+        } else if (!Ctx.IsAttacking && !Ctx.IsDashing && !Ctx.IsJumping && (Ctx.MoveInput == Vector2.zero)) {
             Ctx.IsWalking = false;
             Ctx.IsIdle = true;
         }
-        /*
-        if (!Ctx.IsWalking && !Ctx.IsAttacking && !Ctx.IsDashing && !Ctx.IsJumping) {            
-            Ctx.IsIdle = true;
-        }
-        else Ctx.IsIdle = false;
-        */
+        
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {

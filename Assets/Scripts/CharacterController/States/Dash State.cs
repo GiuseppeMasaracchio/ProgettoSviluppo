@@ -12,7 +12,7 @@ public class DashState : BaseState, IContextInit {
 
         GravityOff();
 
-        Ctx.AnimHandler.Play(AnimHandler.Dash());
+        Ctx.AnimHandler.PlayDirect(AnimHandler.Dash());
 
         HandleDash(Ctx.PlayerRb);
 
@@ -48,13 +48,22 @@ public class DashState : BaseState, IContextInit {
         }
     }
     public void InitializeContext() {
+        Ctx.DashInput = false;
+
+        Ctx.IsWalking = false;
+        Ctx.IsIdle = false;
         Ctx.IsJumping = false;
         Ctx.IsAttacking = false;
     }
-    public void HandleDash(Rigidbody rb) {
-        
+    public void HandleDash(Rigidbody rb) {        
         rb.velocity.Set(0f, 0f, 0f);
-        //rb.velocity.Set(rb.velocity.x, -1f, rb.velocity.z);
-        rb.AddForce(Ctx.Asset.transform.forward * 25f, ForceMode.Impulse);
+        rb.AddForce(DashDirection() * 25f, ForceMode.Impulse);
+    }
+    private Vector3 DashDirection() {
+        if (Ctx.OnSlope) {
+            Vector3 direction = Vector3.ProjectOnPlane(Ctx.Asset.transform.forward, Ctx.SurfaceNormal);
+            return direction;
+        }
+        else return Ctx.Asset.transform.forward;
     }
 }

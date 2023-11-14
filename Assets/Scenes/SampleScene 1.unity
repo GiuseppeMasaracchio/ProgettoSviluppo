@@ -1162,6 +1162,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 955635912824246590, guid: 73e64702af523cb4a96141433111b375, type: 3}
+      propertyPath: _sens
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 955635912824246590, guid: 73e64702af523cb4a96141433111b375, type: 3}
       propertyPath: slopeAngle
       value: 31
       objectReference: {fileID: 0}

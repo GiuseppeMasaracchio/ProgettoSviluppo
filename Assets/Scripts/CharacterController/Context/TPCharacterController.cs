@@ -212,19 +212,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     public void OnMove(InputValue input) {
-        moveInput = input.Get<Vector2>();
-        //Debug.Log(moveInput);
-        /*
-        if (moveInput == Vector2.zero) {
-            isWalking = false;
-            return;
-        } 
-
-        if (isGrounded) {
-            isWalking = true;
-            return;
-        }
-        */
+        moveInput = input.Get<Vector2>();        
     }
     public void OnLook(InputValue input) {
         camInput = input.Get<Vector2>();
@@ -250,7 +238,22 @@ public class TPCharacterController : MonoBehaviour
             dashInput = false;
         }
     }
-
+    
+    //Collision Callbacks
+    private void OnCollisionStay(Collision collision) {
+        if (collision.collider.tag == "Slope") {
+            float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
+            Debug.Log(angle);
+            SetSlope(angle, collision.GetContact(0).normal);
+        }
+    }
+    private void OnCollisionExit(Collision collision) {
+        if (collision.collider.tag == "Slope") {
+            onSlope = false;
+            //Debug.Log("Bye from slope");
+        }
+    }
+    
     //SetUp Methods
     private void SetUpJump() {
         if (!jumpInput) {
@@ -258,7 +261,6 @@ public class TPCharacterController : MonoBehaviour
             SetJumpState();
         } else {
             return;
-            //isJumping = false;
         }
     }
     private void SetUpDash() {
@@ -268,7 +270,6 @@ public class TPCharacterController : MonoBehaviour
         }
         else {
             return;
-            //isDashing = false;
         }
     }
     private void SetUpAttack() {
@@ -278,7 +279,6 @@ public class TPCharacterController : MonoBehaviour
         }
         else {
             return;
-            //isAttacking = false;
         }
     }
     private void SetJumpState() {
@@ -365,7 +365,7 @@ public class TPCharacterController : MonoBehaviour
         yield break;
     }
     public IEnumerator ResetDash() {
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(.3f);
 
         isDashing = false;
 
@@ -388,19 +388,5 @@ public class TPCharacterController : MonoBehaviour
 
         yield break;
     }
-
-    //Collision Callbacks
-    private void OnCollisionStay(Collision collision) {
-        if (collision.collider.tag == "Slope") {
-            float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
-            Debug.Log(angle);
-            SetSlope(angle, collision.GetContact(0).normal);            
-        }
-    }
-    private void OnCollisionExit(Collision collision) {
-        if (collision.collider.tag == "Slope") {
-            onSlope = false;
-            //Debug.Log("Bye from slope");
-        }
-    }
+    //
 }

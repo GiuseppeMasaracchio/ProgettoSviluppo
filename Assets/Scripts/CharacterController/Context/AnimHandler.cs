@@ -35,22 +35,24 @@ public class AnimHandler : MonoBehaviour{
 
     private void Awake() {
         _animator = gameObject.GetComponent<Animator>();
-        
     }
 
     public void Play(Vector2 clip) {
         if (clip != currentclip) {
             targetclip = clip;
-            StartCoroutine(LoadClip());
-        }        
+            StartCoroutine(LoadClip());                   
+        }
     }    
-    
-    IEnumerator LoadClip() {
-        //Debug.Log("Initializing Coroutine");
+    public void PlayDirect(Vector2 clip) {
+        targetclip = clip;
         
+        _animator.SetFloat("xAxis", targetclip.x);
+        _animator.SetFloat("yAxis", targetclip.y);
+        currentclip = targetclip;
+    }
+    IEnumerator LoadClip() {
         while (currentclip - targetclip != Vector2.zero) {
-            //Debug.Log("Doing Coroutine");
-            Vector2 lerpvalue = Vector2.Lerp(currentclip, targetclip, .18f);
+            Vector2 lerpvalue = Vector2.Lerp(currentclip, targetclip, .19f);
 
             _animator.SetFloat("xAxis", lerpvalue.x);
             _animator.SetFloat("yAxis", lerpvalue.y);

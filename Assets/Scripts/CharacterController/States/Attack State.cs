@@ -17,7 +17,6 @@ public class AttackState : BaseState, IContextInit {
         Ctx.StartCoroutine("ResetAttack");
     }
     public override void UpdateState() {
-        //Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
         CheckSwitchStates();
     }
     public override void ExitState() {
@@ -49,17 +48,15 @@ public class AttackState : BaseState, IContextInit {
         }
     }
     public void InitializeContext() {
-        //Ctx.AttackInput = false;
-        
-        
         if (!Ctx.IsGrounded) {
             Ctx.Gravity = 0f;
-        }
-        
+        }        
 
         Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
         Ctx.AttackCount--;
 
+        Ctx.IsWalking = false;
+        Ctx.IsIdle = false;
         Ctx.IsDashing = false;
         Ctx.IsJumping = false;
     }

@@ -8,7 +8,6 @@ public class JumpState : BaseState, IContextInit, IWalk {
     }
     public override void EnterState() {
         //Enter logic
-        //Debug.Log("Hi from Jump State");
         InitializeContext();
         
         Ctx.AnimHandler.Play(AnimHandler.Jump());
@@ -74,11 +73,6 @@ public class JumpState : BaseState, IContextInit, IWalk {
         //Jump Logic
         rb.velocity.Set(rb.velocity.x, -1f, rb.velocity.z);        
         rb.AddForce(Vector3.up * Ctx.JumpHeight * 3.14f, ForceMode.VelocityChange);
-        //ResetJump();
-    }
-    private void ResetJump() {
-        Ctx.JumpInput = false;
-        Ctx.IsJumping = false;
     }
     public void HandleWalk() {
         if (Direction() == Vector3.zero) { return; }
