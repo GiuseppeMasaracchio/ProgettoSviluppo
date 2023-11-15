@@ -54,6 +54,7 @@ public class DashState : BaseState, IContextInit {
         Ctx.IsIdle = false;
         Ctx.IsJumping = false;
         Ctx.IsAttacking = false;
+        Ctx.IsDamaged = false;
     }
     public void HandleDash(Rigidbody rb) {        
         rb.velocity.Set(0f, 0f, 0f);

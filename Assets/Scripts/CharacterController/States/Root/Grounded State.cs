@@ -18,10 +18,10 @@ public class GroundedState : BaseState, IContextInit {
             GravityOn();
         }
 
-        if (!Ctx.IsAttacking && !Ctx.IsDashing && !Ctx.IsJumping && !(Ctx.MoveInput == Vector2.zero)) {
+        if (!Ctx.IsAttacking && !Ctx.IsDashing && !Ctx.IsJumping && !Ctx.IsDamaged && !(Ctx.MoveInput == Vector2.zero)) {
             Ctx.IsWalking = true;
             Ctx.IsIdle = false;            
-        } else if (!Ctx.IsAttacking && !Ctx.IsDashing && !Ctx.IsJumping && (Ctx.MoveInput == Vector2.zero)) {
+        } else if (!Ctx.IsAttacking && !Ctx.IsDashing && !Ctx.IsJumping && !Ctx.IsDamaged && (Ctx.MoveInput == Vector2.zero)) {
             Ctx.IsWalking = false;
             Ctx.IsIdle = true;
         }

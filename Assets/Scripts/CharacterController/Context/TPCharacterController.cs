@@ -31,21 +31,23 @@ public class TPCharacterController : MonoBehaviour
     Rigidbody _playerRb;
     SphereCollider _attackCollider;
 
-    //State vars
+    //Root States
     private bool isDead = false;
-    private bool isIdle = false;
     private bool isGrounded = false;
+    //Sub States
+    private bool isIdle = false;
     private bool isDamaged = false;
     private bool isWalking = false;
     private bool isJumping = false;
     private bool isDashing = false;
     private bool isAttacking = false;
     private bool isFalling = false;
-    private bool isApproaching = false;
+    //private bool isApproaching = false;
 
     //Context vars
     private Vector3 surfaceNormal;
     private bool onSlope;
+    private bool canDMG = true;
     private bool canDash = true;
     private bool canAttack = true;
     private bool canJump = true;
@@ -128,7 +130,7 @@ public class TPCharacterController : MonoBehaviour
     public bool IsDashing { get { return isDashing; } set { isDashing = value; } }
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
     public bool IsFalling { get { return isFalling; } set { isFalling = value; } }
-    public bool IsApproaching { get { return isApproaching; } set { isApproaching = value; } }
+    //public bool IsApproaching { get { return isApproaching; } set { isApproaching = value; } }
 
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
@@ -238,8 +240,18 @@ public class TPCharacterController : MonoBehaviour
             dashInput = false;
         }
     }
-    
+
     //Collision Callbacks
+    private void OnTriggerEnter(Collider other) {
+        if (other.tag == "Enemy") {
+            SetDMGState();
+        }
+    }
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.collider.tag == "Enemy") {
+            SetDMGState();
+        }
+    }
     private void OnCollisionStay(Collision collision) {
         if (collision.collider.tag == "Slope") {
             float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
@@ -283,30 +295,36 @@ public class TPCharacterController : MonoBehaviour
     }
     private void SetJumpState() {
         if (jumpCount <= 0) { return; }
+
+        if (!canJump) { return; }
         
-        if (!canJump) {
-            return;
-        } else {
+        if (!isDamaged) {
             isJumping = true;
         }
     }
     private void SetDashState() {
-        if (!canDash) {
-            return;
-        }
-        else {
+        if (!canDash) { return; }         
+        
+        if (!isDamaged) { 
             isDashing = true;
             canDash = false;
         }
     }
     private void SetAttackState() {
-        if (attackCount <= 0) {
-            return;
-        }
-        else {
+        if (attackCount <= 0) { return; }
+        
+        if (!isDamaged) {
+            canDMG = false;
             isAttacking = true;
         }
     }   
+    public void SetDMGState() {
+        if (!canDMG) { return; }
+
+        if (!isDashing) { 
+            isDamaged = true;
+        }
+    }
     private void SetSlope(float angle, Vector3 _surfaceNormal) {
         if (angle <= slopeAngle) {
             onSlope = true;
@@ -356,6 +374,8 @@ public class TPCharacterController : MonoBehaviour
         yield return new WaitForSeconds(.2f);
 
         isAttacking = false;
+        canDMG = true;
+
         yield return new WaitForSeconds(.1f);
 
         canAttack = true;
@@ -386,6 +406,13 @@ public class TPCharacterController : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         isJumping = false;
 
+        yield break;
+    }
+    public IEnumerator ResetDMG() {
+        canDMG = false;
+        yield return new WaitForSeconds(.2f);
+        isDamaged = false;
+        canDMG = true;
         yield break;
     }
     //

@@ -9,6 +9,10 @@ public class DamageState : BaseState, IContextInit {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
+        GravityOff();
+        Ctx.AnimHandler.PlayDirect(AnimHandler.Damage());
+        HandleDMG();
+        Ctx.StartCoroutine("ResetDMG");
     }
     public override void UpdateState() {
         //Update logic
@@ -17,7 +21,8 @@ public class DamageState : BaseState, IContextInit {
     }
     public override void ExitState() {
         //Exit logic
-        
+        GravityOn();
+        Ctx.PlayerRb.velocity.Set(Ctx.PlayerRb.velocity.x, Ctx.PlayerRb.velocity.y * 3.14f * 2, Ctx.PlayerRb.velocity.z);
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -27,11 +32,21 @@ public class DamageState : BaseState, IContextInit {
         else if (Ctx.IsIdle) {
             SwitchState(StateHandler.Idle());
         }
-        else if (Ctx.IsFalling) {
+        else if (!Ctx.IsDamaged && Ctx.IsFalling) {
             SwitchState(StateHandler.Fall());
         }
     }
     public void InitializeContext() {
-        //
+        Ctx.IsWalking = false;
+        Ctx.IsIdle = false;
+        Ctx.IsJumping = false;
+        Ctx.IsAttacking = false;
+        Ctx.IsDashing = false;
+        Ctx.IsFalling = false;
+    }
+    public void HandleDMG() {
+        Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
+
+        Ctx.PlayerRb.AddForce(Ctx.Asset.transform.forward * -10f, ForceMode.Impulse);        
     }
 }
