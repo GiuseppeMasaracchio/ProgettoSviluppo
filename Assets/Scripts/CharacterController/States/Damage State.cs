@@ -47,6 +47,6 @@ public class DamageState : BaseState, IContextInit {
     public void HandleDMG() {
         Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
 
-        Ctx.PlayerRb.AddForce(Ctx.Asset.transform.forward * -10f, ForceMode.Impulse);        
+        Ctx.PlayerRb.AddForce(Ctx.Asset.transform.forward * -10f, ForceMode.Impulse);
     }
 }

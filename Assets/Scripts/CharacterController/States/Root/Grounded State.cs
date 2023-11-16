@@ -25,7 +25,7 @@ public class GroundedState : BaseState, IContextInit {
             Ctx.IsWalking = false;
             Ctx.IsIdle = true;
         }
-        
+
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
