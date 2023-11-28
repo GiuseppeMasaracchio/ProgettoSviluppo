@@ -9,9 +9,13 @@ public class DamageState : BaseState, IContextInit {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
+
         GravityOff();
+        
         Ctx.AnimHandler.PlayDirect(AnimHandler.Damage());
+        
         HandleDMG();
+        
         Ctx.StartCoroutine("ResetDMG");
     }
     public override void UpdateState() {

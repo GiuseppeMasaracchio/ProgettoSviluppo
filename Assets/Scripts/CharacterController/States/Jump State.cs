@@ -38,7 +38,7 @@ public class JumpState : BaseState, IContextInit, IWalk {
         else if (Ctx.IsDamaged) {
             SwitchState(StateHandler.Damage());
         }        
-        else if (Ctx.JumpInput && Ctx.CanJump) {
+        else if (Ctx.JumpInput && Ctx.CanJump && (Ctx.JumpCount > 0)) {
             SwitchState(StateHandler.Jump());
         }        
         else if (Ctx.IsDashing) {

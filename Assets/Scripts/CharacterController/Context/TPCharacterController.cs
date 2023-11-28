@@ -20,7 +20,7 @@ public class TPCharacterController : MonoBehaviour
     //Custom Components
     StateHandler _stateHandler;
     AnimHandler _animHandler;
-    DevToolUI _devUI;
+    DevToolUI _devUI = null;
 
     //Player references
     [SerializeField] GameObject _player;
@@ -34,6 +34,7 @@ public class TPCharacterController : MonoBehaviour
     //Root States
     private bool isDead = false;
     private bool isGrounded = false;
+
     //Sub States
     private bool isIdle = false;
     private bool isDamaged = false;
@@ -42,7 +43,6 @@ public class TPCharacterController : MonoBehaviour
     private bool isDashing = false;
     private bool isAttacking = false;
     private bool isFalling = false;
-    //private bool isApproaching = false;
 
     //Context vars
     private Vector3 surfaceNormal;
@@ -54,7 +54,7 @@ public class TPCharacterController : MonoBehaviour
     private int dashCount = 1;
     private int attackCount = 1; //Per eventuale sistema di combo
     private int jumpCount = 2;
-    private int moveSpeed = 1760;    
+    private float moveSpeed = 1760f;    
     private float camycurrent;
     private float camytarget;
 
@@ -111,7 +111,7 @@ public class TPCharacterController : MonoBehaviour
     public int DashCount { get { return dashCount; } set { dashCount = value; } }
     public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
     public int AttackCount { get { return attackCount; } set { attackCount = value; } }
-    public int MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
+    public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
     public bool CanDash { get { return canDash; } set { canDash = value; } }
     public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
     public bool CanJump { get { return canJump; } set { canJump = value; } }
@@ -130,7 +130,6 @@ public class TPCharacterController : MonoBehaviour
     public bool IsDashing { get { return isDashing; } set { isDashing = value; } }
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
     public bool IsFalling { get { return isFalling; } set { isFalling = value; } }
-    //public bool IsApproaching { get { return isApproaching; } set { isApproaching = value; } }
 
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
@@ -163,8 +162,8 @@ public class TPCharacterController : MonoBehaviour
         _currentSubState = StateHandler.Fall();
         _currentSubState.EnterState();
 
-        _devUI = GameObject.Find("DevToolUI").GetComponent<DevToolUI>();
-        
+        InitializeUI();
+
         //activeData = DBVault.GetActiveData();
         //Debug.Log(activeData[(int)ActiveData.Name]);
 
@@ -197,8 +196,10 @@ public class TPCharacterController : MonoBehaviour
     // Update is called once per frame
     void Update() {
         UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
-
-        _devUI.UpdateText(this);
+        
+        if (_devUI != null) {
+            _devUI.UpdateText(this);
+        } 
     }
     void FixedUpdate() {
         _currentRootState.UpdateState();
@@ -255,7 +256,6 @@ public class TPCharacterController : MonoBehaviour
     private void OnCollisionStay(Collision collision) {
         if (collision.collider.tag == "Slope") {
             float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
-            Debug.Log(angle);
             SetSlope(angle, collision.GetContact(0).normal);
         }
     }
@@ -318,17 +318,17 @@ public class TPCharacterController : MonoBehaviour
             isAttacking = true;
         }
     }   
+    private void SetSlope(float angle, Vector3 _surfaceNormal) {
+        if (angle <= slopeAngle) {
+            onSlope = true;
+            surfaceNormal = _surfaceNormal;
+        }
+    }
     public void SetDMGState() {
         if (!canDMG) { return; }
 
         if (!isDashing) { 
             isDamaged = true;
-        }
-    }
-    private void SetSlope(float angle, Vector3 _surfaceNormal) {
-        if (angle <= slopeAngle) {
-            onSlope = true;
-            surfaceNormal = _surfaceNormal;
         }
     }
 
@@ -361,10 +361,19 @@ public class TPCharacterController : MonoBehaviour
         }
     }
 
+    //UI Init
+    private void InitializeUI() {
+        GameObject devUI = GameObject.Find("DevToolUI");
+
+        if (devUI != null) {
+            _devUI = devUI.GetComponent<DevToolUI>();
+        }
+    }
+
     //Coroutine
     public IEnumerator InitializeMoveSpeed() {
-        while (moveSpeed > 600) {
-            moveSpeed = moveSpeed - 10;
+        while (moveSpeed > 600f) {
+            moveSpeed = moveSpeed - ((moveSpeed * .6f) * Time.deltaTime);
             yield return null;
         }
         yield break;
