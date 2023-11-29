@@ -8,7 +8,7 @@ public class WalkState : BaseState, IContextInit, IWalk {
         //Enter logic
         InitializeContext();
 
-        if (Ctx.IsGrounded) {            
+        if (Ctx.IsGrounded) {       
             Ctx.AnimHandler.Play(AnimHandler.Walk());
         }
     }

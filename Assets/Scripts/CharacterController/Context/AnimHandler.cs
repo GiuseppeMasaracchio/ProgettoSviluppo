@@ -13,10 +13,11 @@ enum Anim {
     damage
 }
 
-public class AnimHandler : MonoBehaviour{
+public class AnimHandler : MonoBehaviour {
     Animator _animator;
     Vector2 currentclip;
     Vector2 targetclip;
+    Vector2 _moveInput;
 
     Dictionary<Anim, Vector2> animList = new Dictionary<Anim, Vector2>(10);
     public AnimHandler() {
@@ -42,7 +43,7 @@ public class AnimHandler : MonoBehaviour{
             targetclip = clip;
             StartCoroutine(LoadClip());                   
         }
-    }    
+    }
     public void PlayDirect(Vector2 clip) {
         targetclip = clip;
         
