@@ -6,6 +6,7 @@ public class Checkpoint : MonoBehaviour {
     private Vector3 startPos;
     private Vector3 lowPos;
     private Vector3 highPos;
+
     private Vector3 position;
     private Vector3 yShift = new Vector3(0, .25f, 0);
 
