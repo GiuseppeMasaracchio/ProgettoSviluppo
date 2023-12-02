@@ -8,6 +8,9 @@ public class DeadState : BaseState, IContextInit {
     }
     public override void EnterState() {
         //Enter logic
+        Debug.Log("Lmao u ded");
+        Ctx.AnimHandler.PlayDirect(AnimHandler.Dead());
+        GravityOff();
         InitializeContext();
     }
     public override void UpdateState() {

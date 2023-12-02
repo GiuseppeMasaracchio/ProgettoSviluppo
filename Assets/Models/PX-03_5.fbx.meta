@@ -239,7 +239,7 @@ ModelImporter:
       name: Death
       takeName: Hit/Death
       internalID: -4590755170745445147
-      firstFrame: 16
+      firstFrame: 0
       lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0

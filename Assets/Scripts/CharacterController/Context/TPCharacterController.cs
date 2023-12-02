@@ -28,6 +28,7 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
+    PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
     SphereCollider _attackCollider;
@@ -152,6 +153,7 @@ public class TPCharacterController : MonoBehaviour
 
         _animator = _asset.GetComponentInChildren<Animator>();
         _playerRb = _player.GetComponent<Rigidbody>();
+        _playerinput = _player.GetComponent<PlayerInput>();
         //_attackCollider = _player.GetComponentInChildren<SphereCollider>();        
         _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
@@ -195,15 +197,18 @@ public class TPCharacterController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
-        
+        if (!isDead) {
+            UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
+        }
         if (_devUI != null) {
             _devUI.UpdateText(this);
         } 
     }
     void FixedUpdate() {
         _currentRootState.UpdateState();
-        _currentSubState.UpdateState();
+        if (!isDead) { 
+            _currentSubState.UpdateState();
+        }
     } 
     
     //Input Callbacks
@@ -248,17 +253,24 @@ public class TPCharacterController : MonoBehaviour
             SetDMGState();
         }
         if (other.tag == "Platform") {
-            _playerparent.transform.SetParent(other.transform);
+            _playerparent.transform.SetParent(other.transform); //Platform fix (1)
+        }
+        if (other.tag == "Death") {
+            isDead = true;
         }
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Platform") {
-            _playerparent.transform.SetParent(null);
+            _playerparent.transform.SetParent(null); //Platform fix (2)
         }
     }
     private void OnCollisionEnter(Collision collision) {
         if (collision.collider.tag == "Enemy") {
             SetDMGState();
+        }
+        if (collision.collider.tag == "Death") {
+            isDead = true;
+            //SetUpDeath();
         }
     }
     private void OnCollisionStay(Collision collision) {
@@ -275,6 +287,10 @@ public class TPCharacterController : MonoBehaviour
     }
     
     //SetUp Methods
+    private void SetUpDeath() {
+        _playerinput.SwitchCurrentActionMap("UI");
+        //InitializeGOUI
+    }
     private void SetUpJump() {
         if (!jumpInput) {
             jumpInput = true;

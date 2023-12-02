@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - Collider
   - Platform
+  - Death
   layers:
   - Default
   - TransparentFX
