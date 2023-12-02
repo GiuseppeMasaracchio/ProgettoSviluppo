@@ -27,6 +27,7 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _asset;
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
+    [SerializeField] GameObject _playerparent;
     Animator _animator;
     Rigidbody _playerRb;
     SphereCollider _attackCollider;
@@ -151,9 +152,8 @@ public class TPCharacterController : MonoBehaviour
 
         _animator = _asset.GetComponentInChildren<Animator>();
         _playerRb = _player.GetComponent<Rigidbody>();
-        //_attackCollider = _player.GetComponentInChildren<SphereCollider>();
-
-        _animHandler = GameObject.Find("Asset").AddComponent<AnimHandler>();
+        //_attackCollider = _player.GetComponentInChildren<SphereCollider>();        
+        _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
 
         _currentRootState = StateHandler.Airborne();
@@ -246,6 +246,14 @@ public class TPCharacterController : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Enemy") {
             SetDMGState();
+        }
+        if (other.tag == "Platform") {
+            _playerparent.transform.SetParent(other.transform);
+        }
+    }
+    private void OnTriggerExit(Collider other) {
+        if (other.tag == "Platform") {
+            _playerparent.transform.SetParent(null);
         }
     }
     private void OnCollisionEnter(Collision collision) {

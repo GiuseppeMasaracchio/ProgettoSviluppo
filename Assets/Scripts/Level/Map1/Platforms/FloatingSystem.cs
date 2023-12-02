@@ -20,13 +20,11 @@ public class FloatingSystem : MonoBehaviour {
     public SAxis s_axis;
     public MAxis m_axis;
 
-    private Rigidbody rb;
     private Vector3 position;
     private Vector3 center;
     private Vector3 start;
     private Vector3 end;
     private Vector3 shift;
-    private Vector3 direction;
 
     public float offset;
     public float stopTime;
@@ -34,12 +32,10 @@ public class FloatingSystem : MonoBehaviour {
 
     private float startDistance;
     private float endDistance;
-    //private float lerpSpeed = 0f;
 
     private int dir = 1;
 
     void Awake() {
-        rb = GetComponent<Rigidbody>();
         center = this.transform.position;
 
         if (mode == AxisMode.Single) {
@@ -49,11 +45,11 @@ public class FloatingSystem : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void FixedUpdate() {
         GetPosition();
         SetPosition();
     }
-
+    
     private void SetPosition() {
         if (dir == 1) {
             StartToEnd();
@@ -79,11 +75,8 @@ public class FloatingSystem : MonoBehaviour {
             Invoke("SwitchDir", stopTime);
             return;
         } else {
-            //lerpSpeed = Mathf.Lerp(lerpSpeed, speed, .01f);
-            //Vector3 lerpPosition = Vector3.Lerp(position, end, (speed /100));
-            //this.transform.position = lerpPosition;
-            
-            rb.AddForce(shift * speed, ForceMode.Acceleration);
+            Vector3 lerpPosition = Vector3.Lerp(position, end, (speed /100));
+            this.transform.position = lerpPosition;
         }
     }
     private void EndToStart() {
@@ -93,28 +86,26 @@ public class FloatingSystem : MonoBehaviour {
             return;
         }
         else {
-            //lerpSpeed = Mathf.Lerp(lerpSpeed, speed, .005f);
-            //Vector3 lerpPosition = Vector3.Lerp(position, start, (speed /100));
-            //this.transform.position = lerpPosition;
-            rb.AddForce(-shift * speed, ForceMode.Acceleration);
+            Vector3 lerpPosition = Vector3.Lerp(position, start, (speed /100));
+            this.transform.position = lerpPosition;
         }
     }
     private void InitializeSAxis() {
         switch (s_axis) {
             case SAxis.X: {
-                shift = new Vector3(1, 0, 0);
+                shift = transform.right;
                 start = center - (shift * offset);
                 end = center + (shift * offset);
                 return;
             }
             case SAxis.Y: {
-                shift = new Vector3(0, 1, 0);
+                shift = transform.up;
                 start = center - (shift * offset);
                 end = center + (shift * offset);
                 return;
             }
             case SAxis.Z: {
-                shift = new Vector3(0, 0, 1);
+                shift = transform.forward;
                 start = center - (shift * offset);
                 end = center + (shift * offset);
                 return;
@@ -124,25 +115,25 @@ public class FloatingSystem : MonoBehaviour {
     private void InitializeMAxis() {
         switch (m_axis) {
             case MAxis.XZ: {
-                shift = new Vector3(1, 0, 1);
+                shift = transform.right + transform.forward;
                 start = center - (shift * offset);
                 end = center + (shift * offset);
                 return;
             }
             case MAxis.YZ: {
-                shift = new Vector3(0, 1, 1);
+                shift = transform.up + transform.forward;
                 start = center - (shift * offset);
                 end = center + (shift * offset);
                 return;
             }
             case MAxis.XY: {
-                shift = new Vector3(1, 1, 0);
+                shift = transform.right + transform.up;
                 start = center - (shift * offset);
                 end = center + (shift * offset);
                 return;
             }
             case MAxis.XYZ: {
-                shift = new Vector3(1, 1, 1);
+                shift = transform.right + transform.up + transform.right;
                 start = center - (shift * offset);
                 end = center + (shift * offset);
                 return;
@@ -180,7 +171,7 @@ public class FloatingSystem : MonoBehaviour {
         public override void OnInspectorGUI() {
             var editor = (FloatingSystem)target;            
 
-            editor.mode = (AxisMode)EditorGUILayout.EnumPopup("Mode", editor.mode);
+            editor.mode = (AxisMode)EditorGUILayout.EnumPopup("Axis Mode", editor.mode);
             if (editor.mode == AxisMode.Single) {
                 editor.s_axis = (SAxis)EditorGUILayout.EnumPopup("Axis", editor.s_axis);
             } else {

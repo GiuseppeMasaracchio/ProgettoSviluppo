@@ -375,6 +375,7 @@ MonoBehaviour:
   _asset: {fileID: 4030070963395985443}
   _cam: {fileID: 8529624794687793256}
   _forward: {fileID: 8529624796221480217}
+  _playerparent: {fileID: 8529624795265790319}
   gravityMultiplier: 15
   gravitySpeed: 5
   jumpHeight: 10
@@ -487,7 +488,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 918bbbded7a908448a630fbcc078f9f8, type: 2}
     - target: {fileID: 919132149155446097, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
       propertyPath: m_Name
-      value: Asset
+      value: P_Asset
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7365f4612479eb44a2f348b29abf096, type: 3}

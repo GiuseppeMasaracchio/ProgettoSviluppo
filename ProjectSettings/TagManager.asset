@@ -9,6 +9,7 @@ TagManager:
   - Slope
   - Enemy
   - Collider
+  - Platform
   layers:
   - Default
   - TransparentFX
