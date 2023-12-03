@@ -26,6 +26,7 @@ public class FloatingSystem : MonoBehaviour {
     private Vector3 end;
     private Vector3 shift;
 
+    public bool isActive;
     public float offset;
     public float stopTime;
     public float speed;
@@ -46,8 +47,10 @@ public class FloatingSystem : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        GetPosition();
-        SetPosition();
+        if (isActive) {
+            GetPosition();
+            SetPosition();
+        }
     }
     
     private void SetPosition() {
@@ -169,8 +172,8 @@ public class FloatingSystem : MonoBehaviour {
     [CustomEditor(typeof(FloatingSystem)), CanEditMultipleObjects]
     public class FloatingSystemEditor : Editor {        
         public override void OnInspectorGUI() {
-            var editor = (FloatingSystem)target;            
-
+            var editor = (FloatingSystem)target;
+            editor.isActive = EditorGUILayout.Toggle("isActive", editor.isActive);
             editor.mode = (AxisMode)EditorGUILayout.EnumPopup("Axis Mode", editor.mode);
             if (editor.mode == AxisMode.Single) {
                 editor.s_axis = (SAxis)EditorGUILayout.EnumPopup("Axis", editor.s_axis);
