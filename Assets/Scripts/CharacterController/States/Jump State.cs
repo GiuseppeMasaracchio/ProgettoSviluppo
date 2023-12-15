@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class JumpState : BaseState, IContextInit, IWalk {
     public JumpState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
@@ -9,7 +10,7 @@ public class JumpState : BaseState, IContextInit, IWalk {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
-        
+        InitializeParticle();
         Ctx.AnimHandler.Play(AnimHandler.Jump());
 
         HandleJump(Ctx.PlayerRb);
@@ -68,6 +69,11 @@ public class JumpState : BaseState, IContextInit, IWalk {
         Ctx.IsAttacking = false;
         Ctx.IsWalking = false;
         Ctx.IsIdle = false;
+    }
+    public void InitializeParticle() {
+        Vector3 offset = Ctx.Asset.transform.position + (new Vector3(0f, -.75f, 0f));
+        Ctx.Vfx.transform.position = offset - (new Vector3(0f, Ctx.Vfx.transform.position.y/2, 0f));
+        Ctx.Vfx.GetComponent<VisualEffect>().Play();
     }
     private void HandleJump(Rigidbody rb) {
         //Jump Logic

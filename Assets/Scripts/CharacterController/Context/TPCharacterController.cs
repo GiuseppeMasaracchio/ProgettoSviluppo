@@ -28,6 +28,7 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
+    [SerializeField] GameObject _vfx;
     PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
@@ -133,6 +134,7 @@ public class TPCharacterController : MonoBehaviour
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
     public bool IsFalling { get { return isFalling; } set { isFalling = value; } }
 
+    public GameObject Vfx { get { return _vfx; } }
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
     public GameObject Camera { get { return _cam; } }
