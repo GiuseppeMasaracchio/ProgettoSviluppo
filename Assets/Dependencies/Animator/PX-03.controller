@@ -127,10 +127,10 @@ BlendTree:
     m_DirectBlendParameter: xAxis
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 9060002271864667994, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
+    m_Motion: {fileID: 7400000, guid: 4077540c33c8a714586bef56a628bfe2, type: 2}
     m_Threshold: 0.4242857
     m_Position: {x: -0.33, y: -0.33}
-    m_TimeScale: 0.8
+    m_TimeScale: 0.6
     m_CycleOffset: 0
     m_DirectBlendParameter: xAxis
     m_Mirror: 0

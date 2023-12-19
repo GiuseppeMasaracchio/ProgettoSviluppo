@@ -11,6 +11,7 @@ TagManager:
   - Collider
   - Platform
   - Death
+  - Warp
   layers:
   - Default
   - TransparentFX
