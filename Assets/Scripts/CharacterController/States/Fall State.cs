@@ -13,7 +13,11 @@ public class FallState : BaseState, IContextInit, IWalk {
     }
     public override void UpdateState() {
         //Update logic
-        
+
+        if (Ctx.MoveInput != Vector2.zero) {
+            Ctx.Player.transform.forward = Ctx.PlayerForward.transform.forward;
+        }
+
         HandleWalk();
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }

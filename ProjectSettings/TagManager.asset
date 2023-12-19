@@ -12,6 +12,7 @@ TagManager:
   - Platform
   - Death
   - Warp
+  - Lamp
   layers:
   - Default
   - TransparentFX
