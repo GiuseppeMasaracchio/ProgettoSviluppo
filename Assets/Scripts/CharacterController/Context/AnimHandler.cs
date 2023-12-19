@@ -53,7 +53,7 @@ public class AnimHandler : MonoBehaviour {
     }
     IEnumerator LoadClip() {
         while (currentclip - targetclip != Vector2.zero) {
-            Vector2 lerpvalue = Vector2.Lerp(currentclip, targetclip, .19f);
+            Vector2 lerpvalue = Vector2.Lerp(currentclip, targetclip, .21f);
 
             _animator.SetFloat("xAxis", lerpvalue.x);
             _animator.SetFloat("yAxis", lerpvalue.y);
