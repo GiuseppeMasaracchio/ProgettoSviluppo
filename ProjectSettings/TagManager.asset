@@ -8,8 +8,13 @@ TagManager:
   - Modal
   - Enemy
   - Ground
+  - Slope
+  - Enemy
+  - Collider
+  - Platform
   - Death
-  - Checkpoint
+  - Warp
+  - Lamp
   layers:
   - Default
   - TransparentFX
@@ -17,7 +22,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - Enemy
+  - Level
   - 
   - 
   - 
