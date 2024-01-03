@@ -49,6 +49,7 @@ public class TPCharacterController : MonoBehaviour
 
     //Context vars
     private Vector3 surfaceNormal;
+    private bool onPlatform;
     private bool onSlope;
     private bool canDMG = true;
     private bool canDash = true;
@@ -111,6 +112,7 @@ public class TPCharacterController : MonoBehaviour
 
     public Vector3 SurfaceNormal { get { return surfaceNormal; } }
     public bool OnSlope { get { return onSlope; } }
+    public bool OnPlatform { get { return onPlatform; } set { onPlatform = value; } }
     public int DashCount { get { return dashCount; } set { dashCount = value; } }
     public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
     public int AttackCount { get { return attackCount; } set { attackCount = value; } }
@@ -255,6 +257,7 @@ public class TPCharacterController : MonoBehaviour
             SetDMGState();
         }
         if (other.tag == "Platform") {
+            onPlatform = true;
             _playerparent.transform.SetParent(other.transform); //Platform fix (1)
         }
         if (other.tag == "Death") {
@@ -263,6 +266,7 @@ public class TPCharacterController : MonoBehaviour
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Platform") {
+            onPlatform = false;
             _playerparent.transform.SetParent(null); //Platform fix (2)
         }
     }
@@ -320,6 +324,11 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetJumpState() {
+        if (jumpCount <= 0 || !canJump || isDamaged) { return; }
+
+        isJumping = true;
+        
+        /*
         if (jumpCount <= 0) { return; }
 
         if (!canJump) { return; }
@@ -327,6 +336,7 @@ public class TPCharacterController : MonoBehaviour
         if (!isDamaged) {
             isJumping = true;
         }
+        */
     }
     private void SetDashState() {
         if (!canDash) { return; }         
@@ -440,6 +450,7 @@ public class TPCharacterController : MonoBehaviour
 
         yield return new WaitForSeconds(.2f);
         isJumping = false;
+        
 
         yield break;
     }

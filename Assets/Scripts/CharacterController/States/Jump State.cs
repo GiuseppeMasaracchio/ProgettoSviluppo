@@ -54,13 +54,19 @@ public class JumpState : BaseState, IContextInit, IWalk {
         else if (Ctx.IsGrounded && Ctx.IsIdle) {
             SwitchState(StateHandler.Idle());
         }
+        else if (Ctx.OnPlatform && Ctx.IsWalking) {
+            SwitchState(StateHandler.Walk());
+        }
+        else if (Ctx.OnPlatform && Ctx.IsIdle) {
+            SwitchState(StateHandler.Idle());
+        }
 
     }
     public void InitializeContext() {
         Ctx.MoveSpeed = 1760;
         Ctx.Gravity = 9.81f;
+        Ctx.JumpCount--;            
 
-        Ctx.JumpCount--;
         Ctx.JumpInput = false;
         Ctx.CanJump = false;
         Ctx.IsFalling = false;
