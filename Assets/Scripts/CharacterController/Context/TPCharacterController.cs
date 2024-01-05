@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 enum ActiveData {
     Slot_ID,
@@ -28,7 +29,8 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
-    [SerializeField] GameObject _vfx;
+    [SerializeField] GameObject _vfx; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx2; // Da sostituire con framework VFX
     PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
@@ -136,7 +138,8 @@ public class TPCharacterController : MonoBehaviour
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
     public bool IsFalling { get { return isFalling; } set { isFalling = value; } }
 
-    public GameObject Vfx { get { return _vfx; } }
+    public GameObject Vfx { get { return _vfx; } } // Da sostituire con framework VFX
+    public GameObject Vfx2 { get { return _vfx2; } } // Da sostituire con framework VFX
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
     public GameObject Camera { get { return _cam; } }

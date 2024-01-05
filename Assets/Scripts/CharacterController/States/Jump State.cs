@@ -11,6 +11,7 @@ public class JumpState : BaseState, IContextInit, IWalk {
         //Enter logic
         InitializeContext();
         InitializeParticle();
+        InitializeParticle2();
         Ctx.AnimHandler.Play(AnimHandler.Jump());
 
         HandleJump(Ctx.PlayerRb);
@@ -82,6 +83,13 @@ public class JumpState : BaseState, IContextInit, IWalk {
         Vector3 offset = Ctx.Asset.transform.position + (new Vector3(0f, -.25f, 0f));
         Ctx.Vfx.transform.position = offset;
         Ctx.Vfx.GetComponent<VisualEffect>().Play();
+    }
+    public void InitializeParticle2() {
+        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
+        Ctx.Vfx2.GetComponent<VisualEffect>().Reinit();
+        //Vector3 offset = Ctx.Asset.transform.position + (new Vector3(0f, -.15f, 0f));
+        //Ctx.Vfx2.transform.position = offset;
+        Ctx.Vfx2.GetComponent<VisualEffect>().Play();
     }
     private void HandleJump(Rigidbody rb) {
         //Jump Logic
