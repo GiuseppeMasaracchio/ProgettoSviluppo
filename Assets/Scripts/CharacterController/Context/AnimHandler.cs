@@ -16,17 +16,16 @@ enum Anim {
 public class AnimHandler : MonoBehaviour {
     Animator _animator;
     Vector2 currentclip;
-    Vector2 targetclip;
-    Vector2 _moveInput;
+    Vector2 targetclip;    
 
     Dictionary<Anim, Vector2> animList = new Dictionary<Anim, Vector2>(10);
     public AnimHandler() {
         animList[Anim.dead] = new Vector2(.99f, .99f);                    //0
         animList[Anim.idle] = new Vector2(0f, 0f);                        //1
         animList[Anim.walk] = new Vector2(0f, .99f);                      //2
-        animList[Anim.attack1] = new Vector2(-.99f, .99f);                //3
-        animList[Anim.jump] = new Vector2(-.33f, -.33f);                  //4
-        animList[Anim.fall] = new Vector2(-.66f, -.66f);                  //5
+        animList[Anim.attack1] = new Vector2(-.99f, 0f);                  //3
+        animList[Anim.jump] = new Vector2(0f, -.99f);                     //4
+        animList[Anim.fall] = new Vector2(-.99f, -.99f);                  //5
         animList[Anim.dash] = new Vector2(.99f, 0f);                      //6
         animList[Anim.damage] = new Vector2(.99f, -.99f);                 //7
     }
@@ -50,6 +49,9 @@ public class AnimHandler : MonoBehaviour {
         _animator.SetFloat("xAxis", targetclip.x);
         _animator.SetFloat("yAxis", targetclip.y);
         currentclip = targetclip;
+    }
+    public void SetAlt(bool alt) {
+        _animator.SetBool("onAlt", alt);
     }
     IEnumerator LoadClip() {
         while (currentclip - targetclip != Vector2.zero) {

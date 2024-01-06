@@ -11,8 +11,8 @@ public class AttackState : BaseState, IContextInit {
         InitializeContext();
 
         GravityOff();
-
-        Ctx.AnimHandler.Play(AnimHandler.Attack1());
+        Ctx.AnimHandler.SetAlt(true);
+        Ctx.AnimHandler.PlayDirect(AnimHandler.Attack1());
 
         Ctx.StartCoroutine("ResetAttack");
     }
@@ -21,14 +21,14 @@ public class AttackState : BaseState, IContextInit {
     }
     public override void ExitState() {
         //Exit logic
-
+        Ctx.AnimHandler.SetAlt(false);
         GravityOn();
         
     }
     public override void CheckSwitchStates() {
         //Switch logic
         
-        if (Ctx.IsGrounded && Ctx.CanAttack && Ctx.IsWalking) {
+        if (Ctx.IsGrounded && Ctx.CanAttack && Ctx.IsWalking) {          
             SwitchState(StateHandler.Walk());
         }
         else if (Ctx.CanAttack && Ctx.IsIdle) {

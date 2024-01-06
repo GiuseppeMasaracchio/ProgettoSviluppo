@@ -10,8 +10,11 @@ public class JumpState : BaseState, IContextInit, IWalk {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
+
         InitializeParticle();
         InitializeParticle2();
+
+        Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.Play(AnimHandler.Jump());
 
         HandleJump(Ctx.PlayerRb);
@@ -30,6 +33,7 @@ public class JumpState : BaseState, IContextInit, IWalk {
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.AnimHandler.SetAlt(false);
     }
     public override void CheckSwitchStates() {
         //Switch logic
