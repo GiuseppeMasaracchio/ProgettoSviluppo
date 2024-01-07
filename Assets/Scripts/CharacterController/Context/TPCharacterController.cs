@@ -34,6 +34,7 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _vfx3; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx4; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx5; // Da sostituire con framework VFX
+    
     public GameObject dragPoint; // Da sostituire con framework VFX
 
     PlayerInput _playerinput;

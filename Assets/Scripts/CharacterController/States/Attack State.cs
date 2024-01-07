@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class AttackState : BaseState, IContextInit {
     public AttackState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
@@ -11,6 +12,9 @@ public class AttackState : BaseState, IContextInit {
         InitializeContext();
 
         GravityOff();
+
+        InitializeParticle5();
+
         Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.PlayDirect(AnimHandler.Attack1());
 
@@ -59,6 +63,11 @@ public class AttackState : BaseState, IContextInit {
         Ctx.IsIdle = false;
         Ctx.IsDashing = false;
         Ctx.IsJumping = false;
+    }
+    public void InitializeParticle5() {
+        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
+        Ctx.Vfx5.GetComponent<VisualEffect>().Reinit();
+        Ctx.Vfx5.GetComponent<VisualEffect>().Play();
     }
     public void HandleAttack() {
         //

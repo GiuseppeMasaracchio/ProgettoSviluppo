@@ -13,9 +13,9 @@ public class DashState : BaseState, IContextInit {
 
         GravityOff();
 
+        Ctx.AnimHandler.SetAlt(true);
         InitializeParticle3();
         InitializeParticle4();
-
         Ctx.AnimHandler.PlayDirect(AnimHandler.Dash());
 
         HandleDash(Ctx.PlayerRb);
@@ -29,6 +29,7 @@ public class DashState : BaseState, IContextInit {
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.AnimHandler.SetAlt(false);
         GravityOn();
 
     }
