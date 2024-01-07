@@ -91,8 +91,6 @@ public class JumpState : BaseState, IContextInit, IWalk {
     public void InitializeParticle2() {
         //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
         Ctx.Vfx2.GetComponent<VisualEffect>().Reinit();
-        //Vector3 offset = Ctx.Asset.transform.position + (new Vector3(0f, -.15f, 0f));
-        //Ctx.Vfx2.transform.position = offset;
         Ctx.Vfx2.GetComponent<VisualEffect>().Play();
     }
     private void HandleJump(Rigidbody rb) {

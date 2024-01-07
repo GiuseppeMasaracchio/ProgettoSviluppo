@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.VFX;
 
 enum ActiveData {
     Slot_ID,
@@ -29,8 +28,14 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
+
     [SerializeField] GameObject _vfx; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx2; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx3; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx4; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx5; // Da sostituire con framework VFX
+    public GameObject dragPoint; // Da sostituire con framework VFX
+
     PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
@@ -140,6 +145,10 @@ public class TPCharacterController : MonoBehaviour
 
     public GameObject Vfx { get { return _vfx; } } // Da sostituire con framework VFX
     public GameObject Vfx2 { get { return _vfx2; } } // Da sostituire con framework VFX
+    public GameObject Vfx3 { get { return _vfx3; } } // Da sostituire con framework VFX
+    public GameObject Vfx4 { get { return _vfx4; } } // Da sostituire con framework VFX
+    public GameObject Vfx5 { get { return _vfx5; } } // Da sostituire con framework VFX
+    public GameObject DragPoint { get { return dragPoint; } } // Da sostituire con framework VFX
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
     public GameObject Camera { get { return _cam; } }
@@ -164,6 +173,8 @@ public class TPCharacterController : MonoBehaviour
         //_attackCollider = _player.GetComponentInChildren<SphereCollider>();        
         _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
+
+        dragPoint = GameObject.FindWithTag("DragPoint");
 
         _currentRootState = StateHandler.Airborne();
         _currentRootState.EnterState();        

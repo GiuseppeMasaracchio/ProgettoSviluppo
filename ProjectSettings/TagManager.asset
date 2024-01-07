@@ -13,6 +13,7 @@ TagManager:
   - Death
   - Warp
   - Lamp
+  - DragPoint
   layers:
   - Default
   - TransparentFX

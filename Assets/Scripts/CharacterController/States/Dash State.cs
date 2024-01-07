@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class DashState : BaseState, IContextInit {
     public DashState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
@@ -11,6 +12,9 @@ public class DashState : BaseState, IContextInit {
         InitializeContext();
 
         GravityOff();
+
+        InitializeParticle3();
+        InitializeParticle4();
 
         Ctx.AnimHandler.PlayDirect(AnimHandler.Dash());
 
@@ -55,6 +59,17 @@ public class DashState : BaseState, IContextInit {
         Ctx.IsJumping = false;
         Ctx.IsAttacking = false;
         Ctx.IsDamaged = false;
+    }
+    public void InitializeParticle3() {
+        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
+        Ctx.Vfx3.GetComponent<VisualEffect>().Reinit();
+        Ctx.Vfx3.transform.position = Ctx.DragPoint.transform.position;
+        Ctx.Vfx3.GetComponent<VisualEffect>().Play();
+    }
+    public void InitializeParticle4() {
+        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
+        Ctx.Vfx4.GetComponent<VisualEffect>().Reinit();
+        Ctx.Vfx4.GetComponent<VisualEffect>().Play();
     }
     public void HandleDash(Rigidbody rb) {        
         rb.velocity.Set(0f, 0f, 0f);
