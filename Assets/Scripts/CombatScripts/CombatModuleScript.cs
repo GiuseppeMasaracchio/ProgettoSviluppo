@@ -38,7 +38,6 @@ public class CombatModuleScript : MonoBehaviour, ICombat
         if (transform.tag == "Player") {
             Time.timeScale = 0f;
             GameObject.Destroy(transform.parent.gameObject, 1f); //1s per far attivare le animazioni e puzzi
-            GameMaster.Instance.Respawn();
             Time.timeScale = 1f;
         }
 
