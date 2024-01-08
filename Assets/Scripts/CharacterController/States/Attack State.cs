@@ -65,8 +65,8 @@ public class AttackState : BaseState, IContextInit {
         Ctx.IsJumping = false;
     }
     public void InitializeParticle5() {
-        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
-        Ctx.Vfx5.GetComponent<VisualEffect>().Reinit();
+        Ctx.Vfx.GetComponent<VisualEffect>().Stop();
+        //Ctx.Vfx5.GetComponent<VisualEffect>().Reinit();
         Ctx.Vfx5.GetComponent<VisualEffect>().Play();
     }
     public void HandleAttack() {
