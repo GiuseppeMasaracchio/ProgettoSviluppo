@@ -5,7 +5,7 @@ public class DevToolUI : MonoBehaviour {
     private TMP_Text _rootText;
     private TMP_Text _subText;
     private TMP_Text _jumpCountText;
-    private TMP_Text _canDashText;
+    private TMP_Text _moveSpeedText;
     private TMP_Text _gravityText;
     private TMP_Text _sensText;
     private TMP_Text _currentClip;
@@ -15,7 +15,7 @@ public class DevToolUI : MonoBehaviour {
         _rootText = GameObject.Find("RootState").GetComponent<TMP_Text>();
         _subText = GameObject.Find("SubState").GetComponent<TMP_Text>();
         _jumpCountText = GameObject.Find("JumpCount").GetComponent<TMP_Text>();
-        _canDashText = GameObject.Find("CanDash").GetComponent<TMP_Text>();
+        _moveSpeedText = GameObject.Find("MoveSpeed").GetComponent<TMP_Text>();
         _gravityText = GameObject.Find("Gravity").GetComponent<TMP_Text>();
         _sensText = GameObject.Find("CurrentSens").GetComponent<TMP_Text>();
         _currentClip = GameObject.Find("CurrentClip").GetComponent<TMP_Text>();
@@ -25,7 +25,7 @@ public class DevToolUI : MonoBehaviour {
         _rootText.text = _ctx.CurrentRootState.ToString();
         _subText.text = _ctx.CurrentSubState.ToString();
         _jumpCountText.text = _ctx.JumpCount.ToString();
-        _canDashText.text = _ctx.CanDash.ToString();
+        _moveSpeedText.text = _ctx.MoveSpeed.ToString();
         _gravityText.text = _ctx.Gravity.ToString();
         _sensText.text = _ctx.CurrentSens.ToString();
         _currentClip.text = _ctx.AnimHandler.CurrentClip.ToString();
