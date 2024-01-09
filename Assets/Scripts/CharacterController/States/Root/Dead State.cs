@@ -9,6 +9,8 @@ public class DeadState : BaseState, IContextInit {
     public override void EnterState() {
         //Enter logic
         Debug.Log("Lmao u ded");
+
+        Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.PlayDirect(AnimHandler.Dead());
         GravityOff();
         InitializeContext();
@@ -18,8 +20,9 @@ public class DeadState : BaseState, IContextInit {
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
-    public override void ExitState() { 
+    public override void ExitState() {
         //Exit logic
+        Ctx.AnimHandler.SetAlt(false);
 
     }
     public override void CheckSwitchStates() {

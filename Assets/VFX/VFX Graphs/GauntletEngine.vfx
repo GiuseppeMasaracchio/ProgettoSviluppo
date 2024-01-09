@@ -5362,7 +5362,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.Vector, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"vector":{"x":-0.0020000000949949028,"y":0.0,"z":0.0}}'
+      m_SerializableObject: '{"vector":{"x":-0.0005000000237487257,"y":0.0,"z":0.0}}'
     m_Space: 0
   m_Property:
     name: A
@@ -7472,7 +7472,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.TArcTorus, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"torus":{"transform":{"position":{"x":-0.004000000189989805,"y":0.0,"z":0.0},"angles":{"x":0.0,"y":90.0,"z":0.0},"scale":{"x":1.0,"y":1.0,"z":1.0}},"majorRadius":0.003000000026077032,"minorRadius":0.0017999999690800906},"arc":6.2831854820251469}'
+      m_SerializableObject: '{"torus":{"transform":{"position":{"x":-0.004000000189989805,"y":0.0,"z":0.0},"angles":{"x":0.0,"y":90.0,"z":0.0},"scale":{"x":1.0,"y":1.0,"z":1.0}},"majorRadius":0.003000000026077032,"minorRadius":0.0017999999690800906},"arc":6.28000020980835}'
     m_Space: 0
   m_Property:
     name: arcTorus
@@ -7572,7 +7572,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615257}
   - {fileID: 8926484042661615258}
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
+  m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_MasterSlot: {fileID: 8926484042661615252}
   m_MasterData:
