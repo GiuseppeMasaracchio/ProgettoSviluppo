@@ -47,9 +47,9 @@ public class GroundedState : BaseState, IContextInit {
         Ctx.IsJumping = false;
 
         Ctx.StopCoroutine("InitializeMoveSpeed");
-
         Ctx.MoveSpeed = 1760;
-        Ctx.JumpCount = 2;
+
         Ctx.AttackCount = 1;
+        Ctx.JumpCount = 2;
     }
 }

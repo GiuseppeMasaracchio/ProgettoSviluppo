@@ -52,7 +52,7 @@ public class AirborneState : BaseState, IContextInit, IPhysics {
         rb.AddForce(Vector3.up * -Ctx.Gravity * Time.deltaTime, ForceMode.VelocityChange);
     }    
     private void InitializeJumpCount() {
-        if (Ctx.JumpCount > 0 && Ctx.JumpCount < 2) {
+        if (Ctx.JumpCount > 0) {
             Ctx.JumpCount--;
         }
     }

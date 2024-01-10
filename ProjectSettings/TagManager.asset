@@ -15,6 +15,7 @@ TagManager:
   - Death
   - Warp
   - Lamp
+  - DragPoint
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Water
   - UI
   - Level
-  - 
+  - VFX
   - 
   - 
   - Ground

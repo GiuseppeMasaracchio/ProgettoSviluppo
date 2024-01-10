@@ -28,7 +28,15 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
-    [SerializeField] GameObject _vfx;
+
+    [SerializeField] GameObject _vfx; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx2; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx3; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx4; // Da sostituire con framework VFX
+    [SerializeField] GameObject _vfx5; // Da sostituire con framework VFX
+    
+    public GameObject dragPoint; // Da sostituire con framework VFX
+
     PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
@@ -49,6 +57,7 @@ public class TPCharacterController : MonoBehaviour
 
     //Context vars
     private Vector3 surfaceNormal;
+    private bool onPlatform;
     private bool onSlope;
     private bool canDMG = true;
     private bool canDash = true;
@@ -111,6 +120,7 @@ public class TPCharacterController : MonoBehaviour
 
     public Vector3 SurfaceNormal { get { return surfaceNormal; } }
     public bool OnSlope { get { return onSlope; } }
+    public bool OnPlatform { get { return onPlatform; } set { onPlatform = value; } }
     public int DashCount { get { return dashCount; } set { dashCount = value; } }
     public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
     public int AttackCount { get { return attackCount; } set { attackCount = value; } }
@@ -134,7 +144,12 @@ public class TPCharacterController : MonoBehaviour
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
     public bool IsFalling { get { return isFalling; } set { isFalling = value; } }
 
-    public GameObject Vfx { get { return _vfx; } }
+    public GameObject Vfx { get { return _vfx; } } // Da sostituire con framework VFX
+    public GameObject Vfx2 { get { return _vfx2; } } // Da sostituire con framework VFX
+    public GameObject Vfx3 { get { return _vfx3; } } // Da sostituire con framework VFX
+    public GameObject Vfx4 { get { return _vfx4; } } // Da sostituire con framework VFX
+    public GameObject Vfx5 { get { return _vfx5; } } // Da sostituire con framework VFX
+    public GameObject DragPoint { get { return dragPoint; } } // Da sostituire con framework VFX
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
     public GameObject Camera { get { return _cam; } }
@@ -159,6 +174,8 @@ public class TPCharacterController : MonoBehaviour
         //_attackCollider = _player.GetComponentInChildren<SphereCollider>();        
         _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
+
+        dragPoint = GameObject.FindWithTag("DragPoint");
 
         _currentRootState = StateHandler.Airborne();
         _currentRootState.EnterState();        
@@ -255,6 +272,7 @@ public class TPCharacterController : MonoBehaviour
             SetDMGState();
         }
         if (other.tag == "Platform") {
+            onPlatform = true;
             _playerparent.transform.SetParent(other.transform); //Platform fix (1)
         }
         if (other.tag == "Death") {
@@ -263,6 +281,7 @@ public class TPCharacterController : MonoBehaviour
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Platform") {
+            onPlatform = false;
             _playerparent.transform.SetParent(null); //Platform fix (2)
         }
     }
@@ -320,6 +339,11 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetJumpState() {
+        if (jumpCount <= 0 || !canJump || isDamaged) { return; }
+
+        isJumping = true;
+        
+        /*
         if (jumpCount <= 0) { return; }
 
         if (!canJump) { return; }
@@ -327,6 +351,7 @@ public class TPCharacterController : MonoBehaviour
         if (!isDamaged) {
             isJumping = true;
         }
+        */
     }
     private void SetDashState() {
         if (!canDash) { return; }         
@@ -406,7 +431,7 @@ public class TPCharacterController : MonoBehaviour
     }
     public IEnumerator ResetAttack() {
         canAttack = false;
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.4f);
 
         isAttacking = false;
         canDMG = true;
@@ -440,6 +465,7 @@ public class TPCharacterController : MonoBehaviour
 
         yield return new WaitForSeconds(.2f);
         isJumping = false;
+        
 
         yield break;
     }

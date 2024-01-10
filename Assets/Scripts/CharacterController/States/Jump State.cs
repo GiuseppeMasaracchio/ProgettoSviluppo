@@ -10,7 +10,11 @@ public class JumpState : BaseState, IContextInit, IWalk {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
+
         InitializeParticle();
+        InitializeParticle2();
+
+        Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.Play(AnimHandler.Jump());
 
         HandleJump(Ctx.PlayerRb);
@@ -29,6 +33,7 @@ public class JumpState : BaseState, IContextInit, IWalk {
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.AnimHandler.SetAlt(false);
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -54,13 +59,19 @@ public class JumpState : BaseState, IContextInit, IWalk {
         else if (Ctx.IsGrounded && Ctx.IsIdle) {
             SwitchState(StateHandler.Idle());
         }
+        else if (Ctx.OnPlatform && Ctx.IsWalking) {
+            SwitchState(StateHandler.Walk());
+        }
+        else if (Ctx.OnPlatform && Ctx.IsIdle) {
+            SwitchState(StateHandler.Idle());
+        }
 
     }
     public void InitializeContext() {
         Ctx.MoveSpeed = 1760;
         Ctx.Gravity = 9.81f;
+        Ctx.JumpCount--;            
 
-        Ctx.JumpCount--;
         Ctx.JumpInput = false;
         Ctx.CanJump = false;
         Ctx.IsFalling = false;
@@ -76,6 +87,11 @@ public class JumpState : BaseState, IContextInit, IWalk {
         Vector3 offset = Ctx.Asset.transform.position + (new Vector3(0f, -.25f, 0f));
         Ctx.Vfx.transform.position = offset;
         Ctx.Vfx.GetComponent<VisualEffect>().Play();
+    }
+    public void InitializeParticle2() {
+        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
+        Ctx.Vfx2.GetComponent<VisualEffect>().Reinit();
+        Ctx.Vfx2.GetComponent<VisualEffect>().Play();
     }
     private void HandleJump(Rigidbody rb) {
         //Jump Logic
