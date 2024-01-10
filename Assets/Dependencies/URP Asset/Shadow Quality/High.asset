@@ -20,17 +20,10 @@ MonoBehaviour:
     Source: 1
     NormalSamples: 1
     Intensity: 3
-<<<<<<< HEAD
-    DirectLightingStrength: 0.25
-    Radius: 0.035
-    Samples: 2
-    BlurQuality: 0
-=======
     DirectLightingStrength: 0.3
     Radius: 0.03
     Samples: 0
     BlurQuality: 2
->>>>>>> origin/Paolo
     Falloff: 100
     SampleCount: -1
   m_BlueNoise256Textures:
