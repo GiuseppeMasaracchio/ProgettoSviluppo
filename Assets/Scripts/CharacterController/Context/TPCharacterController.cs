@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using UnityEditor;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 enum ActiveData {
     Slot_ID,
@@ -295,6 +298,9 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void OnCollisionStay(Collision collision) {
+        if (collision.collider.tag == "Enemy") {
+            SetDMGState();
+        }
         if (collision.collider.tag == "Slope") {
             float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
             SetSlope(angle, collision.GetContact(0).normal);
@@ -474,6 +480,11 @@ public class TPCharacterController : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         isDamaged = false;
         canDMG = true;
+        yield break;
+    }
+    public IEnumerator ReloadScene() {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
         yield break;
     }
     //

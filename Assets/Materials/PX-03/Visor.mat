@@ -24,7 +24,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 6d7c78f650dd4ca41b53a7d6eec0ea80, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _STATES_IDLE
   m_InvalidKeywords: []
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -111,6 +112,7 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _Eyelid: 1
+    - _Eyelid_Speed: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.59999996
     - _GlossinessSource: 0
@@ -122,6 +124,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _STATES: 0
     - _SampleGI: 0
     - _Shininess: 0
     - _Smoothness: 0.1
