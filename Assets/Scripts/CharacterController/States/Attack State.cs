@@ -10,17 +10,17 @@ public class AttackState : BaseState, IContextInit {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
-
+        HandleAttack();
         GravityOff();
 
         InitializeParticle5();
 
         Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.PlayDirect(AnimHandler.Attack1());
-
         Ctx.StartCoroutine("ResetAttack");
     }
     public override void UpdateState() {
+        Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
         CheckSwitchStates();
     }
     public override void ExitState() {
@@ -52,6 +52,8 @@ public class AttackState : BaseState, IContextInit {
         }
     }
     public void InitializeContext() {
+        Ctx.AttackInput = false;
+
         if (!Ctx.IsGrounded) {
             Ctx.Gravity = 0f;
         }        
@@ -70,7 +72,9 @@ public class AttackState : BaseState, IContextInit {
         Ctx.Vfx5.GetComponent<VisualEffect>().Play();
     }
     public void HandleAttack() {
-        //
+        if (!Ctx.IsGrounded) {
+            //Ctx.PlayerRb.AddForce(Vector3.up, ForceMode.VelocityChange);
+        }
     }
 
 }

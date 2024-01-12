@@ -68,11 +68,11 @@ public class JumpState : BaseState, IContextInit, IWalk {
 
     }
     public void InitializeContext() {
+        Ctx.JumpInput = false;
         Ctx.MoveSpeed = 1760;
         Ctx.Gravity = 9.81f;
         Ctx.JumpCount--;            
 
-        Ctx.JumpInput = false;
         Ctx.CanJump = false;
         Ctx.IsFalling = false;
 

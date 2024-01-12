@@ -326,6 +326,8 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetUpDash() {
+        if (attackInput) { return; }
+
         if (!dashInput) {
             dashInput = true;
             SetDashState();
@@ -335,6 +337,8 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetUpAttack() {
+        if (dashInput) { return; }
+
         if (!attackInput) {
             attackInput = true;
             SetAttackState();
@@ -346,17 +350,7 @@ public class TPCharacterController : MonoBehaviour
     private void SetJumpState() {
         if (jumpCount <= 0 || !canJump || isDamaged) { return; }
 
-        isJumping = true;
-        
-        /*
-        if (jumpCount <= 0) { return; }
-
-        if (!canJump) { return; }
-        
-        if (!isDamaged) {
-            isJumping = true;
-        }
-        */
+        isJumping = true;                
     }
     private void SetDashState() {
         if (!canDash) { return; }         
@@ -367,11 +361,13 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetAttackState() {
+        if (!canAttack) { return; }
         if (attackCount <= 0) { return; }
         
         if (!isDamaged) {
-            canDMG = false;
             isAttacking = true;
+            canDMG = false;
+            canAttack = false;
         }
     }   
     private void SetSlope(float angle, Vector3 _surfaceNormal) {
@@ -450,7 +446,7 @@ public class TPCharacterController : MonoBehaviour
         yield break;
     }
     public IEnumerator ResetDash() {
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.4f);
 
         isDashing = false;
 
