@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEditor;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -225,12 +224,12 @@ public class TPCharacterController : MonoBehaviour
         if (_devUI != null) {
             _devUI.UpdateText(this);
         } 
-    }
-    void FixedUpdate() {
-        _currentRootState.UpdateState();
         if (!isDead) { 
             _currentSubState.UpdateState();
         }
+    }
+    void FixedUpdate() {
+        _currentRootState.UpdateState();
     } 
     
     //Input Callbacks
