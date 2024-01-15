@@ -36,8 +36,9 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _vfx3; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx4; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx5; // Da sostituire con framework VFX
-    
-    public GameObject dragPoint; // Da sostituire con framework VFX
+
+    //[HideInInspector]
+    GameObject dragPoint; // Da sostituire con framework VFX
 
     PlayerInput _playerinput;
     Animator _animator;
@@ -224,12 +225,12 @@ public class TPCharacterController : MonoBehaviour
         if (_devUI != null) {
             _devUI.UpdateText(this);
         } 
-        if (!isDead) { 
-            _currentSubState.UpdateState();
-        }
     }
     void FixedUpdate() {
         _currentRootState.UpdateState();
+        if (!isDead) { 
+            _currentSubState.UpdateState();
+        }
     } 
     
     //Input Callbacks
@@ -267,7 +268,16 @@ public class TPCharacterController : MonoBehaviour
             dashInput = false;
         }
     }
+    public void OnPause(InputValue input) {
+        if (input.Get() != null) {
+            if (_playerinput.currentActionMap.name == "UI") {
+                _playerinput.SwitchCurrentActionMap("Player");
+            } else if (_playerinput.currentActionMap.name == "Player") {
+                _playerinput.SwitchCurrentActionMap("UI");
+            }
+        }
 
+    }
     //Collision Callbacks
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Enemy") {
@@ -318,6 +328,8 @@ public class TPCharacterController : MonoBehaviour
         //InitializeGOUI
     }
     private void SetUpJump() {
+        if (attackInput || dashInput) { return; }
+        
         if (!jumpInput) {
             jumpInput = true;
             SetJumpState();
@@ -326,7 +338,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetUpDash() {
-        if (attackInput) { return; }
+        if (attackInput || jumpInput) { return; }
 
         if (!dashInput) {
             dashInput = true;
@@ -337,7 +349,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetUpAttack() {
-        if (dashInput) { return; }
+        if (dashInput || jumpInput) { return; }
 
         if (!attackInput) {
             attackInput = true;
