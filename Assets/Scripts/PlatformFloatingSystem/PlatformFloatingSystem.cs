@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using System;
+using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -27,6 +29,8 @@ public class PlatformFloatingSystem : MonoBehaviour {
     private Vector3 shift;
 
     public bool isActive;
+    public bool hasTrigger;
+
     public float offset;
     public float stopTime;
     public float speed;
@@ -45,7 +49,6 @@ public class PlatformFloatingSystem : MonoBehaviour {
             InitializeMAxis();
         }
     }
-
     void FixedUpdate() {
         if (isActive) {
             GetPosition();
@@ -62,6 +65,8 @@ public class PlatformFloatingSystem : MonoBehaviour {
         }
     }
     private void TriggerSwitch() {
+        if (!hasTrigger) { return; }
+
         if (dir == -1) {
             SwitchDir();
         }
@@ -109,50 +114,57 @@ public class PlatformFloatingSystem : MonoBehaviour {
     private void InitializeSAxis() {
         switch (s_axis) {
             case PSAxis.X: {
-                shift = transform.right;
-                start = center - (shift * offset);
-                end = center + (shift * offset);
-                return;
+                    hasTrigger = false;
+                    shift = transform.right;
+                    start = center - (shift * offset);
+                    end = center + (shift * offset);
+                    return;
             }
             case PSAxis.Y: {
-                shift = transform.up;
-                start = center - (shift * offset);
-                end = center + (shift * offset);
-                return;
+                    hasTrigger = true;
+                    shift = transform.up;
+                    start = center - (shift * offset);
+                    end = center + (shift * offset);
+                    return;
             }
             case PSAxis.Z: {
-                shift = transform.forward;
-                start = center - (shift * offset);
-                end = center + (shift * offset);
-                return;
+                    hasTrigger = true;
+                    shift = transform.forward;
+                    start = center - (shift * offset);
+                    end = center + (shift * offset);
+                    return;
             }
         }
     }
     private void InitializeMAxis() {
         switch (m_axis) {
             case PMAxis.XZ: {
-                shift = transform.right + transform.forward;
-                start = center - (shift * offset);
-                end = center + (shift * offset);
-                return;
+                    hasTrigger = false;
+                    shift = transform.right + transform.forward;
+                    start = center - (shift * offset);
+                    end = center + (shift * offset);
+                    return;
             }
             case PMAxis.YZ: {
-                shift = transform.up + transform.forward;
-                start = center - (shift * offset);
-                end = center + (shift * offset);
-                return;
+                    hasTrigger = true;
+                    shift = transform.up + transform.forward;
+                    start = center - (shift * offset);
+                    end = center + (shift * offset);
+                    return;
             }
             case PMAxis.XY: {
-                shift = transform.right + transform.up;
-                start = center - (shift * offset);
-                end = center + (shift * offset);
-                return;
+                    hasTrigger = true;
+                    shift = transform.right + transform.up;
+                    start = center - (shift * offset);
+                    end = center + (shift * offset);
+                    return;
             }
             case PMAxis.XYZ: {
-                shift = transform.right + transform.up + transform.right;
-                start = center - (shift * offset);
-                end = center + (shift * offset);
-                return;
+                    hasTrigger = true;
+                    shift = transform.right + transform.up + transform.right;
+                    start = center - (shift * offset);
+                    end = center + (shift * offset);
+                    return;
             }
         }
     }
