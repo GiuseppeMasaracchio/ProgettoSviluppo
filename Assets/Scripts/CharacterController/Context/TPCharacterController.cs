@@ -43,7 +43,8 @@ public class TPCharacterController : MonoBehaviour
     PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
-    SphereCollider _attackCollider;
+    [SerializeField] SphereCollider _attackCollider;
+    [SerializeField] SphereCollider _dashCollider;
 
     //Root States
     private bool isDead = false;
@@ -63,7 +64,7 @@ public class TPCharacterController : MonoBehaviour
     private bool onPlatform;
     private bool onSlope;
     private bool canDMG = true;
-    private bool canDash = true;
+    private bool canDash;
     private bool canAttack = true;
     private bool canJump = true;
     private int dashCount = 1;
@@ -173,8 +174,7 @@ public class TPCharacterController : MonoBehaviour
 
         _animator = _asset.GetComponentInChildren<Animator>();
         _playerRb = _player.GetComponent<Rigidbody>();
-        _playerinput = _player.GetComponent<PlayerInput>();
-        //_attackCollider = _player.GetComponentInChildren<SphereCollider>();        
+        _playerinput = _player.GetComponent<PlayerInput>();   
         _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
 
@@ -188,25 +188,27 @@ public class TPCharacterController : MonoBehaviour
 
         InitializeUI();
 
-        //activeData = DBVault.GetActiveData();
-        //Debug.Log(activeData[(int)ActiveData.Name]);
-
         /*
+        activeData = DBVault.GetActiveData();
+        Debug.Log(activeData[(int)ActiveData.Name]);
+
         if (activeData == null) {
             DBVault.SetActiveSlot(1);
             activeData = DBVault.GetActiveData();
-        }
-
-        currentHp = (int)activeData[(int)ActiveData.CurrentHp];
-        powerUps = (int)activeData[(int)ActiveData.PowerUps];
-        score = (int)activeData[(int)ActiveData.Score];
-
-        if (powerUps >= 2) {
-            jumpCount = 2;
-        } else {
-            jumpCount = 1;
+            score = (int)activeData[(int)ActiveData.Score];
         }
         */
+
+        currentHp = 3;
+        powerUps = 2;
+
+        if (powerUps >= 2) {
+            canDash = true;
+        } else if (powerUps == 1) {
+            jumpCount = 2;
+        } else if (powerUps <= 0){
+            jumpCount = 1;
+        }
 
     }
 
@@ -219,6 +221,10 @@ public class TPCharacterController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if (currentHp <= 0) {
+            isDead = true;
+        }
+
         if (!isDead) {
             UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
         }
@@ -289,7 +295,7 @@ public class TPCharacterController : MonoBehaviour
         }
         if (other.tag == "Death") {
             isDead = true;
-        }
+        }        
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Platform") {
@@ -318,7 +324,6 @@ public class TPCharacterController : MonoBehaviour
     private void OnCollisionExit(Collision collision) {
         if (collision.collider.tag == "Slope") {
             onSlope = false;
-            //Debug.Log("Bye from slope");
         }
     }
     

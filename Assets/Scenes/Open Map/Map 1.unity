@@ -9344,6 +9344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Death (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2719809131442571047, guid: ca17a162a0f2b2a40a9f67fd854aae95, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8915358946817721469, guid: ca17a162a0f2b2a40a9f67fd854aae95, type: 3}
       propertyPath: m_LocalPosition.x
       value: -72.120285
@@ -10348,6 +10352,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &259180942 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7894761597388408314, guid: 73e64702af523cb4a96141433111b375, type: 3}
+  m_PrefabInstance: {fileID: 1468246230}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &275876473
 GameObject:
   m_ObjectHideFlags: 0
@@ -13491,6 +13500,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Damage (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
       value: -59.860283
@@ -13550,6 +13563,10 @@ PrefabInstance:
     - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_Name
       value: Damage (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13620,6 +13637,7 @@ MonoBehaviour:
   s_axis: 2
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 14
   stopTime: 1
   speed: 0.75
@@ -16981,6 +16999,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Damage (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
       value: -54.720284
@@ -19396,6 +19418,10 @@ PrefabInstance:
     - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_Name
       value: Damage (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22928,6 +22954,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Damage (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
       value: -54.120285
@@ -25703,6 +25733,7 @@ MonoBehaviour:
   s_axis: 0
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 8
   stopTime: 2
   speed: 3
@@ -52680,6 +52711,7 @@ MonoBehaviour:
   s_axis: 1
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 0.5
   stopTime: 0
   speed: 1.5
@@ -67295,7 +67327,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7894761597388408314, guid: 73e64702af523cb4a96141433111b375, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1829710462}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73e64702af523cb4a96141433111b375, type: 3}
 --- !u!43 &1471920596
@@ -71974,7 +72009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1625431543}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72017,6 +72052,10 @@ PrefabInstance:
     - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_Name
       value: Damage (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
@@ -72469,6 +72508,7 @@ MonoBehaviour:
   s_axis: 1
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 7.5
   stopTime: 1.8
   speed: 2
@@ -72911,6 +72951,10 @@ PrefabInstance:
     - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_Name
       value: Damage (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
@@ -73546,6 +73590,59 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1829710461
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1829710462}
+  - component: {fileID: 1829710463}
+  m_Layer: 3
+  m_Name: AttackCollider
+  m_TagString: Collider
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1829710462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829710461}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000007380731, y: 0.00000012107192, z: 0.000000016298143, w: 1}
+  m_LocalPosition: {x: 0.0034, y: 0, z: -0}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 259180942}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1829710463
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829710461}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1844681212 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8910817819373665825, guid: 21bad670096adfd48af43b36f64dd688, type: 3}
@@ -73567,6 +73664,7 @@ MonoBehaviour:
   s_axis: 1
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 7.5
   stopTime: 1.2
   speed: 2
@@ -73596,6 +73694,7 @@ MonoBehaviour:
   s_axis: 2
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 9
   stopTime: 2
   speed: 2
@@ -76729,6 +76828,7 @@ MonoBehaviour:
   s_axis: 2
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 5.1
   stopTime: 0.8
   speed: 1.7
@@ -79219,6 +79319,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Damage
       objectReference: {fileID: 0}
+    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
       value: -27.120285
@@ -79293,6 +79397,7 @@ MonoBehaviour:
   s_axis: 1
   m_axis: 0
   isActive: 1
+  hasTrigger: 0
   offset: 7
   stopTime: 1
   speed: 1.85
@@ -79492,6 +79597,10 @@ PrefabInstance:
     - target: {fileID: 2719809131442571047, guid: ca17a162a0f2b2a40a9f67fd854aae95, type: 3}
       propertyPath: m_Name
       value: Death
+      objectReference: {fileID: 0}
+    - target: {fileID: 2719809131442571047, guid: ca17a162a0f2b2a40a9f67fd854aae95, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8915358946817721469, guid: ca17a162a0f2b2a40a9f67fd854aae95, type: 3}
       propertyPath: m_LocalPosition.x
