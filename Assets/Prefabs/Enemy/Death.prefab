@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3064704573920153584}
   - component: {fileID: 1818016548864803814}
   - component: {fileID: 7482629361043317078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Death
   m_TagString: Death
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.48025474, g: 0, b: 0.65, a: 1}
+  m_Color: {r: 0.6528301, g: 0.03927087, b: 0, a: 1}
   m_Intensity: 100
   m_Range: 10
   m_SpotAngle: 30

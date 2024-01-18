@@ -9344,10 +9344,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Death (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2719809131442571047, guid: ca17a162a0f2b2a40a9f67fd854aae95, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 8915358946817721469, guid: ca17a162a0f2b2a40a9f67fd854aae95, type: 3}
       propertyPath: m_LocalPosition.x
       value: -72.120285
@@ -72951,10 +72947,6 @@ PrefabInstance:
     - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_Name
       value: Damage (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5680602086868776711, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8028765642425644957, guid: e0e880157c13a4b4e80135ea6a7040da, type: 3}
       propertyPath: m_LocalPosition.x
