@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.VFX;
 
 public class AttackState : BaseState, IContextInit {
@@ -10,7 +7,8 @@ public class AttackState : BaseState, IContextInit {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
-        HandleAttack();
+
+        ColliderOn(Ctx.AttackCollider);
         GravityOff();
 
         InitializeParticle5();
@@ -20,11 +18,13 @@ public class AttackState : BaseState, IContextInit {
         Ctx.StartCoroutine("ResetAttack");
     }
     public override void UpdateState() {
-        Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
+        Ctx.PlayerRb.velocity.Set(0f, 1f, 0f);
         CheckSwitchStates();
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
+        ColliderOff(Ctx.AttackCollider);
         Ctx.AnimHandler.SetAlt(false);
         GravityOn();
         
@@ -52,11 +52,7 @@ public class AttackState : BaseState, IContextInit {
         }
     }
     public void InitializeContext() {
-        Ctx.AttackInput = false;
-
-        if (!Ctx.IsGrounded) {
-            Ctx.Gravity = 0f;
-        }        
+        Ctx.AttackInput = false;    
 
         Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
         Ctx.AttackCount--;
@@ -72,9 +68,7 @@ public class AttackState : BaseState, IContextInit {
         Ctx.Vfx5.GetComponent<VisualEffect>().Play();
     }
     public void HandleAttack() {
-        if (!Ctx.IsGrounded) {
-            //Ctx.PlayerRb.AddForce(Vector3.up, ForceMode.VelocityChange);
-        }
+        
     }
 
 }
