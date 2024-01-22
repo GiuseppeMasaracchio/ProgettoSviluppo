@@ -13,12 +13,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Base -2
-    second: {fileID: 2100000, guid: e306a25a876dc6c46b2f8808a4808bb5, type: 2}
+    second: {fileID: 2100000, guid: 918bbbded7a908448a630fbcc078f9f8, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Base -2.001
-    second: {fileID: 2100000, guid: e306a25a876dc6c46b2f8808a4808bb5, type: 2}
+    second: {fileID: 2100000, guid: 918bbbded7a908448a630fbcc078f9f8, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

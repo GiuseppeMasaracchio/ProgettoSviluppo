@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: affff296dc9af4a40a75a4f87194071e
+guid: 36e37219031ef044aa8891be38dee409
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,28 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Base -1.001
-    second: {fileID: 2100000, guid: e2070a217b74dad47b0805095296ed10, type: 2}
+      name: Base -1_ruined.001
+    second: {fileID: 2100000, guid: 5874e3a5252aa5a42a2fdc212f5221f7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Base -2
+      name: Base -3
+    second: {fileID: 2100000, guid: 372a6f18306c9c9498774c6ff95b3254, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Base -3_ruined.001
+    second: {fileID: 2100000, guid: 372a6f18306c9c9498774c6ff95b3254, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Visor.002
     second: {fileID: 2100000, guid: 918bbbded7a908448a630fbcc078f9f8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Glass
-    second: {fileID: 2100000, guid: 525a64224442d4244a55786b3ad89359, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Green_Led_Emitter
-    second: {fileID: 2100000, guid: f32d5e80d83cc724f868cc3c7d380754, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Red_Led_Emitter
-    second: {fileID: 2100000, guid: 5d790920b14fefb41868c51bd4f13253, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
