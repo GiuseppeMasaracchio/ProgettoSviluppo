@@ -1174,7 +1174,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"08d154208a9992b44b96b93837333258\",\"type\":3}}",
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"efb6663bb31f5e349aa2f3657fe2dfdd\",\"type\":3}}",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -1477,7 +1477,7 @@
     "m_ShaderOutputName": "Offset",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.6000000238418579,
+        "x": 0.6499999761581421,
         "y": 0.0
     },
     "m_DefaultValue": {
