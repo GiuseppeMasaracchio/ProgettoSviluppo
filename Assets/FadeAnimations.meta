@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/FadeAnimations.meta
 guid: 37d030d2643af074daf4383bd781eee9
 folderAsset: yes
+========
+guid: 953ea967f37bdb84bb5cff495949bca5
+>>>>>>>> Paolo:Assets/Scenes/GameScenes/Lab/Lab.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

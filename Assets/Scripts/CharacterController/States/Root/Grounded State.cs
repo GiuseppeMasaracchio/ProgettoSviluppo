@@ -50,6 +50,11 @@ public class GroundedState : BaseState, IContextInit {
         Ctx.MoveSpeed = 1760;
 
         Ctx.AttackCount = 1;
-        Ctx.JumpCount = 2;
+
+        if (Ctx.PowerUps >= 1) {
+            Ctx.JumpCount = 2;
+        } else if (Ctx.PowerUps <= 0) {
+            Ctx.JumpCount = 1;
+        }
     }
 }

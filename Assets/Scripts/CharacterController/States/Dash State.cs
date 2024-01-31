@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -9,6 +7,7 @@ public class DashState : BaseState, IContextInit {
     }
     public override void EnterState() {
         //Enter logic
+        Ctx.StartCoroutine("ResetDash");
         InitializeContext();
 
         GravityOff();
@@ -18,9 +17,7 @@ public class DashState : BaseState, IContextInit {
         InitializeParticle4();
         Ctx.AnimHandler.PlayDirect(AnimHandler.Dash());
 
-        HandleDash(Ctx.PlayerRb);
-
-        Ctx.StartCoroutine("ResetDash");
+        HandleDash(Ctx.PlayerRb);        
     }
     public override void UpdateState() {
         //Update logic
@@ -60,6 +57,7 @@ public class DashState : BaseState, IContextInit {
         Ctx.IsJumping = false;
         Ctx.IsAttacking = false;
         Ctx.IsDamaged = false;
+        
     }
     public void InitializeParticle3() {
         //Ctx.Vfx.GetComponent<VisualEffect>().Stop();

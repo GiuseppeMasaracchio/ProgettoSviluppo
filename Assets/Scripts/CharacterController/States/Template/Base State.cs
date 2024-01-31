@@ -44,4 +44,10 @@ public abstract class BaseState {
             _ctx.Gravity = 9.81f;
         }
     }
+    protected void ColliderOff(Collider collider) {
+        collider.enabled = false;
+    }
+    protected void ColliderOn(Collider collider) {
+        collider.enabled = true;
+    }
 }

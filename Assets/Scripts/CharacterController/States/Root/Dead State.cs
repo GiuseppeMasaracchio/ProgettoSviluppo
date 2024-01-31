@@ -14,6 +14,7 @@ public class DeadState : BaseState, IContextInit {
         Ctx.AnimHandler.PlayDirect(AnimHandler.Dead());
         GravityOff();
         InitializeContext();
+        Ctx.StartCoroutine("ReloadScene");
     }
     public override void UpdateState() {
         //Update logic

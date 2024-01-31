@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 enum ActiveData {
     Slot_ID,
@@ -34,13 +36,15 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _vfx3; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx4; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx5; // Da sostituire con framework VFX
-    
-    public GameObject dragPoint; // Da sostituire con framework VFX
+
+    //[HideInInspector]
+    GameObject dragPoint; // Da sostituire con framework VFX
 
     PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
-    SphereCollider _attackCollider;
+    [SerializeField] SphereCollider _attackCollider;
+    [SerializeField] SphereCollider _dashCollider;
 
     //Root States
     private bool isDead = false;
@@ -60,7 +64,7 @@ public class TPCharacterController : MonoBehaviour
     private bool onPlatform;
     private bool onSlope;
     private bool canDMG = true;
-    private bool canDash = true;
+    private bool canDash;
     private bool canAttack = true;
     private bool canJump = true;
     private int dashCount = 1;
@@ -170,8 +174,7 @@ public class TPCharacterController : MonoBehaviour
 
         _animator = _asset.GetComponentInChildren<Animator>();
         _playerRb = _player.GetComponent<Rigidbody>();
-        _playerinput = _player.GetComponent<PlayerInput>();
-        //_attackCollider = _player.GetComponentInChildren<SphereCollider>();        
+        _playerinput = _player.GetComponent<PlayerInput>();   
         _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
 
@@ -185,25 +188,27 @@ public class TPCharacterController : MonoBehaviour
 
         InitializeUI();
 
-        //activeData = DBVault.GetActiveData();
-        //Debug.Log(activeData[(int)ActiveData.Name]);
-
         /*
+        activeData = DBVault.GetActiveData();
+        Debug.Log(activeData[(int)ActiveData.Name]);
+
         if (activeData == null) {
             DBVault.SetActiveSlot(1);
             activeData = DBVault.GetActiveData();
-        }
-
-        currentHp = (int)activeData[(int)ActiveData.CurrentHp];
-        powerUps = (int)activeData[(int)ActiveData.PowerUps];
-        score = (int)activeData[(int)ActiveData.Score];
-
-        if (powerUps >= 2) {
-            jumpCount = 2;
-        } else {
-            jumpCount = 1;
+            score = (int)activeData[(int)ActiveData.Score];
         }
         */
+
+        currentHp = 3;
+        powerUps = 2;
+
+        if (powerUps >= 2) {
+            canDash = true;
+        } else if (powerUps == 1) {
+            jumpCount = 2;
+        } else if (powerUps <= 0){
+            jumpCount = 1;
+        }
 
     }
 
@@ -216,6 +221,10 @@ public class TPCharacterController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if (currentHp <= 0) {
+            isDead = true;
+        }
+
         if (!isDead) {
             UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
         }
@@ -265,7 +274,16 @@ public class TPCharacterController : MonoBehaviour
             dashInput = false;
         }
     }
+    public void OnPause(InputValue input) {
+        if (input.Get() != null) {
+            if (_playerinput.currentActionMap.name == "UI") {
+                _playerinput.SwitchCurrentActionMap("Player");
+            } else if (_playerinput.currentActionMap.name == "Player") {
+                _playerinput.SwitchCurrentActionMap("UI");
+            }
+        }
 
+    }
     //Collision Callbacks
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Enemy") {
@@ -277,7 +295,7 @@ public class TPCharacterController : MonoBehaviour
         }
         if (other.tag == "Death") {
             isDead = true;
-        }
+        }        
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Platform") {
@@ -295,6 +313,9 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void OnCollisionStay(Collision collision) {
+        if (collision.collider.tag == "Enemy") {
+            SetDMGState();
+        }
         if (collision.collider.tag == "Slope") {
             float angle = Vector3.Angle(PlayerRb.transform.up, collision.GetContact(0).normal);
             SetSlope(angle, collision.GetContact(0).normal);
@@ -303,7 +324,6 @@ public class TPCharacterController : MonoBehaviour
     private void OnCollisionExit(Collision collision) {
         if (collision.collider.tag == "Slope") {
             onSlope = false;
-            //Debug.Log("Bye from slope");
         }
     }
     
@@ -313,6 +333,8 @@ public class TPCharacterController : MonoBehaviour
         //InitializeGOUI
     }
     private void SetUpJump() {
+        if (attackInput || dashInput) { return; }
+        
         if (!jumpInput) {
             jumpInput = true;
             SetJumpState();
@@ -321,6 +343,8 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetUpDash() {
+        if (attackInput || jumpInput) { return; }
+
         if (!dashInput) {
             dashInput = true;
             SetDashState();
@@ -330,6 +354,8 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetUpAttack() {
+        if (dashInput || jumpInput) { return; }
+
         if (!attackInput) {
             attackInput = true;
             SetAttackState();
@@ -341,17 +367,7 @@ public class TPCharacterController : MonoBehaviour
     private void SetJumpState() {
         if (jumpCount <= 0 || !canJump || isDamaged) { return; }
 
-        isJumping = true;
-        
-        /*
-        if (jumpCount <= 0) { return; }
-
-        if (!canJump) { return; }
-        
-        if (!isDamaged) {
-            isJumping = true;
-        }
-        */
+        isJumping = true;                
     }
     private void SetDashState() {
         if (!canDash) { return; }         
@@ -362,11 +378,13 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     private void SetAttackState() {
+        if (!canAttack) { return; }
         if (attackCount <= 0) { return; }
         
         if (!isDamaged) {
-            canDMG = false;
             isAttacking = true;
+            canDMG = false;
+            canAttack = false;
         }
     }   
     private void SetSlope(float angle, Vector3 _surfaceNormal) {
@@ -445,7 +463,7 @@ public class TPCharacterController : MonoBehaviour
         yield break;
     }
     public IEnumerator ResetDash() {
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.4f);
 
         isDashing = false;
 
@@ -474,6 +492,11 @@ public class TPCharacterController : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         isDamaged = false;
         canDMG = true;
+        yield break;
+    }
+    public IEnumerator ReloadScene() {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
         yield break;
     }
     //

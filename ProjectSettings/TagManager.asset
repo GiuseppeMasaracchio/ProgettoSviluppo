@@ -16,6 +16,7 @@ TagManager:
   - Warp
   - Lamp
   - DragPoint
+  - Pod
   layers:
   - Default
   - TransparentFX
@@ -25,10 +26,10 @@ TagManager:
   - UI
   - Level
   - VFX
+  - Enemy
   - Cam2
-  - 
   - Ground
-  - 
+  - Secondary Lights
   - 
   - 
   - 
