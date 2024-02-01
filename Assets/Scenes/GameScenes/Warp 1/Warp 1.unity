@@ -3590,7 +3590,7 @@ GameObject:
   - component: {fileID: 710932211}
   - component: {fileID: 710932210}
   m_Layer: 0
-  m_Name: PowerUp
+  m_Name: 'PowerUp '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3614,7 +3614,7 @@ MonoBehaviour:
   isActive: 1
   offset: 0.5
   stopTime: 0
-  speed: 1.2
+  speed: 1.5
 --- !u!4 &710932211
 Transform:
   m_ObjectHideFlags: 0
@@ -6302,10 +6302,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5378879078050522538, guid: abc4993ff41fb2449ad999b7a5411308, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1051768681}
+      addedObject: {fileID: 1051768682}
     - targetCorrespondingSourceObject: {fileID: 5378879078050522538, guid: abc4993ff41fb2449ad999b7a5411308, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1051768682}
+      addedObject: {fileID: 1051768681}
   m_SourcePrefab: {fileID: 100100000, guid: abc4993ff41fb2449ad999b7a5411308, type: 3}
 --- !u!4 &1051768680 stripped
 Transform:
@@ -6343,6 +6343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa94f857e6228a439cf1d75ce1dce27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0.5
 --- !u!1001 &1055061991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35550,6 +35551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa94f857e6228a439cf1d75ce1dce27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
