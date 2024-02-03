@@ -1,33 +1,32 @@
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using System.Linq;
-using Unity.VisualScripting;
 using System;
 
 public class ButtonSubject : MonoBehaviour {
-
-
     [Header("Text animation parameters")]
     [SerializeField] private TMP_Text[] textList;
-    [SerializeField, Range(0f, 1f)] float delayB4, delayBtw;
+    [SerializeField, Range(0f, 1f)] float delayB4, delayBtw = 0.05f;
     private string content;
 
+
     private bool show = false;
+    private bool isModal;
 
+    private void Awake() {
+        isModal = CompareTag("Modal");
+    }
 
-    // Start is called before the first frame update
-    void Start()
+    void OnEnable() //Chiamata ogni volta che un oggetto viene attivato nella gerarchia
     {
         StartCoroutine(Typewriter());
-        InvokeRepeating("Flashing", .3f, 1f);
+        if(!isModal)    InvokeRepeating("Flashing", .3f, 1f);
 
     }
 
 
     private void Update() {
-        textList[0].alpha = show ? 200 : 0;
+       if(!isModal) textList[0].alpha = show ? 200 : 0;
     }
 
     private void Flashing() {
@@ -37,9 +36,9 @@ public class ButtonSubject : MonoBehaviour {
     private IEnumerator Typewriter() {
         if (textList == null) yield break;
 
-
+       
         //Copia tutti i campi testo in un array
-           for(int i = 1; i < textList.Length; i++) {
+           for (int i = isModal ? 0 : 1; i < textList.Length; i++) {
                 content = "";
                 content = textList[i].text;
                 textList[i].text = "";
