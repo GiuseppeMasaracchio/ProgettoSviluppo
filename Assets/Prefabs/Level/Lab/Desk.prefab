@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3171903086901750911}
   - component: {fileID: 7703136677348336991}
+  - component: {fileID: 7800959066993986504}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Ground
@@ -51,8 +52,29 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.5, y: 0.2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.48, y: 0.1, z: 1.98}
+  m_Center: {x: 0, y: 0.055, z: 0}
+--- !u!65 &7800959066993986504
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119336724413388813}
+  m_Material: {fileID: 13400000, guid: 5b4ead245fbd22648ad4f3f485ef2e19, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.5, y: 2, z: 2}
+  m_Center: {x: 0, y: -0.94, z: 0}
 --- !u!1 &3216946675746429225
 GameObject:
   m_ObjectHideFlags: 0
