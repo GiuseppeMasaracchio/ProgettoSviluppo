@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a02466ed275bac443b7f65eb5b51d4e8
+guid: 56e8883e15ba371468076a423661c6b2
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -18,12 +18,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Body
-    second: {fileID: 2100000, guid: e2070a217b74dad47b0805095296ed10, type: 2}
+    second: {fileID: 2100000, guid: e2c93a9f321cd1b4a906bbd43bdaa94b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wings
-    second: {fileID: 2100000, guid: 051a062993d01b04086ed07a81cd2f45, type: 2}
+    second: {fileID: 2100000, guid: 16a3054ebf63d2d4292696fae30c9ee4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
