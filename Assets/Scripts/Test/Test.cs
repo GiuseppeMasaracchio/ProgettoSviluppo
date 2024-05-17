@@ -1,30 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class Test : MonoBehaviour {
-    public static Test Instance { get; private set; }
+    [SerializeField] public AnimatorController _controller;
 
     private void Awake() {
-        DontDestroyOnLoad(this);
-        if (Instance == null) {
-            Instance = this;
-            Debug.Log("Instance created. " + this.gameObject.name);
-        } else {
-            Debug.Log("Instance existing already, destroying this. " + this.gameObject.name);
-            Destroy(this);
-        }
+        
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         
     }
 }
