@@ -28911,7 +28911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa94f857e6228a439cf1d75ce1dce27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
+  speed: 80
 --- !u!43 &1636002694
 Mesh:
   m_ObjectHideFlags: 0
@@ -53518,7 +53518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa94f857e6228a439cf1d75ce1dce27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.7
+  speed: 80
 --- !u!33 &5271648148133889220
 MeshFilter:
   m_ObjectHideFlags: 0

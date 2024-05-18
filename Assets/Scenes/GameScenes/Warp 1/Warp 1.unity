@@ -6778,7 +6778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa94f857e6228a439cf1d75ce1dce27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.8
+  speed: 80
 --- !u!1001 &1055061991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36516,7 +36516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa94f857e6228a439cf1d75ce1dce27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.8
+  speed: 80
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
