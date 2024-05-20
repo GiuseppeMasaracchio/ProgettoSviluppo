@@ -1601,7 +1601,7 @@ Transform:
   m_Children:
   - {fileID: 1394158822}
   - {fileID: 842386468}
-  m_Father: {fileID: 1417257836}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &590441204
 Mesh:
@@ -27876,7 +27876,6 @@ Transform:
   - {fileID: 351900185}
   - {fileID: 471250147}
   - {fileID: 771501559}
-  - {fileID: 580481621}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1443962261
@@ -55667,3 +55666,4 @@ SceneRoots:
   - {fileID: 522568186}
   - {fileID: 1417257836}
   - {fileID: 1237033102}
+  - {fileID: 580481621}

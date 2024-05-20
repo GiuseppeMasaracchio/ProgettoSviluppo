@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Obstacle
   - Modal
-  - Enemy
   - Ground
   - Slope
   - Enemy
