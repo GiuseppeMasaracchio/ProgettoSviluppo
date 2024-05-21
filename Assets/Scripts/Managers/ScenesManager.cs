@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public enum Scene {
@@ -14,11 +13,14 @@ public enum Scene {
 
 public class ScenesManager : MonoBehaviour {
     public static ScenesManager Instance { get; private set; }
+    
     [SerializeField] Material _fade;
+    
     [SerializeField]
     [Range(.1f, 2f)] float _fadeSpeed;
 
     private bool paused;
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -31,6 +33,10 @@ public class ScenesManager : MonoBehaviour {
         if (n_scene != SceneManager.GetActiveScene().buildIndex) {
             StartCoroutine(InitializeSwitch(n_scene));
         }
+    }
+
+    public void ReloadOnDeath() {
+        StartCoroutine(OnDeath());
     }
 
     private IEnumerator InitializeSwitch(int n_scene) {
@@ -48,7 +54,6 @@ public class ScenesManager : MonoBehaviour {
         while (_fade.GetFloat("_Size") > 0.01f) {
             float size = _fade.GetFloat("_Size");
             float lerpSize = size - _fadeSpeed * .1f;
-            //float lerpSize = Mathf.Lerp(size, 0f, _fadeSpeed * .1f);
             _fade.SetFloat("_Size", lerpSize);            
             yield return null;
         }
@@ -63,7 +68,6 @@ public class ScenesManager : MonoBehaviour {
         while (_fade.GetFloat("_Size") < 3f) {
             float size = _fade.GetFloat("_Size");
             float lerpSize = size + _fadeSpeed * .1f;
-            //float lerpSize = Mathf.Lerp(size, 3f, _fadeSpeed * .1f);
             _fade.SetFloat("_Size", lerpSize);
             yield return null;
         }
@@ -71,6 +75,11 @@ public class ScenesManager : MonoBehaviour {
         _fade.SetFloat("_Size", 3f);
         Debug.Log("Fade out");
         yield break;
+    }
+
+    public IEnumerator OnDeath() {
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(InitializeSwitch(SceneManager.GetActiveScene().buildIndex));
     }
 }
  
