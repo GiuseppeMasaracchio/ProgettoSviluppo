@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour {
-    [SerializeField]
-    public GameObject _checkpoint;
+    [SerializeField] public GameObject _checkpoint;
+    
     public GameObject _player;
     public int id;
     public static GameMaster Instance { get; private set; }
@@ -26,7 +26,7 @@ public class GameMaster : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         Debug.Log("Start");
-        StartCoroutine(SetCP());       
+        //StartCoroutine(SetCP());       
     }
 
     // Update is called once per frame

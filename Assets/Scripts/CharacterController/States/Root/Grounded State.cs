@@ -51,9 +51,9 @@ public class GroundedState : BaseState, IContextInit {
 
         Ctx.AttackCount = 1;
 
-        if (Ctx.PowerUps >= 1) {
+        if (Ctx.PlayerInfo.PowerUps >= 1) {
             Ctx.JumpCount = 2;
-        } else if (Ctx.PowerUps <= 0) {
+        } else if (Ctx.PlayerInfo.PowerUps <= 0) {
             Ctx.JumpCount = 1;
         }
     }

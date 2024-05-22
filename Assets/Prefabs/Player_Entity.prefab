@@ -654,6 +654,7 @@ MonoBehaviour:
   _cam: {fileID: 8529624794687793256}
   _forward: {fileID: 8529624796221480217}
   _playerparent: {fileID: 8529624795265790319}
+  _playerInfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
   _vfx: {fileID: 6508768958732399307}
   _vfx2: {fileID: 4620150138237903561}
   _vfx3: {fileID: 6134798140519260313}

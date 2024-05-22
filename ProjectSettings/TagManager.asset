@@ -16,6 +16,7 @@ TagManager:
   - Lamp
   - DragPoint
   - Pod
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - Cam2
   - Ground
   - Secondary Lights
-  - 
+  - Checkpoint
   - 
   - 
   - 

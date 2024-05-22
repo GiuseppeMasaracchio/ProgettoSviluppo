@@ -30,6 +30,8 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
 
+    [SerializeField] PlayerInfo _playerInfo;
+
     [SerializeField] GameObject _vfx; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx2; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx3; // Da sostituire con framework VFX
@@ -165,7 +167,8 @@ public class TPCharacterController : MonoBehaviour
     public BaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
     public StateHandler StateHandler { get { return _stateHandler; } set { _stateHandler = value; } }
     public AnimHandler AnimHandler { get { return _animHandler; } set { _animHandler = value; } }
-
+    public PlayerInfo PlayerInfo { get { return _playerInfo; } }
+    
     // Awake is called before the Start 
     void Awake() 
     {
@@ -198,29 +201,39 @@ public class TPCharacterController : MonoBehaviour
         }
         */
 
-        currentHp = 3;
-        powerUps = 2;
+        _playerInfo.CurrentHp = 3;
+        _playerInfo.PowerUps = 2;
 
-        if (powerUps >= 2) {
+        /*
+        if (_playerInfo.PowerUps >= 2) {
             canDash = true;
-        } else if (powerUps == 1) {
+        } else if (_playerInfo.PowerUps == 1) {
             jumpCount = 2;
-        } else if (powerUps <= 0){
+        } else if (_playerInfo.PowerUps <= 0){
             jumpCount = 1;
         }
-
+        */
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        if (_playerInfo.PowerUps >= 2) {
+            canDash = true;
+        }
+        else if (_playerInfo.PowerUps == 1) {
+            jumpCount = 2;
+        }
+        else if (_playerInfo.PowerUps <= 0) {
+            jumpCount = 1;
+        }
         //Slow-mo
         //Time.timeScale = Time.timeScale * 0.1f;
     }
 
     // Update is called once per frame
     void Update() {
-        if (currentHp <= 0) {
+        if (_playerInfo.CurrentHp <= 0) {
             isDead = true;
         }
 
