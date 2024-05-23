@@ -4,10 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour {
-    [SerializeField] public GameObject _checkpoint;
-    
-    public GameObject _player;
-    public int id;
+    [SerializeField] PlayerInfo _playerinfo;
     public static GameMaster Instance { get; private set; }
 
     private void Awake() {
@@ -15,18 +12,16 @@ public class GameMaster : MonoBehaviour {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(this);
-            Debug.Log("Instance created. " + this.gameObject.name);
         }
-        else {
-            Debug.Log("Instance existing already, destroying this. " + this.gameObject.name);
-            Destroy(this);
-        }
+        else { Destroy(this); }
     }
 
     // Start is called before the first frame update
     void Start() {
-        Debug.Log("Start");
-        //StartCoroutine(SetCP());       
+        Debug.Log("Game Master Start");
+
+        InitializePlayerInfo();
+        ScenesManager.Instance.Starter(Scenes.Lab);
     }
 
     // Update is called once per frame
@@ -34,10 +29,11 @@ public class GameMaster : MonoBehaviour {
 
     }
 
-    public IEnumerator SetCP() {
-        yield return new WaitForSeconds(2f);
-        _player.transform.position = _checkpoint.transform.position;
-        _player.transform.forward = _checkpoint.transform.forward;
-        yield break;
+    private void InitializePlayerInfo() {
+        _playerinfo.Checkpoint = new Vector2(0f, 1f);
+        _playerinfo.CurrentHp = 3;
+        _playerinfo.PowerUps = 2;
+        _playerinfo.Score = 0;
     }
+
 }

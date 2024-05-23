@@ -45,4 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fade: {fileID: 2100000, guid: 4b0d5e33d146a7c48b351d4f40bfca1c, type: 2}
+  _playerprefab: {fileID: 8529624795265790319, guid: 73e64702af523cb4a96141433111b375, type: 3}
+  _playerinfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
   _fadeSpeed: 0.5

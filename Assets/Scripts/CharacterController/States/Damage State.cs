@@ -47,7 +47,8 @@ public class DamageState : BaseState, IContextInit {
         Ctx.IsAttacking = false;
         Ctx.IsDashing = false;
         Ctx.IsFalling = false;
-        Ctx.CurrentHp--;
+
+        Ctx.PlayerInfo.CurrentHp--;
     }
     public void HandleDMG() {
         Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);

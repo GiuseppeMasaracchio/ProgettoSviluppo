@@ -15,7 +15,6 @@ public class DeadState : BaseState, IContextInit {
         GravityOff();
         InitializeContext();
         ScenesManager.Instance.ReloadOnDeath();
-        //Ctx.StartCoroutine("ReloadScene");
     }
     public override void UpdateState() {
         //Update logic

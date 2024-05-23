@@ -201,8 +201,8 @@ public class TPCharacterController : MonoBehaviour
         }
         */
 
-        _playerInfo.CurrentHp = 3;
-        _playerInfo.PowerUps = 2;
+        //_playerInfo.CurrentHp = 3;
+        //_playerInfo.PowerUps = 2;
 
         /*
         if (_playerInfo.PowerUps >= 2) {
@@ -505,11 +505,6 @@ public class TPCharacterController : MonoBehaviour
         isDamaged = false;
         canDMG = true;
         yield break;
-    }
-    public IEnumerator ReloadScene() {
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
-        yield break;
-    }
+    }    
     //
 }
