@@ -176,7 +176,9 @@ public class ScenesManager : MonoBehaviour {
 
         GameObject[] _tmp = GameObject.FindGameObjectsWithTag("Checkpoint");
 
-        _targetCp = (Cp)_playerinfo.Checkpoint.y;
+        if (SceneManager.GetActiveScene().buildIndex == _playerinfo.Checkpoint.x) {
+            _targetCp = (Cp)_playerinfo.Checkpoint.y;
+        } else { _targetCp = Cp.CP_0; }
 
         foreach (GameObject _obj in _tmp) {
             if (_obj.name == _targetCp.ToString()) {
@@ -197,7 +199,7 @@ public class ScenesManager : MonoBehaviour {
 
         GameObject[] _tmp = GameObject.FindGameObjectsWithTag("Checkpoint");
 
-        _targetCp = _point;
+        _targetCp = _point;        
 
         foreach (GameObject _obj in _tmp) {
             if (_obj.name == _targetCp.ToString()) {

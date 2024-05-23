@@ -30,7 +30,7 @@ public class GameMaster : MonoBehaviour {
     }
 
     private void InitializePlayerInfo() {
-        _playerinfo.Checkpoint = new Vector2(0f, 1f);
+        _playerinfo.Checkpoint = new Vector2(1f, 1f);
         _playerinfo.CurrentHp = 3;
         _playerinfo.PowerUps = 2;
         _playerinfo.Score = 0;
