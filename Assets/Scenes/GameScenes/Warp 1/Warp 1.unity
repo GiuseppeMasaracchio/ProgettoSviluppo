@@ -14813,6 +14813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerInfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
+  _pu: 1
 --- !u!4 &2949359334249233027 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4964355434041748093, guid: d2c20be65fbc0fa4688aa34ef0a72135, type: 3}
