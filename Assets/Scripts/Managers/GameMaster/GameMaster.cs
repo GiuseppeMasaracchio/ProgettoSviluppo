@@ -21,7 +21,7 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("Game Master Start");
 
         InitializePlayerInfo();
-        ScenesManager.Instance.Starter(Scenes.Lab);
+        ScenesManager.Instance.Begin(Scenes.Lab);
     }
 
     // Update is called once per frame
@@ -30,9 +30,9 @@ public class GameMaster : MonoBehaviour {
     }
 
     private void InitializePlayerInfo() {
-        _playerinfo.Checkpoint = new Vector2(1f, 1f);
+        _playerinfo.Checkpoint = new Vector2(0f, 0f);
         _playerinfo.CurrentHp = 3;
-        _playerinfo.PowerUps = 2;
+        _playerinfo.PowerUps = 0;
         _playerinfo.Score = 0;
     }
 

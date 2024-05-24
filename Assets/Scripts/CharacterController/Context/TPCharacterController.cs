@@ -200,35 +200,12 @@ public class TPCharacterController : MonoBehaviour
             score = (int)activeData[(int)ActiveData.Score];
         }
         */
-
-        //_playerInfo.CurrentHp = 3;
-        //_playerInfo.PowerUps = 2;
-
-        /*
-        if (_playerInfo.PowerUps >= 2) {
-            canDash = true;
-        } else if (_playerInfo.PowerUps == 1) {
-            jumpCount = 2;
-        } else if (_playerInfo.PowerUps <= 0){
-            jumpCount = 1;
-        }
-        */
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (_playerInfo.PowerUps >= 2) {
-            canDash = true;
-        }
-        else if (_playerInfo.PowerUps == 1) {
-            jumpCount = 2;
-        }
-        else if (_playerInfo.PowerUps <= 0) {
-            jumpCount = 1;
-        }
-        //Slow-mo
-        //Time.timeScale = Time.timeScale * 0.1f;
+        InitializePowerUps();
     }
 
     // Update is called once per frame
@@ -240,6 +217,7 @@ public class TPCharacterController : MonoBehaviour
         if (!isDead) {
             UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
         }
+
         if (_devUI != null) {
             _devUI.UpdateText(this);
         } 
@@ -260,7 +238,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     public void OnMove(InputValue input) {
-        moveInput = input.Get<Vector2>();        
+       moveInput = input.Get<Vector2>();
     }
     public void OnLook(InputValue input) {
         camInput = input.Get<Vector2>();
@@ -307,7 +285,10 @@ public class TPCharacterController : MonoBehaviour
         }
         if (other.tag == "Death") {
             isDead = true;
-        }        
+        }
+        if (other.tag == "PowerUps") {
+            InitializePowerUps();
+        }
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Platform") {
@@ -412,6 +393,17 @@ public class TPCharacterController : MonoBehaviour
             isDamaged = true;
         }
     }
+    private void InitializePowerUps() {
+        if (_playerInfo.PowerUps >= 2) {
+            canDash = true;
+        }
+        else if (_playerInfo.PowerUps == 1) {
+            jumpCount = 2;
+        }
+        else if (_playerInfo.PowerUps <= 0) {
+            jumpCount = 1;
+        }
+    }
 
     //Camera Methods
     private void UpdateCamera(GameObject cam, GameObject player, GameObject forward, Vector2 mouseInput, float sens) {
@@ -456,7 +448,7 @@ public class TPCharacterController : MonoBehaviour
         while (moveSpeed > 600f) {
             moveSpeed = moveSpeed - ((moveSpeed * .6f) * Time.deltaTime);
             yield return null;
-        }
+        }   
         yield break;
     }
     public IEnumerator ResetAttack() {

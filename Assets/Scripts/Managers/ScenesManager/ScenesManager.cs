@@ -43,7 +43,7 @@ public class ScenesManager : MonoBehaviour {
         } else { Destroy(this); }
     }
 
-    public void Starter(Scenes scene) {
+    public void Begin(Scenes scene) {
         if (paused) { return; }
 
         StartCoroutine(InitializeStarter((int)scene));        
