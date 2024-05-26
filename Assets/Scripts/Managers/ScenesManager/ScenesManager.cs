@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -125,7 +124,13 @@ public class ScenesManager : MonoBehaviour {
 
     public IEnumerator OnDeath() {
         yield return new WaitForSeconds(1f);
+
         StartCoroutine(InitializeLoad(SceneManager.GetActiveScene().buildIndex));
+        yield return null;
+
+        _playerinfo.CurrentHp = 3;
+
+        yield break;
     }
 
     private IEnumerator FadeIn() {

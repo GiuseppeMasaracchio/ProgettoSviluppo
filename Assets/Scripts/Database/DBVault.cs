@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using UnityEngine;
 using System.Data;
 using System.Collections.Generic;
 using Mono.Data.Sqlite;

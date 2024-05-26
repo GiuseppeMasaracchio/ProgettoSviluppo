@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 enum ActiveData {
     Slot_ID,
@@ -79,11 +78,6 @@ public class TPCharacterController : MonoBehaviour
     private float camycurrent;
     private float camytarget;
 
-    private object[] activeData;
-    private int currentHp;
-    private int powerUps;
-    private int score;
-
     private float xaxis;
     private float yaxis;
     private float _currentSens;
@@ -139,10 +133,6 @@ public class TPCharacterController : MonoBehaviour
     public bool CanJump { get { return canJump; } set { canJump = value; } }
     public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
 
-    public int CurrentHp { get { return currentHp; } set { currentHp = value; } }
-    public int PowerUps { get { return powerUps; } set { powerUps = value; } }
-    public int Score { get { return score; } set { score = value; } }
-
     public bool IsDead { get { return isDead; } set { isDead = value; } }
     public bool IsIdle { get { return isIdle; } set { isIdle = value; } }
     public bool IsGrounded { get { return isGrounded; } set { isGrounded = value; } }
@@ -180,14 +170,14 @@ public class TPCharacterController : MonoBehaviour
 
         _animator = _asset.GetComponentInChildren<Animator>();
         _playerRb = _player.GetComponent<Rigidbody>();
-        _playerinput = _player.GetComponent<PlayerInput>();   
+        _playerinput = _player.GetComponent<PlayerInput>();
         _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
 
         dragPoint = GameObject.FindWithTag("DragPoint");
 
         _currentRootState = StateHandler.Airborne();
-        _currentRootState.EnterState();        
+        _currentRootState.EnterState();
 
         _currentSubState = StateHandler.Fall();
         _currentSubState.EnterState();
@@ -390,7 +380,7 @@ public class TPCharacterController : MonoBehaviour
             surfaceNormal = _surfaceNormal;
         }
     }
-    public void SetDMGState() {
+    private void SetDMGState() {
         if (!canDMG) { return; }
 
         if (!isDashing) { 
