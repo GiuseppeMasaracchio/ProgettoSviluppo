@@ -10,6 +10,7 @@ public class DashState : BaseState, IContextInit {
         Ctx.StartCoroutine("ResetDash");
         InitializeContext();
 
+        ColliderOn(Ctx.DashCollider);
         GravityOff();
 
         Ctx.AnimHandler.SetAlt(true);
@@ -22,11 +23,13 @@ public class DashState : BaseState, IContextInit {
     public override void UpdateState() {
         //Update logic
         Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
+
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
         Ctx.AnimHandler.SetAlt(false);
+        ColliderOff(Ctx.DashCollider);
         GravityOn();
 
     }
@@ -60,13 +63,11 @@ public class DashState : BaseState, IContextInit {
         
     }
     public void InitializeParticle3() {
-        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
         Ctx.Vfx3.GetComponent<VisualEffect>().Reinit();
-        Ctx.Vfx3.transform.position = Ctx.DragPoint.transform.position;
+        Ctx.Vfx3.transform.position = Ctx.DashPoint.transform.position;
         Ctx.Vfx3.GetComponent<VisualEffect>().Play();
     }
     public void InitializeParticle4() {
-        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
         Ctx.Vfx4.GetComponent<VisualEffect>().Reinit();
         Ctx.Vfx4.GetComponent<VisualEffect>().Play();
     }

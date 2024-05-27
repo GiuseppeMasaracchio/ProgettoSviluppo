@@ -18,7 +18,7 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("Game Master Start");
 
         InitializePlayerInfo();
-        ScenesManager.Instance.Begin(Scenes.Lab);
+        ScenesManager.Instance.StartGame();
     }
 
     // Update is called once per frame

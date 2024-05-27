@@ -18,7 +18,8 @@ public class AttackState : BaseState, IContextInit {
         Ctx.StartCoroutine("ResetAttack");
     }
     public override void UpdateState() {
-        Ctx.PlayerRb.velocity.Set(0f, 1f, 0f);
+        Ctx.PlayerRb.velocity.Set(0f, 9.81f, 0f);
+
         CheckSwitchStates();
     }
     public override void ExitState() {

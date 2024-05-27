@@ -32,6 +32,7 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
+    [SerializeField] GameObject _dashPoint; // Spawnpoint Dash VFX
 
     [SerializeField] PlayerInfo _playerInfo;
 
@@ -41,12 +42,10 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _vfx4; // Da sostituire con framework VFX
     [SerializeField] GameObject _vfx5; // Da sostituire con framework VFX
 
-    //[HideInInspector]
-    GameObject dragPoint; // Da sostituire con framework VFX
-
     PlayerInput _playerinput;
     Animator _animator;
     Rigidbody _playerRb;
+
     [SerializeField] SphereCollider _attackCollider;
     [SerializeField] SphereCollider _dashCollider;
 
@@ -148,7 +147,7 @@ public class TPCharacterController : MonoBehaviour
     public GameObject Vfx3 { get { return _vfx3; } } // Da sostituire con framework VFX
     public GameObject Vfx4 { get { return _vfx4; } } // Da sostituire con framework VFX
     public GameObject Vfx5 { get { return _vfx5; } } // Da sostituire con framework VFX
-    public GameObject DragPoint { get { return dragPoint; } } // Da sostituire con framework VFX
+    public GameObject DashPoint { get { return _dashPoint; } } 
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
     public GameObject Camera { get { return _cam; } }
@@ -156,6 +155,7 @@ public class TPCharacterController : MonoBehaviour
     public Rigidbody PlayerRb { get { return _playerRb; } }
     public Animator Animator { get { return _animator; } }
     public SphereCollider AttackCollider { get { return _attackCollider; } set { _attackCollider = value; } }
+    public SphereCollider DashCollider { get { return _dashCollider; } set { _dashCollider = value; } }
 
     public BaseState CurrentRootState { get { return _currentRootState; } set { _currentRootState = value; } }
     public BaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
@@ -164,8 +164,7 @@ public class TPCharacterController : MonoBehaviour
     public PlayerInfo PlayerInfo { get { return _playerInfo; } }
     
     // Awake is called before the Start 
-    void Awake() 
-    {
+    void Awake() {
         Cursor.lockState = CursorLockMode.Locked;
 
         _animator = _asset.GetComponentInChildren<Animator>();
@@ -173,8 +172,6 @@ public class TPCharacterController : MonoBehaviour
         _playerinput = _player.GetComponent<PlayerInput>();
         _animHandler = GameObject.Find("P_Asset").AddComponent<AnimHandler>();
         _stateHandler = new StateHandler(this, _animHandler);
-
-        dragPoint = GameObject.FindWithTag("DragPoint");
 
         _currentRootState = StateHandler.Airborne();
         _currentRootState.EnterState();
@@ -197,8 +194,7 @@ public class TPCharacterController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         InitializePowerUps();
     }
 

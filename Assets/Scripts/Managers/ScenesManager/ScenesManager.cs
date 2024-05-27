@@ -40,10 +40,10 @@ public class ScenesManager : MonoBehaviour {
         } else { Destroy(this); }
     }
 
-    public void Begin(Scenes scene) {
+    public void StartGame() {
         if (paused) { return; }
 
-        StartCoroutine(InitializeStarter((int)scene));        
+        StartCoroutine(InitializeStarter((int)Scenes.Lab));        
     }
 
     public void Switch(Scenes scene, Cp point) {
@@ -55,7 +55,7 @@ public class ScenesManager : MonoBehaviour {
         }
     }
 
-    public void Load(Scenes scene) {
+    public void LoadGame(Scenes scene) {
         if (paused) { return; }
 
         int n_scene = (int)scene;
