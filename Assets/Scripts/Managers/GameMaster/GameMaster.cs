@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour {
     [SerializeField] PlayerInfo _playerinfo;
+
     public static GameMaster Instance { get; private set; }
 
     private void Awake() {

@@ -1,6 +1,7 @@
 using System.Data;
 using System.Collections.Generic;
 using Mono.Data.Sqlite;
+using System.Numerics;
 
 public static class DBVault {
     //Env vars
