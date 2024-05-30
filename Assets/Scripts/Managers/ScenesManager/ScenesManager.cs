@@ -3,21 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum Scenes {
-    Lab,
-    Map1,
-    Warp1,
-    Warp2,
-    Warp3
-}
-public enum Cp {
-    CP_0,
-    CP_1,
-    CP_2,
-    CP_3,
-    CP_4
-}
-
 public class ScenesManager : MonoBehaviour {
     public static ScenesManager Instance { get; private set; }
     

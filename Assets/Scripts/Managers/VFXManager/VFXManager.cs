@@ -1,21 +1,28 @@
 using UnityEngine;
 using UnityEngine.VFX;
-
 public class VFXManager : MonoBehaviour {
-    [SerializeField] GameObject _vfx;
+    [SerializeField] VFX entityType;
+
+    [Space]
+    [SerializeField] GameObject[] _playerVfx;
+    [SerializeField] GameObject[] _enemyVfx;
+    [SerializeField] GameObject[] _objectVfx;
 
     void Awake() {
-        Instantiate(_vfx, this.transform.position, this.transform.rotation);
+        
     }
 
     // Start is called before the first frame update
     void Start() {
-        _vfx.GetComponent<VisualEffect>().Play();
-
+        InvokeRepeating("InitalizePrefab", 1f, 1f);
     }
 
     // Update is called once per frame
     void Update() {
-        Debug.Log(_vfx.GetComponent<VisualEffect>().GetSpawnSystemInfo(0).vfxEventAttribute.GetFloat("lifetime"));
+        
+    }
+
+    void InitalizePrefab() {
+        Instantiate(_playerVfx[0], this.transform.position, this.transform.rotation);
     }
 }

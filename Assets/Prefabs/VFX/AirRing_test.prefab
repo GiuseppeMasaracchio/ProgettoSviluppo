@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5997098685499190151}
   - component: {fileID: 5997098685499190150}
   - component: {fileID: 5997098685499190153}
+  - component: {fileID: 7400068276111639305}
   m_Layer: 0
   m_Name: AirRing_test
   m_TagString: Untagged
@@ -45,7 +46,7 @@ VisualEffect:
   m_InitialEventName: null
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
-  m_ResetSeedOnPlay: 0
+  m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
   m_ResourceVersion: 1
   m_PropertySheet:
@@ -156,3 +157,16 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &7400068276111639305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997098685499190152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96e7f59a6b64b74fb90244fe456f9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 2

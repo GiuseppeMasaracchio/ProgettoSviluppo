@@ -3,18 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-enum ActiveData {
-    Slot_ID,
-    Name,
-    PowerUps,
-    Score,
-    CurrentHp,
-    Runtime
-}
-enum PowerUps {
-    DJump = 1,
-    Dash = 2
-}
 public class TPCharacterController : MonoBehaviour
 {
     //State reference

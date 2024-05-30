@@ -1,18 +1,5 @@
 using System.Collections.Generic;
 
-enum States {
-    dead,
-    grounded,
-    airborne,
-    damage,
-    idle,
-    walk,
-    attack,
-    jump,
-    dash,
-    fall
-}
-
 public class StateHandler {
     TPCharacterController _context;
     AnimHandler _animHandler;

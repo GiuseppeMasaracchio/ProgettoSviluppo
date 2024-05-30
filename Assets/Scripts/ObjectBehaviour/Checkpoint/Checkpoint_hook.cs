@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public class Checkpoint_hook : MonoBehaviour
-{
+public class Checkpoint_hook : MonoBehaviour {
+
     [SerializeField] PlayerInfo _playerInfo;
     [SerializeField] Scenes _scene;
     [SerializeField] Cp _cp;
