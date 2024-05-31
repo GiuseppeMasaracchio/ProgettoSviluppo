@@ -8989,11 +8989,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d793e177ce41ef4ca0954eb9e51075c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityType: 0
-  _playerVfx:
-  - {fileID: 5997098685499190152, guid: 42f208c3da3dcb148be92841f5b22e13, type: 3}
-  _enemyVfx: []
-  _objectVfx: []
+  playerVfx: []
+  enemyVfx: []
+  objectVfx: []
 --- !u!1001 &312367860
 PrefabInstance:
   m_ObjectHideFlags: 0
