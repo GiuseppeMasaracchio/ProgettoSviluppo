@@ -1,7 +1,7 @@
 using UnityEngine.AI;
 using UnityEngine;
 
-public class CombatModuleScript : MonoBehaviour, ICombat
+public class CombatModuleScript : MonoBehaviour
 {
     public int maxHp = 3, currentHp;
     [SerializeField] Rigidbody rb;

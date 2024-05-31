@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MMScript : MonoBehaviour
 {
@@ -17,7 +16,9 @@ public class MMScript : MonoBehaviour
     private List<UnityEngine.UIElements.Button> _saveslots = new List<UnityEngine.UIElements.Button>();
     private List<UnityEngine.UIElements.Button> _settingsTabs = new List<UnityEngine.UIElements.Button>();
     private List<UnityEngine.UIElements.Button> _backButtons = new List<UnityEngine.UIElements.Button>();
-
+    //private List<UnityEngine.UIElements.Button> _videoSettings = new List<UnityEngine.UIElements.Button>();
+    private List<UnityEngine.UIElements.Button> _audioSettings = new List<UnityEngine.UIElements.Button>();
+    private List<VisualElement> _videoSettings = new List<VisualElement>();
     //Pagine
     private VisualElement _settingsPage;
     private VisualElement _saveslotsPage;
@@ -45,6 +46,11 @@ public class MMScript : MonoBehaviour
         _settingsTabs = root.Query("TabsContainer").Children<UnityEngine.UIElements.Button>().ToList();
         _backButtons = root.Query<UnityEngine.UIElements.Button>("BackButton").ToList();
 
+
+        //settings
+        //_videoSettings = root.Query("VideoContent").Children<UnityEngine.UIElements.Button>().ToList();
+        _videoSettings = root.Query("VideoContent").Children<VisualElement>().ToList();
+        _audioSettings = root.Query("AudioContent").Children<UnityEngine.UIElements.Button>().ToList();
 
         //riferimento pagine
         _settingsPage = root.Q("SettingsPage");
@@ -129,6 +135,17 @@ public class MMScript : MonoBehaviour
     }
 
 
+   private void InitializeVideoSettings() {
+        DropdownField temp = (DropdownField)_videoSettings[0];
+        foreach(Resolution res in Screen.resolutions) {
+            temp.choices.Add(res.ToString());
+        }
+
+        temp = (DropdownField)_videoSettings[1];
+        //QualitySettings
+   }
+
+
 
     private void MainPageButtonsHandler(ClickEvent evnt) {
         string buttonName = "";
@@ -170,6 +187,7 @@ public class MMScript : MonoBehaviour
 
                 _settingsTabs[0].Focus();
                 currentContent = _settingsContent[0];
+                currentContent.style.display = DisplayStyle.Flex;
                 break;
 
             case "QuitButton":
@@ -204,6 +222,27 @@ public class MMScript : MonoBehaviour
     }
 
 
+    //To do videoSettings 
+    private void VideoContentCallbacks() {
+        _videoSettings[0].RegisterCallback<ChangeEvent<Resolution>>((ChangeEvent<Resolution> evnt) => {
+            //set resolution
+            Screen.SetResolution(evnt.newValue.width, evnt.newValue.height, true);
+        });
+
+        _videoSettings[1].RegisterCallback<ChangeEvent<int>>((ChangeEvent<int> evnt) => {
+            //set quality
+            QualitySettings.SetQualityLevel(evnt.newValue);
+        });
+
+        _videoSettings[2].RegisterCallback<ChangeEvent<bool>>((ChangeEvent<bool> evnt) => {
+            Screen.fullScreen = evnt.newValue;
+        });
+    }
+
+    //To do audioSettings 
+    private void AudioSettingsHandler(ChangeEvent<string> evnt) {
+        //
+    }
 
 
     // Update is called once per frame
