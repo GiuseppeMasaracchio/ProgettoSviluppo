@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UIElements;
@@ -37,6 +39,7 @@ public class NewPause : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
 
         InitPauseMenu();
+        foreach(Button b in _mainPageButtons)   StartCoroutine(Typewriter<Button>(b));
     }
 
     // Start is called before the first frame update
@@ -55,14 +58,46 @@ public class NewPause : MonoBehaviour
             Button temp = elem as Button;
             line = temp.text;
             temp.text = "";
-            temp.style.opacity = 100f;
             foreach (char c in line) {
                 temp.text += c;
                 yield return new WaitForSeconds(charDelay);
             }
             yield return new WaitUntil(() => temp.text.Length == line.Length);
-            line = "";
         }
+
+        if(elem is Slider) {
+            Slider temp = elem as Slider;
+            line = temp.label;
+            temp.label = "";
+            foreach(char c in line) {
+                temp.label += c;
+                yield return new WaitForSeconds(charDelay);
+            }
+            yield return new WaitUntil(() => temp.label.Length == line.Length);
+        }
+
+        if(elem is DropdownField) {
+            DropdownField temp = elem as DropdownField;
+            line = temp.label;
+            temp.label = "";
+            foreach(char c in line) {
+                temp.label += c;
+                yield return new WaitForSeconds(charDelay);
+            }
+            yield return new WaitUntil(() => temp.label.Length == line.Length);
+        }
+
+        if(elem is Toggle) {
+            Toggle temp = elem as Toggle;
+            line = temp.text;
+            temp.text = "";
+            foreach (char c in line) {
+                temp.text += c;
+                yield return new WaitForSeconds(charDelay);
+            }
+            yield return new WaitUntil(() => temp.text.Length == line.Length);
+        }
+            line = "";
     }
     private void SwitchPage(VisualElement oldPage, VisualElement newPage) {
         if (oldPage != null) oldPage.style.display = DisplayStyle.None;
@@ -82,7 +117,7 @@ public class NewPause : MonoBehaviour
     }
     private void ButtonHandlers(List<Button> bList) {
         foreach (Button b in bList) {
-            StartCoroutine(Typewriter<Button>(b));
+            //StartCoroutine(Typewriter<Button>(b));
 
             switch (b.name) {
                 //MainPage
@@ -142,20 +177,29 @@ public class NewPause : MonoBehaviour
 
     private void OnSettingsHandler(ClickEvent evnt) {
         SwitchPage(_pages[0], _pages[1]);
+        
+        foreach (Button b in _settingsTabs) StartCoroutine(Typewriter<Button>(b));
+        StartCoroutine(Typewriter<Button>(_backButton));
     }
 
     private void OnBackHandler(ClickEvent evnt) {
         SwitchPage(_pages[1], _pages[0]);
+
+        foreach (Button b in _mainPageButtons) StartCoroutine(Typewriter<Button>(b));
     }
 
     private void OnVideoTab(ClickEvent evnt) {
         SwitchPage(currentContent, _settingsContent.First());
-        if(!_settingsContent.First().Equals(currentContent))  currentContent = _settingsContent.First();
+        if(!_settingsContent[0].Equals(currentContent))  currentContent = _settingsContent[0];
+
+        foreach (DropdownField d in _settingsContent[0].Children())    StartCoroutine(Typewriter<DropdownField>(d));
     }
 
     private void OnAudioTab(ClickEvent evnt) {
         SwitchPage(currentContent, _settingsContent[1]);
         if(!_settingsContent[1].Equals(currentContent))   currentContent = _settingsContent[1];
+
+        foreach (Slider s in _settingsContent[1].Children()) StartCoroutine(Typewriter<Slider>(s));
     }
 
     private void OnControlsTab(ClickEvent evnt) {
