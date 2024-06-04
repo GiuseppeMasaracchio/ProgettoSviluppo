@@ -20,7 +20,10 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _cam;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
+
     [SerializeField] GameObject _dashPoint; // Spawnpoint Dash VFX
+    [SerializeField] GameObject _attackPoint; // Spawnpoint Dash VFX
+    [SerializeField] GameObject _jumpPoint; // Spawnpoint Dash VFX
 
     [SerializeField] PlayerInfo _playerInfo;
 
@@ -135,7 +138,11 @@ public class TPCharacterController : MonoBehaviour
     public GameObject Vfx3 { get { return _vfx3; } } // Da sostituire con framework VFX
     public GameObject Vfx4 { get { return _vfx4; } } // Da sostituire con framework VFX
     public GameObject Vfx5 { get { return _vfx5; } } // Da sostituire con framework VFX
-    public GameObject DashPoint { get { return _dashPoint; } } 
+    
+    public GameObject DashPoint { get { return _dashPoint; } } // VFX Spawn ref
+    public GameObject AttackPoint { get { return _attackPoint; } } // VFX Spawn ref
+    public GameObject JumpPoint { get { return _jumpPoint; } } // VFX Spawn ref
+
     public GameObject Player { get { return _player; } }
     public GameObject Asset { get { return _asset; } }
     public GameObject Camera { get { return _cam; } }

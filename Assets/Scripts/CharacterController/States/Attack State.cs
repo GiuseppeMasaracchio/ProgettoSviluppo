@@ -11,6 +11,8 @@ public class AttackState : BaseState, IContextInit {
         ColliderOn(Ctx.AttackCollider);
         GravityOff();
 
+        //VFXManager.Instance.SpawnFixedVFX(PlayerVFX.AirRing, Ctx.AttackPoint.transform.position, Ctx.AttackPoint.transform.rotation);
+        //VFXManager.Instance.SpawnFollowVFX(PlayerVFX.AirRing, Ctx.AttackPoint.transform.position, Ctx.AttackPoint.transform.rotation, Ctx.AttackPoint);
         InitializeParticle5();
 
         Ctx.AnimHandler.SetAlt(true);

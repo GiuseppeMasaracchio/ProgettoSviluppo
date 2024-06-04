@@ -1,33 +1,32 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public class VFXBehaviour : MonoBehaviour {
+    [Space]
+    [SerializeField] bool hasParent;
+    [SerializeField][Range(.1f, 10f)] float lifeTime;
 
-    public float lifeTime;
-    public bool hasParent;
-
-    private GameObject _parent { get; set; }
+    private GameObject _parent;
     private VisualEffect _vfx;
 
+    public GameObject Parent { get { return _parent; } set { _parent = value; } }
+
     void Awake() {
-        _vfx = this.GetComponent<VisualEffect>();
+        _vfx = this.GetComponent<VisualEffect>();        
     }
 
-    void Start() {        
+    void Start() {
+        if (hasParent) { 
+            transform.SetParent(_parent.transform);
+            transform.position = _parent.transform.position;
+            transform.rotation = _parent.transform.rotation;
+        }
+
         StartCoroutine(StartBehaviour());
     }
 
-    void Update() {
-        if (hasParent) {
-            gameObject.transform.position = _parent.transform.position;
-            gameObject.transform.rotation = _parent.transform.rotation;
-        }
-    }
     private IEnumerator StartBehaviour() {
         _vfx.Play();
         yield return new WaitForSeconds(lifeTime);
@@ -35,23 +34,4 @@ public class VFXBehaviour : MonoBehaviour {
         Destroy(gameObject);
         yield break;
     }
-
-    #region Editor
-#if UNITY_EDITOR
-    [CustomEditor(typeof(VFXBehaviour)), CanEditMultipleObjects]
-    public class VFXBehaviourEditor : Editor {
-        public override void OnInspectorGUI() {
-            var editor = (VFXBehaviour)target;
-            editor.hasParent = EditorGUILayout.Toggle("Follow parent", editor.hasParent);
-
-            if (editor.hasParent) {
-                editor._parent = (GameObject)EditorGUILayout.ObjectField("Parent", editor._parent, typeof(GameObject), true);
-            }            
-            
-            editor.lifeTime = EditorGUILayout.Slider("Lifetime", editor.lifeTime, 0.1f, 10f);
-        }
-    }
-#endif
-    #endregion
-
 }

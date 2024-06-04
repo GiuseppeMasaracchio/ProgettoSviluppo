@@ -708,6 +708,8 @@ MonoBehaviour:
   _forward: {fileID: 8529624796221480217}
   _playerparent: {fileID: 8529624795265790319}
   _dashPoint: {fileID: 408447261913396516}
+  _attackPoint: {fileID: 7531430052535705864}
+  _jumpPoint: {fileID: 8529624794701201085}
   _playerInfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
   _vfx: {fileID: 6508768958732399307}
   _vfx2: {fileID: 4620150138237903561}
@@ -1049,6 +1051,11 @@ Transform:
 --- !u!4 &4867966007411617734 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4319237920628579369, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
+  m_PrefabInstance: {fileID: 540580063255153681}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7531430052535705864 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1223425424979333863, guid: e7365f4612479eb44a2f348b29abf096, type: 3}
   m_PrefabInstance: {fileID: 540580063255153681}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7894761597388408314 stripped

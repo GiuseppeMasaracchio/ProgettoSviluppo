@@ -1,14 +1,12 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.VFX;
+
 public class VFXManager : MonoBehaviour {
     public static VFXManager Instance { get; private set; }
 
     [SerializeField] GameObject[] playerVfx;
     [SerializeField] GameObject[] enemyVfx;
-    [SerializeField] GameObject[] objectVfx;
-
-    private VFX entityType;
-    private Vector3 _targetPos;
+    [SerializeField] GameObject[] envVfx;
 
     void Awake() {
         if (Instance == null) {
@@ -20,19 +18,37 @@ public class VFXManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        InvokeRepeating("InitalizePrefab", 1f, 1f);
+        //InvokeRepeating("InitalizePrefab", 1f, 1f);
+    }            
+
+    public void SpawnFixedVFX(PlayerVFX _vfx, Vector3 position, Quaternion rotation) { //OVERLOAD
+        Instantiate(playerVfx[(int)_vfx], position, rotation);
     }
 
-    public void SpawnVFX(GameObject target) {
-        _targetPos = target.transform.position;
+    public void SpawnFixedVFX(EnemyVFX _vfx, Vector3 position, Quaternion rotation) { //OVERLOAD
+        Instantiate(enemyVfx[(int)_vfx], position, rotation);
     }
 
-    // Update is called once per frame
-    void Update() {
-        
+    public void SpawnFixedVFX(EnvVFX _vfx, Vector3 position, Quaternion rotation) { //OVERLOAD
+        Instantiate(envVfx[(int)_vfx], position, rotation);
     }
 
-    void InitalizePrefab() {
-        Instantiate(playerVfx[0], this.transform.position, this.transform.rotation);
+    public void SpawnFollowVFX(PlayerVFX _vfx, Vector3 position, Quaternion rotation, GameObject parent) { //OVERLOAD
+        GameObject _prefab = Instantiate(playerVfx[(int)_vfx], position, rotation);
+        var script = _prefab.GetComponent<VFXBehaviour>();
+        script.Parent = parent;
     }
+
+    public void SpawnFollowVFX(EnemyVFX _vfx, Vector3 position, Quaternion rotation, GameObject parent) { //OVERLOAD
+        GameObject _prefab = Instantiate(enemyVfx[(int)_vfx], position, rotation);
+        var script = _prefab.GetComponent<VFXBehaviour>();
+        script.Parent = parent;
+    }
+
+    public void SpawnFollowVFX(EnvVFX _vfx, Vector3 position, Quaternion rotation, GameObject parent) { //OVERLOAD
+        GameObject _prefab = Instantiate(envVfx[(int)_vfx], position, rotation);
+        var script = _prefab.GetComponent<VFXBehaviour>();
+        script.Parent = parent;
+    }
+
 }

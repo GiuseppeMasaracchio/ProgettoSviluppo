@@ -1,7 +1,18 @@
-public enum VFX {
-    Player,
-    Enemy,
-    Object
+public enum PlayerVFX {
+    AirRing,
+    Dash,
+    Attack,
+    Jump,
+    Damage
+}
+public enum EnemyVFX {
+    Spawn,
+    Death,
+    Trail
+}
+public enum EnvVFX {
+    Splash,
+    Boom
 }
 public enum Scenes {
     Lab,
