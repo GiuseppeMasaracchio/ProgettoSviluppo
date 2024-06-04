@@ -21,8 +21,8 @@
                         <ui:Toggle label="Fullscreen" value="false" name="Fullscreen" class="VideoSettigs" style="width: 35%; background-color: rgba(0, 0, 0, 0);" />
                     </ui:VisualElement>
                     <ui:VisualElement name="AudioContent" style="flex-grow: 1; overflow: hidden; align-self: stretch; justify-content: space-around; align-items: center; display: none;">
-                        <ui:Slider picking-mode="Ignore" label="Music" value="42" high-value="100" name="Music" class="VideoSettigs" style="color: rgb(128, 182, 251); justify-content: space-around; align-items: center; align-self: stretch;" />
-                        <ui:Slider picking-mode="Ignore" label="Effects" value="42" high-value="100" name="Effects" class="VideoSettigs" />
+                        <ui:Slider picking-mode="Ignore" label="Music" value="42" high-value="20" name="Music" low-value="-80" class="VideoSettigs" style="color: rgb(128, 182, 251); justify-content: space-around; align-items: center; align-self: stretch;" />
+                        <ui:Slider picking-mode="Ignore" label="Effects" value="42" high-value="20" name="Effects" low-value="-80" class="VideoSettigs" />
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:Button text="&lt;= Back" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Back" class="MPButton" style="width: 20%; -unity-text-align: middle-center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-self: flex-end; height: 20%; position: absolute; left: 80%;" />

@@ -30670,6 +30670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802cfffd929f1c340b0e7c8f63810e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mixer: {fileID: 24100000, guid: 6d4dc88f776067d45b14af1d59f7b969, type: 2}
   charDelay: 0.02
 --- !u!1001 &1669372060
 PrefabInstance:

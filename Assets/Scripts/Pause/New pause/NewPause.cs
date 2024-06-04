@@ -4,16 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 public class NewPause : MonoBehaviour
 {
     private VisualElement root;
-
-    //private Button[] _mainPageButtons;
-    //private Button[] _settingsTabs;
-    //private VisualElement[] _pages;
-    //private VisualElement[] _settingsContent;
 
     private List<Button> _mainPageButtons;
     private List<Button> _settingsTabs;
@@ -22,7 +18,7 @@ public class NewPause : MonoBehaviour
     private List<VisualElement> _pages;
     private List<VisualElement> _settingsContent;
 
-   
+    [SerializeField] private AudioMixer _mixer;
 
     private VisualElement currentContent = null;
 
@@ -172,7 +168,7 @@ public class NewPause : MonoBehaviour
 
         _settingsContent = root.Query("ContentContainer").Children<VisualElement>().ToList();
         InitVideoSettings(_settingsContent[0].Children().ToList());
-        //InitAudioSettings(_settingsContent[1].Children().ToList());
+        InitAudioSettings(_settingsContent[1].Children().ToList());
 
         _backButton = root.Q("Back") as Button;
         _backButton.RegisterCallback<ClickEvent>(OnBackHandler);
@@ -189,7 +185,16 @@ public class NewPause : MonoBehaviour
     }
 
     private void InitAudioSettings(List<VisualElement> setList) {
+        setList[0].RegisterCallback<ChangeEvent<float>>(MusicSlider);
+        setList[1].RegisterCallback<ChangeEvent<float>>(EffectsSlider);
+    }
 
+    private void MusicSlider(ChangeEvent<float> evnt) {
+        _mixer.SetFloat("MusicVolume", evnt.newValue);
+    }
+
+    private void EffectsSlider(ChangeEvent<float> evnt) {
+        _mixer.SetFloat("SfxVolume", evnt.newValue);
     }
 
     private void InitResolutionDropdown(DropdownField input) {
