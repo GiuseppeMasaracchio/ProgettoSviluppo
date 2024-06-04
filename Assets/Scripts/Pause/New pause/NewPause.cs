@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -30,16 +31,22 @@ public class NewPause : MonoBehaviour
     [SerializeField] private float charDelay = 0.02f;
 
     private void OnEnable() {
-        
+    }
+
+    private void OnDisable() {
+        //ButtonDispose(_settingsTabs);
+        //ButtonDispose(_mainPageButtons);
+        //_backButton.UnregisterCallback<ClickEvent>(OnBackHandler);
     }
 
     private void Awake() {
         root = GetComponent<UIDocument>().rootVisualElement;
+
+        InitPauseMenu();
     }
 
     // Start is called before the first frame update
     void Start() {
-        InitPauseMenu();
     }
 
     // Update is called once per frame
@@ -101,7 +108,7 @@ public class NewPause : MonoBehaviour
         }
     }
 
-    private void ButtonDispose(Button[] arr) {
+    private void ButtonDispose(List<Button> arr) {
         foreach(Button b in arr) {
             switch (b.name) {
                     //MainPage
@@ -126,6 +133,7 @@ public class NewPause : MonoBehaviour
         }
     }
 
+    //Handlers
     private void OnResumeHandler(ClickEvent evnt) {
         gameObject.SetActive(false);
     }
@@ -140,17 +148,17 @@ public class NewPause : MonoBehaviour
 
     private void OnVideoTab(ClickEvent evnt) {
         SwitchPage(currentContent, _settingsContent.First());
-        currentContent = _settingsContent.First();
+        if(!_settingsContent.First().Equals(currentContent))  currentContent = _settingsContent.First();
     }
 
     private void OnAudioTab(ClickEvent evnt) {
         SwitchPage(currentContent, _settingsContent.ElementAt(1));
-        currentContent = _settingsContent.ElementAt(1);
+        if(!_settingsContent.ElementAt(1).Equals(currentContent))   currentContent = _settingsContent.ElementAt(1);
     }
 
     private void OnControlsTab(ClickEvent evnt) {
         SwitchPage(currentContent, _settingsContent.ElementAt(2));
-        currentContent = _settingsContent.ElementAt(2);
+        if(!_settingsContent.ElementAt(2).Equals(currentContent))  currentContent = _settingsContent.ElementAt(2);
     }
 
     private void InitPauseMenu() {
@@ -163,9 +171,37 @@ public class NewPause : MonoBehaviour
         _pages = root.Query("Body").Children<VisualElement>().ToList();
 
         _settingsContent = root.Query("ContentContainer").Children<VisualElement>().ToList();
+        InitVideoSettings(_settingsContent[0].Children().ToList());
+        //InitAudioSettings(_settingsContent[1].Children().ToList());
 
         _backButton = root.Q("Back") as Button;
         _backButton.RegisterCallback<ClickEvent>(OnBackHandler);
+    }
+
+    private void InitVideoSettings(List<VisualElement> setList) {
+        InitResolutionDropdown(setList[0] as DropdownField);
+        InitQualityDropdown(setList[1] as DropdownField);
+        setList[2].RegisterCallback<ChangeEvent<bool>>(FullscreenToggle);
+    }
+
+    private void InitAudioSettings(List<VisualElement> setList) {
+
+    }
+
+    private void InitResolutionDropdown(DropdownField input) {
+        input.value = Screen.currentResolution.width + "x" + Screen.currentResolution.height;
+        foreach(Resolution r in Screen.resolutions) {
+            input.choices.Add(r.width + "x" + r.height);
+        }
+    }
+
+    private void InitQualityDropdown(DropdownField input) {
+        input.value = QualitySettings.names.GetValue(QualitySettings.GetQualityLevel()).ToString();
+        input.choices = QualitySettings.names.ToList();
+    }
+
+    private void FullscreenToggle(ChangeEvent<bool> evnt) {
+        Screen.fullScreen = evnt.newValue;
     }
 
     private void SwitchPage(VisualElement oldPage, VisualElement newPage) {
