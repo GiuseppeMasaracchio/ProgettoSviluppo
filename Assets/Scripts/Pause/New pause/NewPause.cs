@@ -180,7 +180,11 @@ public class NewPause : MonoBehaviour
 
     private void InitVideoSettings(List<VisualElement> setList) {
         InitResolutionDropdown(setList[0] as DropdownField);
+        setList[0].RegisterCallback<ChangeEvent<string>>(ResolutionHandler);
+
         InitQualityDropdown(setList[1] as DropdownField);
+        setList[1].RegisterCallback<ChangeEvent<string>>(QualityHandler);
+
         setList[2].RegisterCallback<ChangeEvent<bool>>(FullscreenToggle);
     }
 
@@ -195,9 +199,26 @@ public class NewPause : MonoBehaviour
         }
     }
 
+    private void ResolutionHandler(ChangeEvent<string> evnt) {
+        DropdownField temp = evnt.currentTarget as DropdownField;
+        int width = int.Parse(temp.value.Split("x").First());
+        int height = int.Parse(temp.value.Split("x").Last());
+        foreach(Resolution r in Screen.resolutions) {
+            if (r.height.Equals(height) && r.width.Equals(width)) Screen.SetResolution(r.width, r.height, Screen.fullScreen);
+        }
+    }
+
+
     private void InitQualityDropdown(DropdownField input) {
         input.value = QualitySettings.names.GetValue(QualitySettings.GetQualityLevel()).ToString();
         input.choices = QualitySettings.names.ToList();
+    }
+
+    private void QualityHandler(ChangeEvent<string> evnt) {
+        DropdownField temp = evnt.currentTarget as DropdownField;
+        for(int i = 0; i < QualitySettings.names.Length; i++) {
+            if (QualitySettings.names[i].Equals(temp.text)) QualitySettings.SetQualityLevel(i);
+        }
     }
 
     private void FullscreenToggle(ChangeEvent<bool> evnt) {
