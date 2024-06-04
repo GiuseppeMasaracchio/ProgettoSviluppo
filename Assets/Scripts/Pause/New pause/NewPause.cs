@@ -26,8 +26,6 @@ public class NewPause : MonoBehaviour
     private string line = "";
     [SerializeField] private float charDelay = 0.02f;
 
-    private void OnEnable() {
-    }
 
     private void OnDisable() {
         //ButtonDispose(_settingsTabs);
@@ -66,6 +64,10 @@ public class NewPause : MonoBehaviour
             line = "";
         }
     }
+    private void SwitchPage(VisualElement oldPage, VisualElement newPage) {
+        if (oldPage != null) oldPage.style.display = DisplayStyle.None;
+        newPage.style.display = DisplayStyle.Flex;
+    }
 
     private T[] FillArray<T>(T[] arr, string name) {
         if(arr is Button[]) {
@@ -80,6 +82,8 @@ public class NewPause : MonoBehaviour
     }
     private void ButtonHandlers(List<Button> bList) {
         foreach (Button b in bList) {
+            StartCoroutine(Typewriter<Button>(b));
+
             switch (b.name) {
                 //MainPage
                 case "Resume":
@@ -89,6 +93,7 @@ public class NewPause : MonoBehaviour
                     b.RegisterCallback<ClickEvent>(OnSettingsHandler);
                     break;
                 case "MainMenu":
+                    //To do collegamento alle scene
                     break;
 
                 //Tabs
@@ -99,6 +104,7 @@ public class NewPause : MonoBehaviour
                     b.RegisterCallback<ClickEvent>(OnAudioTab);
                     break;
                 case "Controls":
+                    //To do collegamento InputMaps
                     break;
             }
         }
@@ -148,13 +154,13 @@ public class NewPause : MonoBehaviour
     }
 
     private void OnAudioTab(ClickEvent evnt) {
-        SwitchPage(currentContent, _settingsContent.ElementAt(1));
-        if(!_settingsContent.ElementAt(1).Equals(currentContent))   currentContent = _settingsContent.ElementAt(1);
+        SwitchPage(currentContent, _settingsContent[1]);
+        if(!_settingsContent[1].Equals(currentContent))   currentContent = _settingsContent[1];
     }
 
     private void OnControlsTab(ClickEvent evnt) {
         SwitchPage(currentContent, _settingsContent.ElementAt(2));
-        if(!_settingsContent.ElementAt(2).Equals(currentContent))  currentContent = _settingsContent.ElementAt(2);
+        if(!_settingsContent[2].Equals(currentContent))  currentContent = _settingsContent[2];
     }
 
     private void InitPauseMenu() {
@@ -174,16 +180,9 @@ public class NewPause : MonoBehaviour
         _backButton.RegisterCallback<ClickEvent>(OnBackHandler);
     }
 
-    private void InitVideoSettings(List<VisualElement> setList) {
-        InitResolutionDropdown(setList[0] as DropdownField);
-        setList[0].RegisterCallback<ChangeEvent<string>>(ResolutionHandler);
+    
 
-        InitQualityDropdown(setList[1] as DropdownField);
-        setList[1].RegisterCallback<ChangeEvent<string>>(QualityHandler);
-
-        setList[2].RegisterCallback<ChangeEvent<bool>>(FullscreenToggle);
-    }
-
+    //AudioSettings
     private void InitAudioSettings(List<VisualElement> setList) {
         setList[0].RegisterCallback<ChangeEvent<float>>(MusicSlider);
         setList[1].RegisterCallback<ChangeEvent<float>>(EffectsSlider);
@@ -195,6 +194,17 @@ public class NewPause : MonoBehaviour
 
     private void EffectsSlider(ChangeEvent<float> evnt) {
         _mixer.SetFloat("SfxVolume", evnt.newValue);
+    }
+
+    //VideoSettings
+    private void InitVideoSettings(List<VisualElement> setList) {
+        InitResolutionDropdown(setList[0] as DropdownField);
+        setList[0].RegisterCallback<ChangeEvent<string>>(ResolutionHandler);
+
+        InitQualityDropdown(setList[1] as DropdownField);
+        setList[1].RegisterCallback<ChangeEvent<string>>(QualityHandler);
+
+        setList[2].RegisterCallback<ChangeEvent<bool>>(FullscreenToggle);
     }
 
     private void InitResolutionDropdown(DropdownField input) {
@@ -229,10 +239,4 @@ public class NewPause : MonoBehaviour
     private void FullscreenToggle(ChangeEvent<bool> evnt) {
         Screen.fullScreen = evnt.newValue;
     }
-
-    private void SwitchPage(VisualElement oldPage, VisualElement newPage) {
-        if(oldPage != null) oldPage.style.display = DisplayStyle.None;
-        newPage.style.display = DisplayStyle.Flex;
-    }
-
 }
