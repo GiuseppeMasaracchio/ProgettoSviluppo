@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
-public class JumpState : BaseState, IContextInit, IWalk {
+public class JumpState : BaseState, IContextInit, IWalk, IVFXInit {
     public JumpState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
@@ -9,8 +8,7 @@ public class JumpState : BaseState, IContextInit, IWalk {
         //Enter logic
         InitializeContext();
 
-        InitializeParticle();
-        InitializeParticle2();
+        InitializeParticles();
 
         Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.Play(AnimHandler.Jump());
@@ -63,7 +61,6 @@ public class JumpState : BaseState, IContextInit, IWalk {
         else if (Ctx.OnPlatform && Ctx.IsIdle) {
             SwitchState(StateHandler.Idle());
         }
-
     }
     public void InitializeContext() {
         Ctx.JumpInput = false;
@@ -79,18 +76,11 @@ public class JumpState : BaseState, IContextInit, IWalk {
         Ctx.IsWalking = false;
         Ctx.IsIdle = false;
     }
-    public void InitializeParticle() {
-        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
-        Ctx.Vfx.GetComponent<VisualEffect>().Reinit();
-        Vector3 offset = Ctx.Asset.transform.position + (new Vector3(0f, -.25f, 0f));
-        Ctx.Vfx.transform.position = offset;
-        Ctx.Vfx.GetComponent<VisualEffect>().Play();
+    public void InitializeParticles() {
+        VFXManager.Instance.SpawnFixedVFX(PlayerVFX.JumpBump, Ctx.JumpPoint.transform.position, Ctx.JumpPoint.transform.rotation);
+        VFXManager.Instance.SpawnFollowVFX(PlayerVFX.JumpTrail, Ctx.JumpPoint.transform.position, Ctx.JumpPoint.transform.rotation, Ctx.JumpPoint);
     }
-    public void InitializeParticle2() {
-        //Ctx.Vfx.GetComponent<VisualEffect>().Stop();
-        Ctx.Vfx2.GetComponent<VisualEffect>().Reinit();
-        Ctx.Vfx2.GetComponent<VisualEffect>().Play();
-    }
+    
     private void HandleJump(Rigidbody rb) {
         //Jump Logic
         rb.velocity.Set(rb.velocity.x, -1f, rb.velocity.z);        

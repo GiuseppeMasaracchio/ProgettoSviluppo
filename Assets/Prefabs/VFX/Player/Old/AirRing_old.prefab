@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5997098685499190150}
   - component: {fileID: 5997098685499190153}
   m_Layer: 0
-  m_Name: AirRing
+  m_Name: AirRing_old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

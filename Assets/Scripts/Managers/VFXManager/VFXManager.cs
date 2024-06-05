@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class VFXManager : MonoBehaviour {
     public static VFXManager Instance { get; private set; }
@@ -14,15 +14,10 @@ public class VFXManager : MonoBehaviour {
             DontDestroyOnLoad(this);
         }
         else { Destroy(this); }
-    }
-
-    // Start is called before the first frame update
-    void Start() {
-        //InvokeRepeating("InitalizePrefab", 1f, 1f);
-    }            
+    }          
 
     public void SpawnFixedVFX(PlayerVFX _vfx, Vector3 position, Quaternion rotation) { //OVERLOAD
-        Instantiate(playerVfx[(int)_vfx], position, rotation);
+        Instantiate(playerVfx[(int)_vfx], position, rotation);        
     }
 
     public void SpawnFixedVFX(EnemyVFX _vfx, Vector3 position, Quaternion rotation) { //OVERLOAD

@@ -1,6 +1,4 @@
-using UnityEngine.VFX;
-
-public class AttackState : BaseState, IContextInit {
+public class AttackState : BaseState, IContextInit, IVFXInit {
     public AttackState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
@@ -11,9 +9,7 @@ public class AttackState : BaseState, IContextInit {
         ColliderOn(Ctx.AttackCollider);
         GravityOff();
 
-        //VFXManager.Instance.SpawnFixedVFX(PlayerVFX.AirRing, Ctx.AttackPoint.transform.position, Ctx.AttackPoint.transform.rotation);
-        //VFXManager.Instance.SpawnFollowVFX(PlayerVFX.AirRing, Ctx.AttackPoint.transform.position, Ctx.AttackPoint.transform.rotation, Ctx.AttackPoint);
-        InitializeParticle5();
+        InitializeParticles();
 
         Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.PlayDirect(AnimHandler.Attack1());
@@ -29,12 +25,10 @@ public class AttackState : BaseState, IContextInit {
         Ctx.PlayerRb.velocity.Set(0f, 0f, 0f);
         ColliderOff(Ctx.AttackCollider);
         Ctx.AnimHandler.SetAlt(false);
-        GravityOn();
-        
+        GravityOn();        
     }
     public override void CheckSwitchStates() {
-        //Switch logic
-        
+        //Switch logic        
         if (Ctx.IsGrounded && Ctx.CanAttack && Ctx.IsWalking) {          
             SwitchState(StateHandler.Walk());
         }
@@ -65,13 +59,7 @@ public class AttackState : BaseState, IContextInit {
         Ctx.IsDashing = false;
         Ctx.IsJumping = false;
     }
-    public void InitializeParticle5() {
-        Ctx.Vfx.GetComponent<VisualEffect>().Stop();
-        //Ctx.Vfx5.GetComponent<VisualEffect>().Reinit();
-        Ctx.Vfx5.GetComponent<VisualEffect>().Play();
+    public void InitializeParticles() {
+        VFXManager.Instance.SpawnFollowVFX(PlayerVFX.AttackBurst, Ctx.AttackPoint.transform.position, Ctx.AttackPoint.transform.rotation, Ctx.AttackPoint);
     }
-    public void HandleAttack() {
-        
-    }
-
 }

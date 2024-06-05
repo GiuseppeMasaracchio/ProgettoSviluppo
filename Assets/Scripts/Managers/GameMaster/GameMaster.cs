@@ -22,11 +22,6 @@ public class GameMaster : MonoBehaviour {
         ScenesManager.Instance.StartGame();
     }
 
-    // Update is called once per frame
-    void Update() {
-
-    }
-
     private void InitializePlayerInfo() {
         _playerinfo.Checkpoint = new Vector2(0f, 0f);
         _playerinfo.CurrentHp = 3;

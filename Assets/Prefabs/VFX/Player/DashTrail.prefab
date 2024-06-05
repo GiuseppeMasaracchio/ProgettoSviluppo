@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5997098685499190151}
   - component: {fileID: 5997098685499190150}
   - component: {fileID: 5997098685499190153}
-  - component: {fileID: 7400068276111639305}
+  - component: {fileID: 8132958521986625050}
   m_Layer: 0
-  m_Name: AirRing_test
+  m_Name: DashTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,11 +42,11 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5997098685499190152}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 951c8134bc4c9294895f5cc18c9de5f9, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 960fd2d764eb6ae4babb955e4e5965cb, type: 3}
   m_InitialEventName: null
-  m_InitialEventNameOverriden: 0
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
-  m_ResetSeedOnPlay: 1
+  m_ResetSeedOnPlay: 0
   m_AllowInstancing: 1
   m_ResourceVersion: 1
   m_PropertySheet:
@@ -157,7 +157,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &7400068276111639305
+--- !u!114 &8132958521986625050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -169,5 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96e7f59a6b64b74fb90244fe456f9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 2
   hasParent: 1
+  lifeTime: 0.8

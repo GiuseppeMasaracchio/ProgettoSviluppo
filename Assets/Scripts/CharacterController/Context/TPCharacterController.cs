@@ -22,16 +22,11 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _playerparent;
 
     [SerializeField] GameObject _dashPoint; // Spawnpoint Dash VFX
-    [SerializeField] GameObject _attackPoint; // Spawnpoint Dash VFX
-    [SerializeField] GameObject _jumpPoint; // Spawnpoint Dash VFX
+    [SerializeField] GameObject _attackPoint; // Spawnpoint Attack VFX
+    [SerializeField] GameObject _jumpPoint; // Spawnpoint Jump VFX
+    [SerializeField] GameObject _ringPoint; // Spawnpoint Ring VFX
 
     [SerializeField] PlayerInfo _playerInfo;
-
-    [SerializeField] GameObject _vfx; // Da sostituire con framework VFX
-    [SerializeField] GameObject _vfx2; // Da sostituire con framework VFX
-    [SerializeField] GameObject _vfx3; // Da sostituire con framework VFX
-    [SerializeField] GameObject _vfx4; // Da sostituire con framework VFX
-    [SerializeField] GameObject _vfx5; // Da sostituire con framework VFX
 
     PlayerInput _playerinput;
     Animator _animator;
@@ -132,13 +127,8 @@ public class TPCharacterController : MonoBehaviour
     public bool IsDashing { get { return isDashing; } set { isDashing = value; } }
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
     public bool IsFalling { get { return isFalling; } set { isFalling = value; } }
-
-    public GameObject Vfx { get { return _vfx; } } // Da sostituire con framework VFX
-    public GameObject Vfx2 { get { return _vfx2; } } // Da sostituire con framework VFX
-    public GameObject Vfx3 { get { return _vfx3; } } // Da sostituire con framework VFX
-    public GameObject Vfx4 { get { return _vfx4; } } // Da sostituire con framework VFX
-    public GameObject Vfx5 { get { return _vfx5; } } // Da sostituire con framework VFX
     
+    public GameObject RingPoint { get { return _ringPoint; } } // VFX Spawn ref
     public GameObject DashPoint { get { return _dashPoint; } } // VFX Spawn ref
     public GameObject AttackPoint { get { return _attackPoint; } } // VFX Spawn ref
     public GameObject JumpPoint { get { return _jumpPoint; } } // VFX Spawn ref

@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
-public class DashState : BaseState, IContextInit {
+public class DashState : BaseState, IContextInit, IVFXInit {
     public DashState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
@@ -14,8 +13,9 @@ public class DashState : BaseState, IContextInit {
         GravityOff();
 
         Ctx.AnimHandler.SetAlt(true);
-        InitializeParticle3();
-        InitializeParticle4();
+
+        InitializeParticles();
+
         Ctx.AnimHandler.PlayDirect(AnimHandler.Dash());
 
         HandleDash(Ctx.PlayerRb);        
@@ -62,15 +62,11 @@ public class DashState : BaseState, IContextInit {
         Ctx.IsDamaged = false;
         
     }
-    public void InitializeParticle3() {
-        Ctx.Vfx3.GetComponent<VisualEffect>().Reinit();
-        Ctx.Vfx3.transform.position = Ctx.DashPoint.transform.position;
-        Ctx.Vfx3.GetComponent<VisualEffect>().Play();
+    public void InitializeParticles() {
+        VFXManager.Instance.SpawnFixedVFX(PlayerVFX.AirRing, Ctx.RingPoint.transform.position, Ctx.RingPoint.transform.rotation);
+        VFXManager.Instance.SpawnFollowVFX(PlayerVFX.DashTrail, Ctx.RingPoint.transform.position, Ctx.RingPoint.transform.rotation, Ctx.DashPoint);
     }
-    public void InitializeParticle4() {
-        Ctx.Vfx4.GetComponent<VisualEffect>().Reinit();
-        Ctx.Vfx4.GetComponent<VisualEffect>().Play();
-    }
+
     public void HandleDash(Rigidbody rb) {        
         rb.velocity.Set(0f, 0f, 0f);
         rb.AddForce(DashDirection() * 25f, ForceMode.Impulse);

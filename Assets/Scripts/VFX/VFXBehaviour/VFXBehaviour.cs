@@ -1,11 +1,12 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
 public class VFXBehaviour : MonoBehaviour {
     [Space]
     [SerializeField] bool hasParent;
+    [SerializeField] bool ignoreScale;
+
     [SerializeField][Range(.1f, 10f)] float lifeTime;
 
     private GameObject _parent;
@@ -18,13 +19,25 @@ public class VFXBehaviour : MonoBehaviour {
     }
 
     void Start() {
-        if (hasParent) { 
+        InitializeParent();
+
+        StartCoroutine(StartBehaviour());
+    }
+
+    void Update() {
+        if (_vfx.HasVector3("RefScale")) {
+            _vfx.SetVector3("RefScale", _parent.transform.localScale);
+        }
+    }
+
+    private void InitializeParent() {
+        if (hasParent) {
             transform.SetParent(_parent.transform);
             transform.position = _parent.transform.position;
             transform.rotation = _parent.transform.rotation;
-        }
 
-        StartCoroutine(StartBehaviour());
+            if (!ignoreScale) { transform.localScale = _parent.transform.localScale; }
+        }
     }
 
     private IEnumerator StartBehaviour() {

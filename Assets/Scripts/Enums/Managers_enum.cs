@@ -1,9 +1,9 @@
 public enum PlayerVFX {
     AirRing,
-    Dash,
-    Attack,
-    Jump,
-    Damage
+    DashTrail,
+    AttackBurst,
+    JumpTrail,
+    JumpBump
 }
 public enum EnemyVFX {
     Spawn,
@@ -11,6 +11,8 @@ public enum EnemyVFX {
     Trail
 }
 public enum EnvVFX {
+    Shock,
+    Smoke,
     Splash,
     Boom
 }
