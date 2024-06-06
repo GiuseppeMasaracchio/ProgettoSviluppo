@@ -11,6 +11,8 @@ public class DamageState : BaseState, IContextInit {
         GravityOff();
         
         Ctx.AnimHandler.PlayDirect(AnimHandler.Damage());
+
+        VFXManager.Instance.SpawnFollowVFX(EnvVFX.Shock, Ctx.Player.transform.position, Ctx.Player.transform.rotation, Ctx.Player);
         
         HandleDMG();
         

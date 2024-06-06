@@ -43462,33 +43462,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4685415326737356853, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
-      propertyPath: _player
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4685415326737356853, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
-      propertyPath: _playerinfo
-      value: 
-      objectReference: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
-    - target: {fileID: 4685415326737356853, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
-      propertyPath: _playerprefab
-      value: 
-      objectReference: {fileID: 8529624795265790319, guid: 73e64702af523cb4a96141433111b375, type: 3}
     - target: {fileID: 5717954940236864013, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_Name
       value: ScenesManager
       objectReference: {fileID: 0}
     - target: {fileID: 7593554463513585107, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5337973
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7593554463513585107, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.0006466
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7593554463513585107, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.589485
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7593554463513585107, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_LocalRotation.w
