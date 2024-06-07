@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5683e02101e27e4cb83447181882c27, type: 3}
   m_Name: PlayerInfo_Asset
   m_EditorClassIdentifier: 
-  _currentHp: 47
+  _currentHp: 3
   _powerUps: 0
   _score: 0
   _checkpoint: {x: 0, y: 0}
