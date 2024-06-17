@@ -53,3 +53,4 @@ MonoBehaviour:
   enemyVfx: []
   envVfx:
   - {fileID: 6444617577989549947, guid: 174fbd188c84d8e469bbef290f0a6673, type: 3}
+  - {fileID: 8504097554640748780, guid: 290a1051d893acd459cb23f0fd9292f7, type: 3}

@@ -108,7 +108,7 @@ public class ScenesManager : MonoBehaviour {
     }
 
     public IEnumerator OnDeath() {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         StartCoroutine(InitializeLoad(SceneManager.GetActiveScene().buildIndex));
         yield return null;
