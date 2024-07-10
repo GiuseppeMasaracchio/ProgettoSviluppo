@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FullscreenTest
-  m_Shader: {fileID: -6465566751694194690, guid: d1b6caa668b2bce4ebfe16597f122a80, type: 3}
+  m_Name: ShadowsStep
+  m_Shader: {fileID: -6465566751694194690, guid: 67cedb4d81297184dbce5b1327f32b3d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -115,7 +115,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Intensity: 10
+    - _Intensity: 1.8
     - _LerpTransition: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
