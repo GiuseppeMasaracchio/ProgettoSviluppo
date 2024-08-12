@@ -21,11 +21,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Visor
-  m_Shader: {fileID: -6465566751694194690, guid: 6d7c78f650dd4ca41b53a7d6eec0ea80, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b8ac1c5459eda464697c823cbb66f26f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _STATES_IDLE
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -117,6 +116,7 @@ Material:
     - _Glossiness: 0.59999996
     - _GlossinessSource: 0
     - _GlossyReflections: 1
+    - _HealthDisplayColor: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -142,6 +142,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
     - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+    - _Display_color: {r: 0.004786778, g: 0, b: 0.3, a: 0}
     - _EmissionColor: {r: 1.254902, g: 1.3803922, b: 11.984314, a: 1}
     - _Emitter_color: {r: 0, g: 0.69303954, b: 5.9921556, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
