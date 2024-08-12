@@ -39,4 +39,8 @@ public enum ActiveData {
     Runtime
 }
 
-
+public enum PlayerHealthRange {    
+    LOW = 3,
+    MID = 2,
+    HIGH = 1
+}

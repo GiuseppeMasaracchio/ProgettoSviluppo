@@ -26,6 +26,8 @@ public class TPCharacterController : MonoBehaviour
     [SerializeField] GameObject _jumpPoint; // Spawnpoint Jump VFX
     [SerializeField] GameObject _ringPoint; // Spawnpoint Ring VFX
 
+    [SerializeField] Material _visor; // Material reference for Health Based Display Color
+
     [SerializeField] PlayerInfo _playerInfo;
 
     PlayerInput _playerinput;
@@ -181,13 +183,18 @@ public class TPCharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         InitializePowerUps();
+
     }
 
     // Update is called once per frame
     void Update() {
+        /*
         if (_playerInfo.CurrentHp <= 0) {
             isDead = true;
         }
+        */
+
+        EvaluateHealth();        
 
         if (!isDead) {
             UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
@@ -213,7 +220,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     public void OnMove(InputValue input) {
-       moveInput = input.Get<Vector2>();
+        moveInput = input.Get<Vector2>();
     }
     public void OnLook(InputValue input) {
         camInput = input.Get<Vector2>();
@@ -377,6 +384,29 @@ public class TPCharacterController : MonoBehaviour
         }
         else if (_playerInfo.PowerUps <= 0) {
             jumpCount = 1;
+        }
+    }
+    private void EvaluateHealth() {
+        switch (_playerInfo.CurrentHp) {
+            case 0: {
+                    isDead = true;
+                    break;
+                }
+            case 1: {
+                    _visor.SetFloat("_HealthDisplayColor", (float)PlayerHealthRange.LOW);
+                    break;
+                }
+            case 2: {
+                    _visor.SetFloat("_HealthDisplayColor", (float)PlayerHealthRange.MID);
+                    break;
+                }
+            case 3: {
+                    _visor.SetFloat("_HealthDisplayColor", (float)PlayerHealthRange.HIGH);
+                    break;
+                }
+            default: {
+                    break;
+                }
         }
     }
 

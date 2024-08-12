@@ -707,12 +707,8 @@ MonoBehaviour:
   _attackPoint: {fileID: 7531430052535705864}
   _jumpPoint: {fileID: 8529624794701201085}
   _ringPoint: {fileID: 408447261913396516}
+  _visor: {fileID: 2100000, guid: 595d6e1605d9deb4581d96ac9097b71c, type: 2}
   _playerInfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
-  _vfx: {fileID: 0}
-  _vfx2: {fileID: 0}
-  _vfx3: {fileID: 0}
-  _vfx4: {fileID: 0}
-  _vfx5: {fileID: 0}
   _attackCollider: {fileID: 1834172070014641355}
   _dashCollider: {fileID: 4356050793802766177}
   gravityMultiplier: 15
