@@ -194,7 +194,8 @@ public class TPCharacterController : MonoBehaviour
         }
         */
 
-        EvaluateHealth();        
+        EvaluateHealth();
+        StorePlayerStates();
 
         if (!isDead) {
             UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
@@ -407,6 +408,16 @@ public class TPCharacterController : MonoBehaviour
             default: {
                     break;
                 }
+        }
+    }
+
+    private void StorePlayerStates() {
+        if (_playerInfo.PlayerRootState != _currentRootState.ToString()) { 
+            _playerInfo.PlayerRootState = _currentRootState.ToString();
+        }
+
+        if (_playerInfo.PlayerSubState != _currentSubState.ToString()) {
+            _playerInfo.PlayerSubState = _currentSubState.ToString();
         }
     }
 

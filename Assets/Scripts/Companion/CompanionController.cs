@@ -7,10 +7,19 @@ public class CompanionController : MonoBehaviour {
     [SerializeField] PlayerInfo _playerInfo;
     [SerializeField] VisualEffect _spark;
 
+    private TPCharacterController _player;
+
+    void Awake() {
+        _player = FindObjectOfType<TPCharacterController>();
+        
+    }
+
     // Update is called once per frame
     void Update() {
         EvaluateHealth();
+        transform.LookAt(_player.transform.position);
     }
+    
 
     private void EvaluateHealth() {
         switch (_playerInfo.CurrentHp) {

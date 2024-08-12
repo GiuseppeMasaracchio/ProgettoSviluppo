@@ -31253,7 +31253,7 @@ MonoBehaviour:
   isActive: 1
   offset: 0.2
   stopTime: 0
-  speed: 0.5
+  speed: 2
 --- !u!114 &1612344936
 MonoBehaviour:
   m_ObjectHideFlags: 0
