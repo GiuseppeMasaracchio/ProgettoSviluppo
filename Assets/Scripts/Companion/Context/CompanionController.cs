@@ -33,6 +33,7 @@ public class CompanionController : MonoBehaviour {
     private bool isFocusing = false;
     private bool isUnstucking = false;
 
+    private int rrToken = 0;
     private float limitDistanceMax;
     private Vector3[] targetPosition = new Vector3[4];
     private Vector3 lockedPosition;
@@ -57,6 +58,7 @@ public class CompanionController : MonoBehaviour {
     public bool IsFocusing { get { return isFocusing; } set { isFocusing = value; } }
     public bool IsUnstucking { get { return isUnstucking; } set { isUnstucking = value; } }
 
+    public int RRToken { get { return rrToken; } }
     public float HorizontalOffset { get { return horizontalOffset; } }
     public float VerticalOffset { get { return verticalOffset; } }
     public float MaxVelocity { get { return maxVelocity; } }
@@ -93,6 +95,13 @@ public class CompanionController : MonoBehaviour {
         //_currentSubState.UpdateState();
     }
     
+    private void CycleRRToken() {
+        if (rrToken < 3) {
+            rrToken++;
+        } else {
+            rrToken = 0;
+        }
+    }
 
     private void EvaluateHealth() {
         switch (_playerInfo.CurrentHp) {
