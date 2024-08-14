@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class CStuckState : CBaseState {
-    public CStuckState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) {
+public class COperativeState : CBaseState {
+    public COperativeState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) {
         IsRootState = true; //SOLO SU STUCK E OPERATIVE (ROOT STATES)
     }
     public override void EnterState() {
@@ -20,12 +20,12 @@ public class CStuckState : CBaseState {
     public override void CheckSwitchStates() {
         //Switch logic
         
-        if (Ctx.IsOperative) {
-            SwitchState(StateHandler.Operative());
+        if (Ctx.IsStuck) {
+            SwitchState(StateHandler.Stuck());
         }        
         
     }
     public void InitializeContext() {
-        Ctx.IsOperative = false;
+        Ctx.IsStuck = false;
     }    
 }

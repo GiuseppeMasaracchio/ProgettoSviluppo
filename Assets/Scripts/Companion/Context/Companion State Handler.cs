@@ -8,12 +8,12 @@ public class CompanionStateHandler {
         _context = currentContext;
 
         stateList[CompanionStates.stuck] = new CStuckState(_context, this);           //0
-        //stateList[CompanionStates.operative] = new COperativeState(_context, this);   //1
-        //stateList[CompanionStates.unstuck] = new CUnstuckState(_context, this);       //2
-        //stateList[CompanionStates.talk] = new CTalkState(_context, this);             //3
-        //stateList[CompanionStates.idle] = new CIdleState(_context, this);             //4
-        //stateList[CompanionStates.move] = new CMoveState(_context, this);             //5
-        //stateList[CompanionStates.focus] = new CFocusState(_context, this);           //6
+        stateList[CompanionStates.operative] = new COperativeState(_context, this);   //1
+        stateList[CompanionStates.unstuck] = new CUnstuckState(_context, this);       //2
+        stateList[CompanionStates.talk] = new CTalkState(_context, this);             //3
+        stateList[CompanionStates.idle] = new CIdleState(_context, this);             //4
+        stateList[CompanionStates.move] = new CMoveState(_context, this);             //5
+        stateList[CompanionStates.focus] = new CFocusState(_context, this);           //6
     }
 
     public CBaseState Stuck() {

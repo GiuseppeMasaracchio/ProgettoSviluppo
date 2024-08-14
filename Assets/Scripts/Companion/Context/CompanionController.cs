@@ -1,9 +1,12 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
 public class CompanionController : MonoBehaviour {
     [SerializeField] PlayerInfo _playerInfo;
     [SerializeField] VisualEffect _spark;
+    [SerializeField] VisualEffect _trail;
     [SerializeField] Collider _stuckCollider;
 
     [SerializeField]
@@ -17,7 +20,9 @@ public class CompanionController : MonoBehaviour {
 
     [SerializeField]
     [Range(0f, 10f)] float limitDistance;
-    
+
+    public string debugState;
+
     private CBaseState _currentRootState;
     private CBaseState _currentSubState;
     private CompanionStateHandler _stateHandler;
@@ -26,7 +31,6 @@ public class CompanionController : MonoBehaviour {
 
     private bool isStuck = false;
     private bool isOperative = false;
-
     private bool isIdle = false;
     private bool isMoving = false;
     private bool isTalking = false;
@@ -42,6 +46,9 @@ public class CompanionController : MonoBehaviour {
 
     private float velocity;
     private float playerDistance;
+
+    public VisualEffect Spark { get { return _spark; } set { _spark = value; } }
+    public VisualEffect Trail { get { return _trail; } set { _trail = value; } }
 
     public CBaseState CurrentRootState { get { return _currentRootState; } set { _currentRootState = value; } }
     public CBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
@@ -75,15 +82,12 @@ public class CompanionController : MonoBehaviour {
         _playerHead = GameObject.Find("PlayerHead");
 
         limitDistanceMax = limitDistance + horizontalOffset;
-
-        /*
-        _currentRootState = CompanionStateHandler.Operative();
+        
+        _currentRootState = StateHandler.Operative();
         _currentRootState.EnterState();
 
-        _currentSubState = CompanionStateHandler.Idle();
+        _currentSubState = StateHandler.Idle();
         _currentSubState.EnterState();
-
-        */
 
     }
 
@@ -91,8 +95,13 @@ public class CompanionController : MonoBehaviour {
     void Update() {
         EvaluateHealth();
 
-        //_currentRootState.UpdateState();
-        //_currentSubState.UpdateState();
+        _currentRootState.UpdateState();
+        _currentSubState.UpdateState();
+
+        debugState = _currentSubState.ToString();
+        if (_playerInfo.PlayerSubState == "JumpState") {
+            isFocusing = true;
+        }
     }
     
     private void CycleRRToken() {
@@ -121,5 +130,47 @@ public class CompanionController : MonoBehaviour {
                     break;
                 }
         }
+    }
+
+    public void LookAround() {
+        StartCoroutine("LookAroundRoutine");
+    }
+
+    public void StopLookAround() {
+        StopCoroutine("LookAroundRoutine");
+    }
+
+    public IEnumerator LookAroundRoutine() {
+        yield return new WaitForSeconds(3f);
+
+        Quaternion startAngle = this.transform.rotation;
+        Quaternion targetAngle = new Quaternion(0f, 0f, 0f, 0f);       
+        
+        targetAngle.Set(startAngle.x, startAngle.y, startAngle.z, startAngle.w);
+        targetAngle = Quaternion.Euler(0f, 40f, 0f);
+
+        while (Mathf.Abs(targetAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
+            this.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f)); 
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+        
+        targetAngle.Set(startAngle.x, startAngle.y, startAngle.z, startAngle.w);
+        targetAngle = Quaternion.Euler(0f, -40f, 0f);
+
+        while (Mathf.Abs(targetAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
+            this.transform.Rotate(new Vector3(0f, -160f * Time.deltaTime, 0f));
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        while (Mathf.Abs(startAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
+            this.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f));
+            yield return null;
+        }
+
+        yield break;
     }
 }
