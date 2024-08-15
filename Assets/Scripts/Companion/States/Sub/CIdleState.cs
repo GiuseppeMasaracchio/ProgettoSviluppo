@@ -7,18 +7,25 @@ public class CIdleState : CBaseState {
         //Enter logic
         InitializeContext();
 
-        Ctx.InvokeRepeating("LookAround", 0f, 10f);
-        //Ctx.StartCoroutine(Ctx.LookAround());        
+        //Ctx.InvokeRepeating("LookAround", 3f, 15f);
+
+        //Ctx.InvokeRepeating("UpdateRRToken", 0f, 2f);
+        Ctx.LockedPosition = Ctx.FocusDefault.position;
+
+        Ctx.StartCoroutine("FocusTarget");        
     }
     public override void UpdateState() {
         //Update logic        
+        Ctx.LockedPosition = Ctx.FocusDefault.position;
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
-        Ctx.StopLookAround();
-        Ctx.CancelInvoke("LookAround");
+
+        Ctx.StopCoroutine("FocusTarget");
+        //Ctx.StopLookAround();
+        //Ctx.CancelInvoke("LookAround");
     }
     public override void CheckSwitchStates() {
         //Switch logic

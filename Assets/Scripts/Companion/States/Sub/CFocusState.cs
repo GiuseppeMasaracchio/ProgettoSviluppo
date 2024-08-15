@@ -4,16 +4,21 @@ using UnityEngine;
 public class CFocusState : CBaseState {
     public CFocusState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
-        //Enter logic
+        //Enter logic      
+
+        Ctx.StartCoroutine("FocusTarget");        
+
         InitializeContext();
     }
     public override void UpdateState() {
-        //Update logic        
+        //Update logic
+        Ctx.LockedPosition = Ctx.PlayerHead.transform.position;
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.StopCoroutine("FocusTarget");
     }
     public override void CheckSwitchStates() {
         //Switch logic

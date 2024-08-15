@@ -1,5 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -8,6 +8,12 @@ public class CompanionController : MonoBehaviour {
     [SerializeField] VisualEffect _spark;
     [SerializeField] VisualEffect _trail;
     [SerializeField] Collider _stuckCollider;
+
+    [SerializeField] Transform _asset;
+    [SerializeField] GameObject _playerHead;
+    [SerializeField] Transform _focusDefault;
+    [SerializeField] Transform _focusPivot;
+    [SerializeField] Transform _focusPoint;
 
     [SerializeField]
     [Range(0f, 5f)] float horizontalOffset;
@@ -21,13 +27,9 @@ public class CompanionController : MonoBehaviour {
     [SerializeField]
     [Range(0f, 10f)] float limitDistance;
 
-    public string debugState;
-
     private CBaseState _currentRootState;
     private CBaseState _currentSubState;
-    private CompanionStateHandler _stateHandler;
-
-    private GameObject _playerHead;
+    private CompanionStateHandler _stateHandler;    
 
     private bool isStuck = false;
     private bool isOperative = false;
@@ -39,7 +41,7 @@ public class CompanionController : MonoBehaviour {
 
     private int rrToken = 0;
     private float limitDistanceMax;
-    private Vector3[] targetPosition = new Vector3[4];
+    private Vector3[] targetPosition = new Vector3[8];
     private Vector3 lockedPosition;
 
     private bool targetLocked = false;
@@ -55,6 +57,7 @@ public class CompanionController : MonoBehaviour {
     public CompanionStateHandler StateHandler { get { return _stateHandler; } set { _stateHandler = value; } }
 
     public GameObject PlayerHead { get { return _playerHead; } set { _playerHead = value; } }
+    public Transform FocusDefault { get { return _focusDefault; } set { _focusDefault = value; } }
     public Collider StuckCollider { get { return _stuckCollider; } set { _stuckCollider = value; } }
 
     public bool IsStuck { get { return isStuck; } set { isStuck = value; } }
@@ -73,13 +76,12 @@ public class CompanionController : MonoBehaviour {
     public float LimitDistanceMax { get { return limitDistanceMax; } set { limitDistanceMax = value; } }
     public Vector3[] TargetPositions { get { return targetPosition; } set { targetPosition = value; } }
     public bool TargetLocked { get { return targetLocked; } set { targetLocked = value; } }
-    public Vector3 LockedPositions { get { return lockedPosition; } set { lockedPosition = value; } }
+    public Vector3 LockedPosition { get { return lockedPosition; } set { lockedPosition = value; } }
     public float Velocity { get { return velocity; } set { velocity = value; } }
     public float PlayerDistance { get { return playerDistance; } set { playerDistance = value; } }
 
     void Awake() {
-        _stateHandler = new CompanionStateHandler(this);
-        _playerHead = GameObject.Find("PlayerHead");
+        _stateHandler = new CompanionStateHandler(this);      
 
         limitDistanceMax = limitDistance + horizontalOffset;
         
@@ -98,20 +100,15 @@ public class CompanionController : MonoBehaviour {
         _currentRootState.UpdateState();
         _currentSubState.UpdateState();
 
-        debugState = _currentSubState.ToString();
-        if (_playerInfo.PlayerSubState == "JumpState") {
+        if (_playerInfo.PlayerSubState == "JumpState") { //DEBUG
             isFocusing = true;
         }
     }
-    
-    private void CycleRRToken() {
-        if (rrToken < 3) {
-            rrToken++;
-        } else {
-            rrToken = 0;
-        }
-    }
 
+    public void StorePlayerDistance() {
+        PlayerDistance = Vector3.Distance(this.transform.position, _playerHead.transform.position);
+    }
+    
     private void EvaluateHealth() {
         switch (_playerInfo.CurrentHp) {
             case 1: {
@@ -140,17 +137,66 @@ public class CompanionController : MonoBehaviour {
         StopCoroutine("LookAroundRoutine");
     }
 
+    public void UpdateRRToken() {
+        StartCoroutine("CycleRRToken");
+    }   
+
+    private IEnumerator CycleRRToken() {
+        int tempToken = Random.Range(1, 9);
+
+        if (rrToken != tempToken) {
+            rrToken = tempToken;
+            
+            yield break;
+        }
+
+        while (rrToken == tempToken) {
+            tempToken = Random.Range(1, 9);
+
+            if (rrToken != tempToken) {
+                rrToken = tempToken;
+
+                yield break;
+            }
+        }        
+    }
+
+    public IEnumerator FocusTarget() {
+        Vector3 lerpPoint = _focusPoint.position;        
+        _focusPivot.LookAt(LockedPosition);
+
+        Vector3 targetPoint = _focusPoint.position;
+
+        while (Mathf.Abs(Vector3.Distance(lerpPoint, targetPoint)) > 0.3f) {            
+            _focusPivot.LookAt(LockedPosition);
+            targetPoint = _focusPoint.position;
+            _asset.transform.LookAt(lerpPoint);            
+            lerpPoint = Vector3.LerpUnclamped(lerpPoint, targetPoint, 10f * Time.deltaTime);
+            yield return null;
+        }
+                
+        float timer = Time.time + 2f;
+        while (Time.time < timer) {
+            _focusPivot.LookAt(LockedPosition);
+            _asset.transform.LookAt(LockedPosition);
+            yield return null;
+        }
+
+        IsFocusing = false;
+        yield break;
+    }
+
     public IEnumerator LookAroundRoutine() {
         yield return new WaitForSeconds(3f);
 
-        Quaternion startAngle = this.transform.rotation;
+        Quaternion startAngle = _asset.transform.rotation;
         Quaternion targetAngle = new Quaternion(0f, 0f, 0f, 0f);       
         
         targetAngle.Set(startAngle.x, startAngle.y, startAngle.z, startAngle.w);
         targetAngle = Quaternion.Euler(0f, 40f, 0f);
 
         while (Mathf.Abs(targetAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
-            this.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f)); 
+            _asset.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f)); 
             yield return null;
         }
 
@@ -160,17 +206,18 @@ public class CompanionController : MonoBehaviour {
         targetAngle = Quaternion.Euler(0f, -40f, 0f);
 
         while (Mathf.Abs(targetAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
-            this.transform.Rotate(new Vector3(0f, -160f * Time.deltaTime, 0f));
+            _asset.transform.Rotate(new Vector3(0f, -160f * Time.deltaTime, 0f));
             yield return null;
         }
 
         yield return new WaitForSeconds(1f);
 
         while (Mathf.Abs(startAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
-            this.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f));
+            _asset.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f));
             yield return null;
         }
 
         yield break;
     }
+
 }
