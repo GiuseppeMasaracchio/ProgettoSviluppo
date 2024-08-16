@@ -30,14 +30,23 @@ public class CompanionController : MonoBehaviour {
     private CBaseState _currentRootState;
     private CBaseState _currentSubState;
     private CompanionStateHandler _stateHandler;    
-
+    
+    //Root States
     private bool isStuck = false;
     private bool isOperative = false;
+
+    //Sub States
     private bool isIdle = false;
     private bool isMoving = false;
     private bool isTalking = false;
     private bool isFocusing = false;
     private bool isUnstucking = false;
+
+    /*
+    private bool canFocus = true;
+    private bool canTalk = true;
+    private bool canMove = true;
+    */
 
     private int rrToken = 0;
     private float limitDistanceMax;
@@ -98,10 +107,18 @@ public class CompanionController : MonoBehaviour {
         EvaluateHealth();
 
         _currentRootState.UpdateState();
-        _currentSubState.UpdateState();
+        _currentSubState.UpdateState();        
 
-        if (_playerInfo.PlayerSubState == "JumpState") { //DEBUG
-            isFocusing = true;
+        if (PlayerDistance < 2.5f) { //DEBUG
+            if (!isFocusing) {
+                isFocusing = true;
+            }
+            else { return; }
+        } else {
+            if (isFocusing) {
+                isFocusing = false;
+            }
+            else { return; }
         }
     }
 
@@ -143,12 +160,12 @@ public class CompanionController : MonoBehaviour {
 
     private IEnumerator CycleRRToken() {
         int tempToken = Random.Range(1, 9);
-
+        
         if (rrToken != tempToken) {
             rrToken = tempToken;
             
             yield break;
-        }
+        }        
 
         while (rrToken == tempToken) {
             tempToken = Random.Range(1, 9);
@@ -167,14 +184,17 @@ public class CompanionController : MonoBehaviour {
 
         Vector3 targetPoint = _focusPoint.position;
 
-        while (Mathf.Abs(Vector3.Distance(lerpPoint, targetPoint)) > 0.3f) {            
+        while (Mathf.Abs(Vector3.Distance(lerpPoint, targetPoint)) > 0.2f) {            
             _focusPivot.LookAt(LockedPosition);
             targetPoint = _focusPoint.position;
             _asset.transform.LookAt(lerpPoint);            
             lerpPoint = Vector3.LerpUnclamped(lerpPoint, targetPoint, 10f * Time.deltaTime);
             yield return null;
         }
-                
+
+        _focusPivot.LookAt(LockedPosition);
+        _asset.transform.LookAt(LockedPosition);
+
         float timer = Time.time + 2f;
         while (Time.time < timer) {
             _focusPivot.LookAt(LockedPosition);
@@ -182,7 +202,12 @@ public class CompanionController : MonoBehaviour {
             yield return null;
         }
 
-        IsFocusing = false;
+        while (IsFocusing) {
+            _focusPivot.LookAt(LockedPosition);
+            _asset.transform.LookAt(LockedPosition);
+            yield return null;
+        }
+
         yield break;
     }
 

@@ -6,12 +6,14 @@ public class CFocusState : CBaseState {
     public override void EnterState() {
         //Enter logic      
 
+        Ctx.LockedPosition = Ctx.PlayerHead.transform.position;
         Ctx.StartCoroutine("FocusTarget");        
 
         InitializeContext();
     }
     public override void UpdateState() {
         //Update logic
+        
         Ctx.LockedPosition = Ctx.PlayerHead.transform.position;
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
@@ -22,13 +24,13 @@ public class CFocusState : CBaseState {
     }
     public override void CheckSwitchStates() {
         //Switch logic
-        
+                
         if (Ctx.IsTalking) {
             SwitchState(StateHandler.Talk());
         } 
         else if (Ctx.IsMoving) {
             SwitchState(StateHandler.Move());
-        }
+        } 
         else if (Ctx.IsIdle) {
             SwitchState(StateHandler.Idle());
         }
