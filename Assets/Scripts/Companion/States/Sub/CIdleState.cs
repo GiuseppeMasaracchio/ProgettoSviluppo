@@ -11,13 +11,13 @@ public class CIdleState : CBaseState {
 
         //Ctx.InvokeRepeating("UpdateRRToken", 0f, 2f);
 
-        Ctx.LockedPosition = Ctx.FocusDefault.position;
+        Ctx.VisionLockedPoint = Ctx.FocusDefaultPoint.position;
         Ctx.StartCoroutine("FocusTarget");        
     }
     public override void UpdateState() {
         //Update logic        
         
-        Ctx.LockedPosition = Ctx.FocusDefault.position;
+        Ctx.VisionLockedPoint = Ctx.FocusDefaultPoint.position;
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }

@@ -7847,9 +7847,9 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &152168756 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2889840909061318955, guid: 73e64702af523cb4a96141433111b375, type: 3}
+--- !u!4 &152168757 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8648365742446114647, guid: 73e64702af523cb4a96141433111b375, type: 3}
   m_PrefabInstance: {fileID: 542678909}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &152676759
@@ -31496,7 +31496,7 @@ Transform:
   m_GameObject: {fileID: 1612344933}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4360001, y: 3.4060817, z: -6.793}
+  m_LocalPosition: {x: 1.4360001, y: 3.4060817, z: -8.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -31541,8 +31541,8 @@ MonoBehaviour:
   _trail: {fileID: 557355931}
   _stuckCollider: {fileID: 1614835046}
   _asset: {fileID: 714268551}
-  _playerHead: {fileID: 152168756}
-  _focusDefault: {fileID: 325274899}
+  _playerHead: {fileID: 152168757}
+  _focusDefaultPoint: {fileID: 325274899}
   _focusPivot: {fileID: 1409148711}
   _focusPoint: {fileID: 911336309}
   horizontalOffset: 2

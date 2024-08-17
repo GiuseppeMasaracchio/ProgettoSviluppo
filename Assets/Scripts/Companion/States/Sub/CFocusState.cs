@@ -6,7 +6,7 @@ public class CFocusState : CBaseState {
     public override void EnterState() {
         //Enter logic      
 
-        Ctx.LockedPosition = Ctx.PlayerHead.transform.position;
+        Ctx.VisionLockedPoint = Ctx.PlayerHead.position;
         Ctx.StartCoroutine("FocusTarget");        
 
         InitializeContext();
@@ -14,7 +14,7 @@ public class CFocusState : CBaseState {
     public override void UpdateState() {
         //Update logic
         
-        Ctx.LockedPosition = Ctx.PlayerHead.transform.position;
+        Ctx.VisionLockedPoint = Ctx.PlayerHead.position;
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }

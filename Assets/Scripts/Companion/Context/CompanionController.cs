@@ -10,8 +10,8 @@ public class CompanionController : MonoBehaviour {
     [SerializeField] Collider _stuckCollider;
 
     [SerializeField] Transform _asset;
-    [SerializeField] GameObject _playerHead;
-    [SerializeField] Transform _focusDefault;
+    [SerializeField] Transform _playerHead;
+    [SerializeField] Transform _focusDefaultPoint;
     [SerializeField] Transform _focusPivot;
     [SerializeField] Transform _focusPoint;
 
@@ -48,14 +48,19 @@ public class CompanionController : MonoBehaviour {
     private bool canMove = true;
     */
 
-    private int rrToken = 0;
-    private float limitDistanceMax;
-    private Vector3[] targetPosition = new Vector3[8];
-    private Vector3 lockedPosition;
+    //VISION MODULE
+    private Vector3 visionFocusPoint;
+    private Vector3 visionLockedPoint;
+    private bool visionLocked;
 
-    private bool targetLocked = false;
+    //TRAVEL MODULE
+    private Vector3[] travelDestinations = new Vector3[8];
+    private Vector3 travelPosition;
+    private bool travelLocked = false;
 
     private float velocity;
+    private int rrToken = 0;
+    private float limitDistanceMax;
     private float playerDistance;
 
     public VisualEffect Spark { get { return _spark; } set { _spark = value; } }
@@ -65,8 +70,8 @@ public class CompanionController : MonoBehaviour {
     public CBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
     public CompanionStateHandler StateHandler { get { return _stateHandler; } set { _stateHandler = value; } }
 
-    public GameObject PlayerHead { get { return _playerHead; } set { _playerHead = value; } }
-    public Transform FocusDefault { get { return _focusDefault; } set { _focusDefault = value; } }
+    public Transform PlayerHead { get { return _playerHead; } set { _playerHead = value; } }
+    public Transform FocusDefaultPoint { get { return _focusDefaultPoint; } set { _focusDefaultPoint = value; } }
     public Collider StuckCollider { get { return _stuckCollider; } set { _stuckCollider = value; } }
 
     public bool IsStuck { get { return isStuck; } set { isStuck = value; } }
@@ -77,16 +82,22 @@ public class CompanionController : MonoBehaviour {
     public bool IsFocusing { get { return isFocusing; } set { isFocusing = value; } }
     public bool IsUnstucking { get { return isUnstucking; } set { isUnstucking = value; } }
 
-    public int RRToken { get { return rrToken; } }
     public float HorizontalOffset { get { return horizontalOffset; } }
     public float VerticalOffset { get { return verticalOffset; } }
     public float MaxVelocity { get { return maxVelocity; } }
     public float LimitDistance { get { return limitDistance; } }
-    public float LimitDistanceMax { get { return limitDistanceMax; } set { limitDistanceMax = value; } }
-    public Vector3[] TargetPositions { get { return targetPosition; } set { targetPosition = value; } }
-    public bool TargetLocked { get { return targetLocked; } set { targetLocked = value; } }
-    public Vector3 LockedPosition { get { return lockedPosition; } set { lockedPosition = value; } }
+
+    public Vector3 VisionFocusPoint { get { return visionFocusPoint; } set { visionFocusPoint = value; } }
+    public Vector3 VisionLockedPoint { get { return visionLockedPoint; } set { visionLockedPoint = value; } }
+    public bool VisionLocked { get { return visionLocked; } set { visionLocked = value; } }
+
+    public Vector3[] TravelDestinations { get { return travelDestinations; } set { travelDestinations = value; } }
+    public Vector3 TravelPosition { get { return TravelPosition; } set { TravelPosition = value; } }
+    public bool TravelLocked { get { return travelLocked; } set { travelLocked = value; } }
+
     public float Velocity { get { return velocity; } set { velocity = value; } }
+    public int RRToken { get { return rrToken; } }
+    public float LimitDistanceMax { get { return limitDistanceMax; } set { limitDistanceMax = value; } }
     public float PlayerDistance { get { return playerDistance; } set { playerDistance = value; } }
 
     void Awake() {
@@ -123,7 +134,7 @@ public class CompanionController : MonoBehaviour {
     }
 
     public void StorePlayerDistance() {
-        PlayerDistance = Vector3.Distance(this.transform.position, _playerHead.transform.position);
+        PlayerDistance = Vector3.Distance(this.transform.position, _playerHead.position);
     }
     
     private void EvaluateHealth() {
@@ -180,31 +191,31 @@ public class CompanionController : MonoBehaviour {
 
     public IEnumerator FocusTarget() {
         Vector3 lerpPoint = _focusPoint.position;        
-        _focusPivot.LookAt(LockedPosition);
+        
+        _focusPivot.LookAt(VisionLockedPoint);
+        VisionFocusPoint = _focusPoint.position;
 
-        Vector3 targetPoint = _focusPoint.position;
-
-        while (Mathf.Abs(Vector3.Distance(lerpPoint, targetPoint)) > 0.2f) {            
-            _focusPivot.LookAt(LockedPosition);
-            targetPoint = _focusPoint.position;
+        while (Mathf.Abs(Vector3.Distance(lerpPoint, VisionFocusPoint)) > 0.2f) {            
+            _focusPivot.LookAt(VisionLockedPoint);
+            VisionFocusPoint = _focusPoint.position;
             _asset.transform.LookAt(lerpPoint);            
-            lerpPoint = Vector3.LerpUnclamped(lerpPoint, targetPoint, 10f * Time.deltaTime);
+            lerpPoint = Vector3.LerpUnclamped(lerpPoint, VisionFocusPoint, 10f * Time.deltaTime);
             yield return null;
         }
 
-        _focusPivot.LookAt(LockedPosition);
-        _asset.transform.LookAt(LockedPosition);
+        _focusPivot.LookAt(VisionLockedPoint);
+        _asset.transform.LookAt(VisionLockedPoint);
 
         float timer = Time.time + 2f;
         while (Time.time < timer) {
-            _focusPivot.LookAt(LockedPosition);
-            _asset.transform.LookAt(LockedPosition);
+            _focusPivot.LookAt(VisionLockedPoint);
+            _asset.transform.LookAt(VisionLockedPoint);
             yield return null;
         }
 
         while (IsFocusing) {
-            _focusPivot.LookAt(LockedPosition);
-            _asset.transform.LookAt(LockedPosition);
+            _focusPivot.LookAt(VisionLockedPoint);
+            _asset.transform.LookAt(VisionLockedPoint);
             yield return null;
         }
 
