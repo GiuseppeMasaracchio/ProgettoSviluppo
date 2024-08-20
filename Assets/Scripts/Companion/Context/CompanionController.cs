@@ -122,19 +122,6 @@ public class CompanionController : MonoBehaviour {
         _currentRootState.UpdateState();
         _currentSubState.UpdateState();        
 
-        /*
-        if (PlayerDistance < 2.5f) { //DEBUG
-            if (!isFocusing) {
-                isFocusing = true;
-            }
-            else { return; }
-        } else {
-            if (isFocusing) {
-                isFocusing = false;
-            }
-            else { return; }
-        }
-        */
     }
 
     public void StorePlayerDistance() {
@@ -165,7 +152,8 @@ public class CompanionController : MonoBehaviour {
         StartCoroutine("CycleRRToken");
     }   
 
-    public void VisionDiscoveryStart() {
+    public void VisionIdleBehaviour() {
+        VisionLocked = false;
         StopCoroutine("VisionDiscoveryRoutine");
         StartCoroutine("VisionDiscoveryRoutine");
     }
@@ -223,29 +211,32 @@ public class CompanionController : MonoBehaviour {
                 VisionDiscoveryTransform = FocusDefaultPoint;                
             }
         }
+        
+        VisionLocked = true;
+        StartCoroutine("VisionFocusRoutine");
 
         yield break;
     }
     public IEnumerator VisionFocusRoutine() {
         Vector3 lerpPoint = _focusPoint.position;        
         
-        _focusPivot.LookAt(VisionLockedPoint);
+        _focusPivot.LookAt(VisionDiscoveryTransform.position);
         VisionFocusPoint = _focusPoint.position;
 
         while (Mathf.Abs(Vector3.Distance(lerpPoint, VisionFocusPoint)) > 0.2f) {            
-            _focusPivot.LookAt(VisionLockedPoint);
+            _focusPivot.LookAt(VisionDiscoveryTransform.position);
             VisionFocusPoint = _focusPoint.position;
             _asset.LookAt(lerpPoint);            
             lerpPoint = Vector3.LerpUnclamped(lerpPoint, VisionFocusPoint, 10f * Time.deltaTime);
             yield return null;
         }
 
-        _focusPivot.LookAt(VisionLockedPoint);
-        _asset.LookAt(VisionLockedPoint);
+        _focusPivot.LookAt(VisionDiscoveryTransform.position);
+        _asset.LookAt(VisionDiscoveryTransform.position);
 
         while (VisionLocked) {
-            _focusPivot.LookAt(VisionLockedPoint);
-            _asset.LookAt(VisionLockedPoint);
+            _focusPivot.LookAt(VisionDiscoveryTransform.position);
+            _asset.LookAt(VisionDiscoveryTransform.position);
             yield return null;
         }
 

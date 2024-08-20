@@ -7,7 +7,7 @@ public class CIdleState : CBaseState {
         //Enter logic
         InitializeContext();
 
-        Ctx.InvokeRepeating("VisionDiscoveryStart", 0f, 1.5f);
+        Ctx.InvokeRepeating("VisionIdleBehaviour", 0f, 5f);
 
         //Ctx.InvokeRepeating("UpdateRRToken", 0f, 2f);
 
