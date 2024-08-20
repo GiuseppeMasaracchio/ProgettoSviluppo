@@ -49,6 +49,7 @@ public class CompanionController : MonoBehaviour {
     */
 
     //VISION MODULE
+    private Transform visionDiscoveryTransform;
     private Vector3 visionFocusPoint;
     private Vector3 visionLockedPoint;
     private bool visionLocked;
@@ -87,6 +88,7 @@ public class CompanionController : MonoBehaviour {
     public float MaxVelocity { get { return maxVelocity; } }
     public float LimitDistance { get { return limitDistance; } }
 
+    public Transform VisionDiscoveryTransform { get { return visionDiscoveryTransform; } set { visionDiscoveryTransform = value; } }
     public Vector3 VisionFocusPoint { get { return visionFocusPoint; } set { visionFocusPoint = value; } }
     public Vector3 VisionLockedPoint { get { return visionLockedPoint; } set { visionLockedPoint = value; } }
     public bool VisionLocked { get { return visionLocked; } set { visionLocked = value; } }
@@ -120,6 +122,7 @@ public class CompanionController : MonoBehaviour {
         _currentRootState.UpdateState();
         _currentSubState.UpdateState();        
 
+        /*
         if (PlayerDistance < 2.5f) { //DEBUG
             if (!isFocusing) {
                 isFocusing = true;
@@ -131,10 +134,11 @@ public class CompanionController : MonoBehaviour {
             }
             else { return; }
         }
+        */
     }
 
     public void StorePlayerDistance() {
-        PlayerDistance = Vector3.Distance(this.transform.position, _playerHead.position);
+        PlayerDistance = Mathf.Abs(Vector3.Distance(this.transform.position, _playerHead.position));
     }
     
     private void EvaluateHealth() {
@@ -156,18 +160,15 @@ public class CompanionController : MonoBehaviour {
                 }
         }
     }
-
-    public void LookAround() {
-        StartCoroutine("LookAroundRoutine");
-    }
-
-    public void StopLookAround() {
-        StopCoroutine("LookAroundRoutine");
-    }
-
+  
     public void UpdateRRToken() {
         StartCoroutine("CycleRRToken");
     }   
+
+    public void VisionDiscoveryStart() {
+        StopCoroutine("VisionDiscoveryRoutine");
+        StartCoroutine("VisionDiscoveryRoutine");
+    }
 
     private IEnumerator CycleRRToken() {
         int tempToken = Random.Range(1, 9);
@@ -189,7 +190,43 @@ public class CompanionController : MonoBehaviour {
         }        
     }
 
-    public IEnumerator FocusTarget() {
+    public IEnumerator VisionDiscoveryRoutine() {
+        Collider[] targets = Physics.OverlapSphere(transform.position, 10f, LayerMask.GetMask("Enemy"));
+
+        yield return null;
+
+        if (PlayerDistance < limitDistance) {
+            VisionDiscoveryTransform = PlayerHead;            
+        } else {
+            if (targets != null) {
+                float distanceBuffer = 10f;
+
+                foreach (Collider target in targets) {
+                    Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out RaycastHit hitInfo, 10f);
+                    
+                    if (hitInfo.collider.transform == target.transform) {                         
+                        float targetDistance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
+
+                        if (targetDistance < distanceBuffer) {
+                            distanceBuffer = targetDistance;
+                            VisionDiscoveryTransform = target.transform;
+                            Debug.Log(target.transform.name + ": Locked at Distance (" + distanceBuffer + ")");
+                        }                                                 
+                    } else {
+                        VisionDiscoveryTransform = FocusDefaultPoint;
+                    }    
+
+                    yield return null;
+                }                
+
+            } else {
+                VisionDiscoveryTransform = FocusDefaultPoint;                
+            }
+        }
+
+        yield break;
+    }
+    public IEnumerator VisionFocusRoutine() {
         Vector3 lerpPoint = _focusPoint.position;        
         
         _focusPivot.LookAt(VisionLockedPoint);
@@ -198,62 +235,20 @@ public class CompanionController : MonoBehaviour {
         while (Mathf.Abs(Vector3.Distance(lerpPoint, VisionFocusPoint)) > 0.2f) {            
             _focusPivot.LookAt(VisionLockedPoint);
             VisionFocusPoint = _focusPoint.position;
-            _asset.transform.LookAt(lerpPoint);            
+            _asset.LookAt(lerpPoint);            
             lerpPoint = Vector3.LerpUnclamped(lerpPoint, VisionFocusPoint, 10f * Time.deltaTime);
             yield return null;
         }
 
         _focusPivot.LookAt(VisionLockedPoint);
-        _asset.transform.LookAt(VisionLockedPoint);
+        _asset.LookAt(VisionLockedPoint);
 
-        float timer = Time.time + 2f;
-        while (Time.time < timer) {
+        while (VisionLocked) {
             _focusPivot.LookAt(VisionLockedPoint);
-            _asset.transform.LookAt(VisionLockedPoint);
-            yield return null;
-        }
-
-        while (IsFocusing) {
-            _focusPivot.LookAt(VisionLockedPoint);
-            _asset.transform.LookAt(VisionLockedPoint);
+            _asset.LookAt(VisionLockedPoint);
             yield return null;
         }
 
         yield break;
     }
-
-    public IEnumerator LookAroundRoutine() {
-        yield return new WaitForSeconds(3f);
-
-        Quaternion startAngle = _asset.transform.rotation;
-        Quaternion targetAngle = new Quaternion(0f, 0f, 0f, 0f);       
-        
-        targetAngle.Set(startAngle.x, startAngle.y, startAngle.z, startAngle.w);
-        targetAngle = Quaternion.Euler(0f, 40f, 0f);
-
-        while (Mathf.Abs(targetAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
-            _asset.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f)); 
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(1f);
-        
-        targetAngle.Set(startAngle.x, startAngle.y, startAngle.z, startAngle.w);
-        targetAngle = Quaternion.Euler(0f, -40f, 0f);
-
-        while (Mathf.Abs(targetAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
-            _asset.transform.Rotate(new Vector3(0f, -160f * Time.deltaTime, 0f));
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(1f);
-
-        while (Mathf.Abs(startAngle.eulerAngles.y - transform.rotation.eulerAngles.y) > 10f) {
-            _asset.transform.Rotate(new Vector3(0f, 80f * Time.deltaTime, 0f));
-            yield return null;
-        }
-
-        yield break;
-    }
-
 }

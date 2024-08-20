@@ -7,24 +7,24 @@ public class CIdleState : CBaseState {
         //Enter logic
         InitializeContext();
 
-        //Ctx.InvokeRepeating("LookAround", 3f, 15f);
+        Ctx.InvokeRepeating("VisionDiscoveryStart", 0f, 1.5f);
 
         //Ctx.InvokeRepeating("UpdateRRToken", 0f, 2f);
 
-        Ctx.VisionLockedPoint = Ctx.FocusDefaultPoint.position;
-        Ctx.StartCoroutine("FocusTarget");        
+        //Ctx.VisionLockedPoint = Ctx.FocusDefaultPoint.position;
+        //Ctx.StartCoroutine("VisionDiscoveryRoutine");        
     }
     public override void UpdateState() {
         //Update logic        
         
-        Ctx.VisionLockedPoint = Ctx.FocusDefaultPoint.position;
+        //Ctx.VisionLockedPoint = Ctx.FocusDefaultPoint.position;
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
 
-        Ctx.StopCoroutine("FocusTarget");
+        //Ctx.StopCoroutine("FocusTarget");
         //Ctx.StopLookAround();
         //Ctx.CancelInvoke("LookAround");
     }
