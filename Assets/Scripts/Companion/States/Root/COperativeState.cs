@@ -19,8 +19,8 @@ public class COperativeState : CBaseState {
             Ctx.IsIdle = false;
         }
         else if (!Ctx.IsFocusing && !Ctx.IsTalking && !Ctx.IsMoving) {
-            Ctx.IsMoving = false;
             Ctx.IsIdle = true;
+            Ctx.IsMoving = false;
         }        
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION

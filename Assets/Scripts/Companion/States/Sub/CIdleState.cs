@@ -24,8 +24,8 @@ public class CIdleState : CBaseState {
     public override void ExitState() {
         //Exit logic
 
-        Ctx.VisionExitIdleBehaviour();
         Ctx.CancelInvoke("VisionEnterIdleBehaviour");
+        Ctx.VisionExitIdleBehaviour();
 
         //Ctx.StopCoroutine("FocusTarget");
         //Ctx.StopLookAround();

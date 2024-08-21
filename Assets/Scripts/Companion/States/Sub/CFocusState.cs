@@ -4,17 +4,12 @@ using UnityEngine;
 public class CFocusState : CBaseState {
     public CFocusState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
-        //Enter logic      
-
-        Ctx.VisionLockedPoint = Ctx.PlayerHead.position;
-        Ctx.StartCoroutine("FocusTarget");        
+        //Enter logic    
 
         InitializeContext();
     }
     public override void UpdateState() {
-        //Update logic
-        
-        Ctx.VisionLockedPoint = Ctx.PlayerHead.position;
+        //Update logic                
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }

@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -42,16 +41,9 @@ public class CompanionController : MonoBehaviour {
     private bool isFocusing = false;
     private bool isUnstucking = false;
 
-    /*
-    private bool canFocus = true;
-    private bool canTalk = true;
-    private bool canMove = true;
-    */
-
     //VISION MODULE
     private Transform visionDiscoveryTransform;
-    private Vector3 visionFocusPoint;
-    private Vector3 visionLockedPoint;
+    private Vector3 visionFocusPoint;    
     private bool visionLocked;
 
     //TRAVEL MODULE
@@ -59,8 +51,9 @@ public class CompanionController : MonoBehaviour {
     private Vector3 travelPosition;
     private bool travelLocked = false;
 
-    private float velocity;
-    private int rrToken = 0;
+    private int rngToken = 0;
+    private float currentVelocity = 0f;
+
     private float limitDistanceMax;
     private float playerDistance;
 
@@ -89,16 +82,15 @@ public class CompanionController : MonoBehaviour {
     public float LimitDistance { get { return limitDistance; } }
 
     public Transform VisionDiscoveryTransform { get { return visionDiscoveryTransform; } set { visionDiscoveryTransform = value; } }
-    public Vector3 VisionFocusPoint { get { return visionFocusPoint; } set { visionFocusPoint = value; } }
-    public Vector3 VisionLockedPoint { get { return visionLockedPoint; } set { visionLockedPoint = value; } }
+    public Vector3 VisionFocusPoint { get { return visionFocusPoint; } set { visionFocusPoint = value; } }    
     public bool VisionLocked { get { return visionLocked; } set { visionLocked = value; } }
 
     public Vector3[] TravelDestinations { get { return travelDestinations; } set { travelDestinations = value; } }
     public Vector3 TravelPosition { get { return TravelPosition; } set { TravelPosition = value; } }
     public bool TravelLocked { get { return travelLocked; } set { travelLocked = value; } }
 
-    public float Velocity { get { return velocity; } set { velocity = value; } }
-    public int RRToken { get { return rrToken; } }
+    public int RNGToken { get { return rngToken; } }
+    public float CurrentVelocity { get { return currentVelocity; } set { currentVelocity = value; } }
     public float LimitDistanceMax { get { return limitDistanceMax; } set { limitDistanceMax = value; } }
     public float PlayerDistance { get { return playerDistance; } set { playerDistance = value; } }
 
@@ -123,11 +115,6 @@ public class CompanionController : MonoBehaviour {
         _currentSubState.UpdateState();        
 
     }
-
-    public void StorePlayerDistance() {
-        PlayerDistance = Mathf.Abs(Vector3.Distance(this.transform.position, _playerHead.position));
-    }
-    
     private void EvaluateHealth() {
         switch (_playerInfo.CurrentHp) {
             case 1: {
@@ -147,126 +134,166 @@ public class CompanionController : MonoBehaviour {
                 }
         }
     }
+
+    public void StorePlayerDistance() {
+        playerDistance = Mathf.Abs(Vector3.Distance(transform.position, _playerHead.position));
+    }    
   
-    public void UpdateRRToken() {
-        StartCoroutine("CycleRRToken");
+    public void UpdateRNGToken() {
+        StartCoroutine("CycleRNGToken");
     }   
 
     public void VisionEnterIdleBehaviour() {
-        VisionLocked = false;
+        visionLocked = false;
         StopCoroutine("VisionDiscoveryRoutine");
         StartCoroutine("VisionDiscoveryRoutine");
     }
 
     public void VisionExitIdleBehaviour() {
-        VisionLocked = false;
+        visionLocked = false;
         StopCoroutine("VisionDiscoveryRoutine");
+        StopCoroutine("VisionFocusRoutine");
     }
 
     public void VisionEnterTalkBehaviour() {
-        VisionLocked = true;
-        visionDiscoveryTransform = PlayerHead;
+        visionLocked = true;
+        visionDiscoveryTransform = _playerHead;
         StartCoroutine("VisionFocusRoutine");
     }
 
     public void VisionExitTalkBehaviour() {
-        VisionLocked = false;
+        visionLocked = false;
     }
 
     public void VisionEnterMoveBehaviour() {
-        VisionLocked = true;
-        visionDiscoveryTransform = FocusDefaultPoint;
+        visionLocked = true;
+        visionDiscoveryTransform = _focusDefaultPoint;
         StartCoroutine("VisionFocusRoutine");
     }
 
     public void VisionExitMoveBehaviour() {
-        VisionLocked = false;
+        visionLocked = false;
     }
 
-    private IEnumerator CycleRRToken() {
+    private IEnumerator CycleRNGToken() {
         int tempToken = Random.Range(1, 9);
         
-        if (rrToken != tempToken) {
-            rrToken = tempToken;
+        if (rngToken != tempToken) {
+            rngToken = tempToken;
             
             yield break;
         }        
 
-        while (rrToken == tempToken) {
+        while (rngToken == tempToken) {
             tempToken = Random.Range(1, 9);
 
-            if (rrToken != tempToken) {
-                rrToken = tempToken;
+            if (rngToken != tempToken) {
+                rngToken = tempToken;
 
                 yield break;
             }
         }        
     }
 
-    public IEnumerator VisionDiscoveryRoutine() {
+    private IEnumerator TravelPredictRoutine() {
+        yield return null;
+    }
+    private IEnumerator TravelMoveRoutine() {
+        Vector3 lerpPosition;
+        Quaternion travelRotation = transform.rotation;
+        
+        float distanceToTarget = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
+        Vector3 travelForward = (travelPosition - transform.position).normalized;
+        travelRotation.SetLookRotation(travelForward);        
+
+        while (distanceToTarget > 0.2f) {
+            distanceToTarget = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
+            travelForward = (travelPosition - transform.position).normalized;
+            travelRotation.SetLookRotation(travelForward);
+            currentVelocity = Mathf.LerpUnclamped(currentVelocity, maxVelocity, 2f);
+            lerpPosition = Vector3.LerpUnclamped(transform.position, travelPosition, currentVelocity * Time.deltaTime);
+
+            _trail.SetFloat("DragDirection", (currentVelocity / maxVelocity));
+            transform.rotation = Quaternion.Euler(0f, travelRotation.y, 0f);
+            transform.position = lerpPosition;
+
+            yield return null;
+        }
+
+        isMoving = false;
+        currentVelocity = 0f;
+        _trail.SetFloat("DragDirection", 0f);
+
+        yield break;
+    }
+
+    private IEnumerator VisionDiscoveryRoutine() {
         Collider[] targets = Physics.OverlapSphere(transform.position, 10f, LayerMask.GetMask("Enemy"));
 
         yield return null;
 
-        if (PlayerDistance < limitDistance) {
-            VisionDiscoveryTransform = PlayerHead;
+        if (playerDistance < limitDistance) {
+            visionDiscoveryTransform = _playerHead;
             
         } else {
 
             if (targets != null) {
                 float distanceBuffer = 10f;
 
+                visionDiscoveryTransform = _focusDefaultPoint;
+
                 foreach (Collider target in targets) {
-                    Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out RaycastHit hitInfo, 10f);
-                    
+                    Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out RaycastHit hitInfo, 10f);                   
+
                     if (hitInfo.collider.transform == target.transform) {                         
                         float targetDistance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
 
-                        if (targetDistance < distanceBuffer) {
+                        if (targetDistance <= distanceBuffer) {
                             distanceBuffer = targetDistance;
-                            VisionDiscoveryTransform = target.transform;
-                            Debug.Log(target.transform.name + ": Locked at Distance (" + distanceBuffer + ")");
+                            visionDiscoveryTransform = target.transform;                          
                         }
                         
-                    } else {
-                        VisionDiscoveryTransform = FocusDefaultPoint;
-
-                    }    
+                    }                    
 
                     yield return null;
-                }                
+                }
+
+                visionLocked = true;
+                StartCoroutine("VisionFocusRoutine");
+
+                yield break;
 
             } else {
-                VisionDiscoveryTransform = FocusDefaultPoint;                
+                visionDiscoveryTransform = _focusDefaultPoint;                
             }
         }
         
-        VisionLocked = true;
+        visionLocked = true;
         StartCoroutine("VisionFocusRoutine");
 
         yield break;
     }
 
-    public IEnumerator VisionFocusRoutine() {
+    private IEnumerator VisionFocusRoutine() {
         Vector3 lerpPoint = _focusPoint.position;        
         
-        _focusPivot.LookAt(VisionDiscoveryTransform.position);
-        VisionFocusPoint = _focusPoint.position;
+        _focusPivot.LookAt(visionDiscoveryTransform.position);
+        visionFocusPoint = _focusPoint.position;
 
-        while (Mathf.Abs(Vector3.Distance(lerpPoint, VisionFocusPoint)) > 0.2f) {            
-            _focusPivot.LookAt(VisionDiscoveryTransform.position);
-            VisionFocusPoint = _focusPoint.position;
+        while (Mathf.Abs(Vector3.Distance(lerpPoint, visionFocusPoint)) > 0.2f) {            
+            _focusPivot.LookAt(visionDiscoveryTransform.position);
+            visionFocusPoint = _focusPoint.position;
             _asset.LookAt(lerpPoint);            
-            lerpPoint = Vector3.LerpUnclamped(lerpPoint, VisionFocusPoint, 10f * Time.deltaTime);
+            lerpPoint = Vector3.LerpUnclamped(lerpPoint, visionFocusPoint, 10f * Time.deltaTime);
             yield return null;
         }
 
-        _focusPivot.LookAt(VisionDiscoveryTransform.position);
-        _asset.LookAt(VisionDiscoveryTransform.position);
+        _focusPivot.LookAt(visionDiscoveryTransform.position);
+        _asset.LookAt(visionDiscoveryTransform.position);
 
-        while (VisionLocked) {
-            _focusPivot.LookAt(VisionDiscoveryTransform.position);
-            _asset.LookAt(VisionDiscoveryTransform.position);
+        while (visionLocked) {
+            _focusPivot.LookAt(visionDiscoveryTransform.position);
+            _asset.LookAt(visionDiscoveryTransform.position);
             yield return null;
         }
 
