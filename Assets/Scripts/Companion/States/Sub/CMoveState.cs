@@ -5,6 +5,9 @@ public class CMoveState : CBaseState {
     public CMoveState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
         //Enter logic
+        Ctx.VisionEnterMoveBehaviour();
+        SetVFXDrag(1f);
+
         InitializeContext();
     }
     public override void UpdateState() {
@@ -14,6 +17,8 @@ public class CMoveState : CBaseState {
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.VisionExitMoveBehaviour();
+        SetVFXDrag(0f);
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -36,5 +41,9 @@ public class CMoveState : CBaseState {
         Ctx.IsFocusing = false;
         Ctx.IsIdle = false;
         Ctx.IsUnstucking = false;
-    }    
+    }
+
+    public void SetVFXDrag(float value) {
+        Ctx.Trail.SetFloat("DragDirection", value);
+    }
 }

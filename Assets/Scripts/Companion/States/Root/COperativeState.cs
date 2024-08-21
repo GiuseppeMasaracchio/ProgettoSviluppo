@@ -13,7 +13,7 @@ public class COperativeState : CBaseState {
         //Update logic        
 
         Ctx.StorePlayerDistance();
-
+        
         if (!Ctx.IsFocusing && !Ctx.IsTalking && Ctx.IsMoving) {
             Ctx.IsMoving = true;
             Ctx.IsIdle = false;
@@ -21,7 +21,7 @@ public class COperativeState : CBaseState {
         else if (!Ctx.IsFocusing && !Ctx.IsTalking && !Ctx.IsMoving) {
             Ctx.IsMoving = false;
             Ctx.IsIdle = true;
-        }
+        }        
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }

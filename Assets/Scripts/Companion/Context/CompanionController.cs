@@ -152,10 +152,35 @@ public class CompanionController : MonoBehaviour {
         StartCoroutine("CycleRRToken");
     }   
 
-    public void VisionIdleBehaviour() {
+    public void VisionEnterIdleBehaviour() {
         VisionLocked = false;
         StopCoroutine("VisionDiscoveryRoutine");
         StartCoroutine("VisionDiscoveryRoutine");
+    }
+
+    public void VisionExitIdleBehaviour() {
+        VisionLocked = false;
+        StopCoroutine("VisionDiscoveryRoutine");
+    }
+
+    public void VisionEnterTalkBehaviour() {
+        VisionLocked = true;
+        visionDiscoveryTransform = PlayerHead;
+        StartCoroutine("VisionFocusRoutine");
+    }
+
+    public void VisionExitTalkBehaviour() {
+        VisionLocked = false;
+    }
+
+    public void VisionEnterMoveBehaviour() {
+        VisionLocked = true;
+        visionDiscoveryTransform = FocusDefaultPoint;
+        StartCoroutine("VisionFocusRoutine");
+    }
+
+    public void VisionExitMoveBehaviour() {
+        VisionLocked = false;
     }
 
     private IEnumerator CycleRRToken() {
@@ -184,8 +209,10 @@ public class CompanionController : MonoBehaviour {
         yield return null;
 
         if (PlayerDistance < limitDistance) {
-            VisionDiscoveryTransform = PlayerHead;            
+            VisionDiscoveryTransform = PlayerHead;
+            
         } else {
+
             if (targets != null) {
                 float distanceBuffer = 10f;
 
@@ -199,9 +226,11 @@ public class CompanionController : MonoBehaviour {
                             distanceBuffer = targetDistance;
                             VisionDiscoveryTransform = target.transform;
                             Debug.Log(target.transform.name + ": Locked at Distance (" + distanceBuffer + ")");
-                        }                                                 
+                        }
+                        
                     } else {
                         VisionDiscoveryTransform = FocusDefaultPoint;
+
                     }    
 
                     yield return null;
@@ -217,6 +246,7 @@ public class CompanionController : MonoBehaviour {
 
         yield break;
     }
+
     public IEnumerator VisionFocusRoutine() {
         Vector3 lerpPoint = _focusPoint.position;        
         

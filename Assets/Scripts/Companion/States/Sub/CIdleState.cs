@@ -7,7 +7,7 @@ public class CIdleState : CBaseState {
         //Enter logic
         InitializeContext();
 
-        Ctx.InvokeRepeating("VisionIdleBehaviour", 0f, 5f);
+        Ctx.InvokeRepeating("VisionEnterIdleBehaviour", 0f, 5f);
 
         //Ctx.InvokeRepeating("UpdateRRToken", 0f, 2f);
 
@@ -24,9 +24,11 @@ public class CIdleState : CBaseState {
     public override void ExitState() {
         //Exit logic
 
+        Ctx.VisionExitIdleBehaviour();
+        Ctx.CancelInvoke("VisionEnterIdleBehaviour");
+
         //Ctx.StopCoroutine("FocusTarget");
         //Ctx.StopLookAround();
-        //Ctx.CancelInvoke("LookAround");
     }
     public override void CheckSwitchStates() {
         //Switch logic

@@ -5,6 +5,8 @@ public class CTalkState : CBaseState {
     public CTalkState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
         //Enter logic
+        Ctx.VisionEnterTalkBehaviour();
+
         InitializeContext();
     }
     public override void UpdateState() {
@@ -14,6 +16,7 @@ public class CTalkState : CBaseState {
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.VisionExitTalkBehaviour();
     }
     public override void CheckSwitchStates() {
         //Switch logic
