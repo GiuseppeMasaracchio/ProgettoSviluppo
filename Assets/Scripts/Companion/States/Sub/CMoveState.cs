@@ -5,8 +5,10 @@ public class CMoveState : CBaseState {
     public CMoveState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
         //Enter logic
+
+        Ctx.StartCoroutine("TravelMoveRoutine");
         Ctx.VisionEnterMoveBehaviour();
-        SetVFXDrag(1f);
+        //SetVFXDrag(1f);
 
         InitializeContext();
     }
@@ -18,7 +20,7 @@ public class CMoveState : CBaseState {
     public override void ExitState() {
         //Exit logic
         Ctx.VisionExitMoveBehaviour();
-        SetVFXDrag(0f);
+        //SetVFXDrag(0f);
     }
     public override void CheckSwitchStates() {
         //Switch logic

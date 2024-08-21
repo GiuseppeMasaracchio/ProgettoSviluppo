@@ -102,7 +102,7 @@ public class CompanionController : MonoBehaviour {
         _currentRootState = StateHandler.Operative();
         _currentRootState.EnterState();
 
-        _currentSubState = StateHandler.Idle();
+        _currentSubState = StateHandler.Move();
         _currentSubState.EnterState();
 
     }
