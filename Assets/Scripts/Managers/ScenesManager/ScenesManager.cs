@@ -7,8 +7,9 @@ public class ScenesManager : MonoBehaviour {
     public static ScenesManager Instance { get; private set; }
     
     [SerializeField] Material _fade;
-    [SerializeField] GameObject _playerprefab;
-    [SerializeField] PlayerInfo _playerinfo;
+    [SerializeField] GameObject _playerPrefab;
+    [SerializeField] GameObject _companionPrefab;
+    [SerializeField] PlayerInfo _playerInfo;
 
     [SerializeField]
     [Range(.1f, 2f)] float _fadeSpeed;
@@ -62,7 +63,7 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(RetrievePoint(Cp.CP_0));
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(InstantiatePlayer());
+        StartCoroutine(InstantiatePlayerAndCompanion());
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(FadeOut());
@@ -80,7 +81,7 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(RetrieveCheckpoints());
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(InstantiatePlayer());
+        StartCoroutine(InstantiatePlayerAndCompanion());
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(FadeOut());
@@ -98,7 +99,7 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(RetrievePoint(_point));
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(InstantiatePlayer());
+        StartCoroutine(InstantiatePlayerAndCompanion());
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(FadeOut());
@@ -113,7 +114,7 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InitializeLoad(SceneManager.GetActiveScene().buildIndex));
         yield return null;
 
-        _playerinfo.CurrentHp = 3;
+        _playerInfo.CurrentHp = 3;
 
         yield break;
     }
@@ -164,8 +165,8 @@ public class ScenesManager : MonoBehaviour {
 
         GameObject[] _tmp = GameObject.FindGameObjectsWithTag("Checkpoint");
 
-        if (SceneManager.GetActiveScene().buildIndex == _playerinfo.Checkpoint.x) {
-            _targetCp = (Cp)_playerinfo.Checkpoint.y;
+        if (SceneManager.GetActiveScene().buildIndex == _playerInfo.Checkpoint.x) {
+            _targetCp = (Cp)_playerInfo.Checkpoint.y;
         } else { _targetCp = Cp.CP_0; }
 
         foreach (GameObject _obj in _tmp) {
@@ -202,9 +203,12 @@ public class ScenesManager : MonoBehaviour {
         yield break;
     }
 
-    public IEnumerator InstantiatePlayer() {
+    public IEnumerator InstantiatePlayerAndCompanion() {
         paused = true;
-        Instantiate(_playerprefab, _cpObj.transform.position, _cpObj.transform.rotation);
+        Instantiate(_playerPrefab, _cpObj.transform.position, _cpObj.transform.rotation);
+        yield return new WaitForSeconds(.2f);
+
+        Instantiate(_companionPrefab, _cpObj.transform.position + new Vector3(0f, 1f, 1f), _cpObj.transform.rotation);
         yield return new WaitForSeconds(.2f);
 
         paused = false;

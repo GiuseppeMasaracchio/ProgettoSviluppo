@@ -1,6 +1,3 @@
-using System.Collections;
-using UnityEngine;
-
 public class CTalkState : CBaseState {
     public CTalkState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
@@ -16,7 +13,7 @@ public class CTalkState : CBaseState {
     }
     public override void ExitState() {
         //Exit logic
-        Ctx.VisionExitTalkBehaviour();
+        Ctx.VisionExitBehaviour();
     }
     public override void CheckSwitchStates() {
         //Switch logic

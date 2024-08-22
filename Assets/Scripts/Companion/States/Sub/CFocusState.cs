@@ -1,6 +1,3 @@
-using System.Collections;
-using UnityEngine;
-
 public class CFocusState : CBaseState {
     public CFocusState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
@@ -15,7 +12,7 @@ public class CFocusState : CBaseState {
     }
     public override void ExitState() {
         //Exit logic
-        Ctx.StopCoroutine("FocusTarget");
+        //Ctx.StopCoroutine("FocusTarget");
     }
     public override void CheckSwitchStates() {
         //Switch logic

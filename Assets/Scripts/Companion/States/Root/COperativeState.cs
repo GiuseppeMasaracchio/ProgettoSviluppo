@@ -1,6 +1,3 @@
-using System.Collections;
-using UnityEngine;
-
 public class COperativeState : CBaseState {
     public COperativeState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) {
         IsRootState = true; //SOLO SU STUCK E OPERATIVE (ROOT STATES)

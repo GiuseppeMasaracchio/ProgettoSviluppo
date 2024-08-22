@@ -1,26 +1,25 @@
-using System.Collections;
-using UnityEngine;
-
 public class CMoveState : CBaseState {
     public CMoveState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
         //Enter logic
-
-        Ctx.StartCoroutine("TravelMoveRoutine");
+        
+        Ctx.TravelEnterBehaviour();
         Ctx.VisionEnterMoveBehaviour();
-        //SetVFXDrag(1f);
 
         InitializeContext();
     }
     public override void UpdateState() {
         //Update logic        
 
+        Ctx.VisionUpdateMoveBehaviour();
+
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
-        Ctx.VisionExitMoveBehaviour();
-        //SetVFXDrag(0f);
+
+        Ctx.VisionLocked = false;
+
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -31,7 +30,7 @@ public class CMoveState : CBaseState {
         else if (Ctx.IsFocusing) {
             SwitchState(StateHandler.Focus());
         }
-        else if (Ctx.IsIdle) {
+        else if (Ctx.IsIdle && !Ctx.TravelLocked) {
             SwitchState(StateHandler.Idle());
         }
         else if (Ctx.IsStuck && Ctx.IsUnstucking) {
@@ -44,8 +43,5 @@ public class CMoveState : CBaseState {
         Ctx.IsIdle = false;
         Ctx.IsUnstucking = false;
     }
-
-    public void SetVFXDrag(float value) {
-        Ctx.Trail.SetFloat("DragDirection", value);
-    }
+   
 }

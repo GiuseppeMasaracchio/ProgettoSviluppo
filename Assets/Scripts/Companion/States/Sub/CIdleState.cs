@@ -1,18 +1,11 @@
-using System.Collections;
-using UnityEngine;
-
 public class CIdleState : CBaseState {
     public CIdleState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
         //Enter logic
         InitializeContext();
 
-        Ctx.InvokeRepeating("VisionEnterIdleBehaviour", 0f, 5f);
-
-        //Ctx.InvokeRepeating("UpdateRRToken", 0f, 2f);
-
-        //Ctx.VisionLockedPoint = Ctx.FocusDefaultPoint.position;
-        //Ctx.StartCoroutine("VisionDiscoveryRoutine");        
+        Ctx.InvokeRepeating("VisionEnterIdleBehaviour", 0f, 3f);
+               
     }
     public override void UpdateState() {
         //Update logic        
@@ -25,7 +18,7 @@ public class CIdleState : CBaseState {
         //Exit logic
 
         Ctx.CancelInvoke("VisionEnterIdleBehaviour");
-        Ctx.VisionExitIdleBehaviour();
+        Ctx.VisionExitBehaviour();
 
         //Ctx.StopCoroutine("FocusTarget");
         //Ctx.StopLookAround();

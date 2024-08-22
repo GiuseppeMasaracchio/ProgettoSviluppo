@@ -9,8 +9,8 @@ public class CompanionController : MonoBehaviour {
     [SerializeField] Collider _stuckCollider;
 
     [SerializeField] Transform _asset;
-    [SerializeField] Transform _playerHead;
     [SerializeField] Transform _focusDefaultPoint;
+    [SerializeField] Transform _focusDefaultPivot;
     [SerializeField] Transform _focusPivot;
     [SerializeField] Transform _focusPoint;
 
@@ -25,6 +25,8 @@ public class CompanionController : MonoBehaviour {
 
     [SerializeField]
     [Range(0f, 10f)] float limitDistance;
+    
+    private Transform _playerHead;
 
     private CBaseState _currentRootState;
     private CBaseState _currentSubState;
@@ -65,7 +67,6 @@ public class CompanionController : MonoBehaviour {
     public CompanionStateHandler StateHandler { get { return _stateHandler; } set { _stateHandler = value; } }
 
     public Transform PlayerHead { get { return _playerHead; } set { _playerHead = value; } }
-    public Transform FocusDefaultPoint { get { return _focusDefaultPoint; } set { _focusDefaultPoint = value; } }
     public Collider StuckCollider { get { return _stuckCollider; } set { _stuckCollider = value; } }
 
     public bool IsStuck { get { return isStuck; } set { isStuck = value; } }
@@ -86,7 +87,7 @@ public class CompanionController : MonoBehaviour {
     public bool VisionLocked { get { return visionLocked; } set { visionLocked = value; } }
 
     public Vector3[] TravelDestinations { get { return travelDestinations; } set { travelDestinations = value; } }
-    public Vector3 TravelPosition { get { return TravelPosition; } set { TravelPosition = value; } }
+    public Vector3 TravelPosition { get { return travelPosition; } set { travelPosition = value; } }
     public bool TravelLocked { get { return travelLocked; } set { travelLocked = value; } }
 
     public int RNGToken { get { return rngToken; } }
@@ -95,15 +96,18 @@ public class CompanionController : MonoBehaviour {
     public float PlayerDistance { get { return playerDistance; } set { playerDistance = value; } }
 
     void Awake() {
-        _stateHandler = new CompanionStateHandler(this);      
+        _stateHandler = new CompanionStateHandler(this);
+        _playerHead = GameObject.Find("PlayerHead").transform;
 
-        limitDistanceMax = limitDistance + horizontalOffset;
+        limitDistanceMax = limitDistance * 2.5f;
         
         _currentRootState = StateHandler.Operative();
         _currentRootState.EnterState();
 
-        _currentSubState = StateHandler.Move();
+        _currentSubState = StateHandler.Idle();
         _currentSubState.EnterState();
+
+        InitializeTravelDestinations();
 
     }
 
@@ -114,7 +118,23 @@ public class CompanionController : MonoBehaviour {
         _currentRootState.UpdateState();
         _currentSubState.UpdateState();        
 
+        if (playerDistance > limitDistanceMax) {
+            isMoving = true;
+        } 
+
     }
+
+    private void InitializeTravelDestinations() {
+        travelDestinations[0] = new Vector3(horizontalOffset, verticalOffset, -horizontalOffset);
+        travelDestinations[1] = new Vector3(0f, verticalOffset, -horizontalOffset);
+        travelDestinations[2] = new Vector3(-horizontalOffset, verticalOffset, -horizontalOffset);
+        travelDestinations[3] = new Vector3(-horizontalOffset, verticalOffset, 0f);
+        travelDestinations[4] = new Vector3(-horizontalOffset, verticalOffset, horizontalOffset);
+        travelDestinations[5] = new Vector3( 0f, verticalOffset, horizontalOffset);
+        travelDestinations[6] = new Vector3(horizontalOffset, verticalOffset, horizontalOffset);
+        travelDestinations[7] = new Vector3(horizontalOffset, verticalOffset, 0f);
+    }
+
     private void EvaluateHealth() {
         switch (_playerInfo.CurrentHp) {
             case 1: {
@@ -135,6 +155,10 @@ public class CompanionController : MonoBehaviour {
         }
     }
 
+    private Vector3 ComputeTravelPosition() {
+        return _playerHead.position + travelDestinations[rngToken - 1];
+    }
+
     public void StorePlayerDistance() {
         playerDistance = Mathf.Abs(Vector3.Distance(transform.position, _playerHead.position));
     }    
@@ -149,30 +173,33 @@ public class CompanionController : MonoBehaviour {
         StartCoroutine("VisionDiscoveryRoutine");
     }
 
-    public void VisionExitIdleBehaviour() {
-        visionLocked = false;
-        StopCoroutine("VisionDiscoveryRoutine");
-        StopCoroutine("VisionFocusRoutine");
-    }
-
     public void VisionEnterTalkBehaviour() {
         visionLocked = true;
         visionDiscoveryTransform = _playerHead;
         StartCoroutine("VisionFocusRoutine");
     }
 
-    public void VisionExitTalkBehaviour() {
-        visionLocked = false;
-    }
-
     public void VisionEnterMoveBehaviour() {
         visionLocked = true;
-        visionDiscoveryTransform = _focusDefaultPoint;
-        StartCoroutine("VisionFocusRoutine");
+        visionDiscoveryTransform = _focusDefaultPoint;        
     }
 
-    public void VisionExitMoveBehaviour() {
+    public void VisionUpdateMoveBehaviour() {
+        _focusPivot.LookAt(visionDiscoveryTransform.position);
+        _asset.LookAt(visionDiscoveryTransform.position);
+    }
+
+    public void VisionExitBehaviour() {
         visionLocked = false;
+        StopCoroutine("VisionDiscoveryRoutine");
+        StopCoroutine("VisionFocusRoutine");
+    }
+
+    public void TravelEnterBehaviour() {
+        travelLocked = true;
+        UpdateRNGToken();
+        StartCoroutine("TravelPredictRoutine");
+        StartCoroutine("TravelMoveRoutine");
     }
 
     private IEnumerator CycleRNGToken() {
@@ -197,29 +224,41 @@ public class CompanionController : MonoBehaviour {
 
     private IEnumerator TravelPredictRoutine() {
         yield return null;
+
+        while (travelLocked) {
+            travelPosition = ComputeTravelPosition();
+            yield return null;
+        }
+        yield break;
     }
-    private IEnumerator TravelMoveRoutine() {
+
+    private IEnumerator TravelMoveRoutine() { 
         Vector3 lerpPosition;
+        
+        yield return null;
+
         Quaternion travelRotation = transform.rotation;
         
-        float distanceToTarget = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
+        float travelDistance = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
         Vector3 travelForward = (travelPosition - transform.position).normalized;
-        travelRotation.SetLookRotation(travelForward);        
+        travelRotation.SetLookRotation(travelForward);
+        _focusDefaultPivot.rotation = Quaternion.Euler(0f, travelRotation.eulerAngles.y, 0f);
 
-        while (distanceToTarget > 0.2f) {
-            distanceToTarget = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
+        while (travelDistance > 0.3f) {
+            travelDistance = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
             travelForward = (travelPosition - transform.position).normalized;
             travelRotation.SetLookRotation(travelForward);
-            currentVelocity = Mathf.LerpUnclamped(currentVelocity, maxVelocity, 2f);
+            currentVelocity = Mathf.LerpUnclamped(currentVelocity, maxVelocity, .1f);
             lerpPosition = Vector3.LerpUnclamped(transform.position, travelPosition, currentVelocity * Time.deltaTime);
 
             _trail.SetFloat("DragDirection", (currentVelocity / maxVelocity));
-            transform.rotation = Quaternion.Euler(0f, travelRotation.y, 0f);
+            _focusDefaultPivot.rotation = Quaternion.Euler(0f, travelRotation.eulerAngles.y, 0f);
             transform.position = lerpPosition;
 
             yield return null;
         }
 
+        travelLocked = false;
         isMoving = false;
         currentVelocity = 0f;
         _trail.SetFloat("DragDirection", 0f);
@@ -232,9 +271,14 @@ public class CompanionController : MonoBehaviour {
 
         yield return null;
 
-        if (playerDistance < limitDistance) {
+        if (playerDistance < limitDistance) {            
             visionDiscoveryTransform = _playerHead;
-            
+                        
+            visionLocked = true;
+            StartCoroutine("VisionFocusRoutine");
+
+            yield break;            
+
         } else {
 
             if (targets != null) {
@@ -257,11 +301,11 @@ public class CompanionController : MonoBehaviour {
 
                     yield return null;
                 }
-
+                                                
                 visionLocked = true;
                 StartCoroutine("VisionFocusRoutine");
 
-                yield break;
+                yield break;                
 
             } else {
                 visionDiscoveryTransform = _focusDefaultPoint;                
@@ -291,7 +335,7 @@ public class CompanionController : MonoBehaviour {
         _focusPivot.LookAt(visionDiscoveryTransform.position);
         _asset.LookAt(visionDiscoveryTransform.position);
 
-        while (visionLocked) {
+        while (visionLocked) {           
             _focusPivot.LookAt(visionDiscoveryTransform.position);
             _asset.LookAt(visionDiscoveryTransform.position);
             yield return null;
