@@ -11,11 +11,11 @@ public class COperativeState : CBaseState {
 
         Ctx.StorePlayerDistance();
         
-        if (!Ctx.IsFocusing && !Ctx.IsTalking && Ctx.IsMoving) {
+        if (!Ctx.IsTalking && Ctx.IsMoving) {
             Ctx.IsMoving = true;
             Ctx.IsIdle = false;
         }
-        else if (!Ctx.IsFocusing && !Ctx.IsTalking && !Ctx.IsMoving) {
+        else if (!Ctx.IsTalking && !Ctx.IsMoving) {
             Ctx.IsIdle = true;
             Ctx.IsMoving = false;
         }        

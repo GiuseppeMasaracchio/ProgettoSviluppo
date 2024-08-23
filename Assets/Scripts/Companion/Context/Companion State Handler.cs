@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class CompanionStateHandler {
     CompanionController _context;
-    Dictionary<CompanionStates, CBaseState> stateList = new Dictionary<CompanionStates, CBaseState>(7); 
+    Dictionary<CompanionStates, CBaseState> stateList = new Dictionary<CompanionStates, CBaseState>(6); 
         
     public CompanionStateHandler(CompanionController currentContext) {
         _context = currentContext;
@@ -13,7 +13,6 @@ public class CompanionStateHandler {
         stateList[CompanionStates.talk] = new CTalkState(_context, this);             //3
         stateList[CompanionStates.idle] = new CIdleState(_context, this);             //4
         stateList[CompanionStates.move] = new CMoveState(_context, this);             //5
-        stateList[CompanionStates.focus] = new CFocusState(_context, this);           //6
     }
 
     public CBaseState Stuck() {
@@ -40,7 +39,4 @@ public class CompanionStateHandler {
         return stateList[CompanionStates.move];
     }
 
-    public CBaseState Focus() {
-        return stateList[CompanionStates.focus];
-    }
 }

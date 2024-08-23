@@ -21,9 +21,6 @@ public class CTalkState : CBaseState {
         if (Ctx.IsMoving) {
             SwitchState(StateHandler.Move());
         } 
-        else if (Ctx.IsFocusing) {
-            SwitchState(StateHandler.Focus());
-        }
         else if (Ctx.IsIdle) {
             SwitchState(StateHandler.Idle());
         }
@@ -33,7 +30,6 @@ public class CTalkState : CBaseState {
     }
     public void InitializeContext() {
         Ctx.IsMoving = false;
-        Ctx.IsFocusing = false;
         Ctx.IsIdle = false;
         Ctx.IsUnstucking = false;
     }    

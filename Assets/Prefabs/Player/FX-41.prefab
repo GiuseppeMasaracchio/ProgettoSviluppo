@@ -439,14 +439,13 @@ MonoBehaviour:
   _trail: {fileID: 6000788717663743403}
   _stuckCollider: {fileID: 5341274922537711686}
   _asset: {fileID: 5518213762513304179}
-  _playerHead: {fileID: 0}
   _focusDefaultPoint: {fileID: 7001780965579526945}
   _focusDefaultPivot: {fileID: 4246673946136195766}
   _focusPivot: {fileID: 3325969306771196874}
   _focusPoint: {fileID: 4848878850115392359}
   horizontalOffset: 1
   verticalOffset: 0.5
-  maxVelocity: 2
+  maxVelocity: 3
   limitDistance: 2
 --- !u!1 &8065461994888398084
 GameObject:

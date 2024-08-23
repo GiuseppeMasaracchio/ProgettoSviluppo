@@ -1301,7 +1301,7 @@ GameObject:
   - component: {fileID: 97204926}
   m_Layer: 0
   m_Name: Wall 1
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7688,11 +7688,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!4 &152168757 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8648365742446114647, guid: 73e64702af523cb4a96141433111b375, type: 3}
-  m_PrefabInstance: {fileID: 542678909}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &152676759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9575,7 +9570,7 @@ GameObject:
   - component: {fileID: 363410302}
   m_Layer: 13
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42675,6 +42670,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pod
       objectReference: {fileID: 0}
+    - target: {fileID: 5555102247469171396, guid: 84e739364c4c1ed4597df957bee3f5df, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     - target: {fileID: 6838580865506128447, guid: 84e739364c4c1ed4597df957bee3f5df, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.41875002
@@ -43284,10 +43283,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6291356821683356197, guid: 87dedec4ea7dfae4b867d7decb418404, type: 3}
-      propertyPath: _playerHead
-      value: 
-      objectReference: {fileID: 152168757}
     - target: {fileID: 7595553370665594620, guid: 87dedec4ea7dfae4b867d7decb418404, type: 3}
       propertyPath: m_Name
       value: FX-41

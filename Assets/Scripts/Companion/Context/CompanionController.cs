@@ -34,13 +34,12 @@ public class CompanionController : MonoBehaviour {
     
     //Root States
     private bool isStuck = false;
-    private bool isOperative = false;
+    private bool isOperative = true;
 
     //Sub States
     private bool isIdle = false;
     private bool isMoving = false;
-    private bool isTalking = false;
-    private bool isFocusing = false;
+    private bool isTalking = false;   
     private bool isUnstucking = false;
 
     //VISION MODULE
@@ -74,7 +73,6 @@ public class CompanionController : MonoBehaviour {
     public bool IsIdle { get { return isIdle; } set { isIdle = value; } }
     public bool IsMoving { get { return isMoving; } set { isMoving = value; } }
     public bool IsTalking { get { return isTalking; } set { isTalking = value; } }
-    public bool IsFocusing { get { return isFocusing; } set { isFocusing = value; } }
     public bool IsUnstucking { get { return isUnstucking; } set { isUnstucking = value; } }
 
     public float HorizontalOffset { get { return horizontalOffset; } }
@@ -202,6 +200,19 @@ public class CompanionController : MonoBehaviour {
         StartCoroutine("TravelMoveRoutine");
     }
 
+    public void UnstuckEnterBehaviour() {
+        travelLocked = true;
+        StartCoroutine("UnstuckRoutine");
+    }
+
+    public void UnstuckUpdateBehaviour() {
+        if (isStuck) {
+            travelLocked = false;
+            StopCoroutine("UnstuckRoutine");
+            StartCoroutine("UnstuckRoutine");
+        }
+    }
+
     private IEnumerator CycleRNGToken() {
         int tempToken = Random.Range(1, 9);
         
@@ -259,7 +270,11 @@ public class CompanionController : MonoBehaviour {
         }
 
         travelLocked = false;
-        isMoving = false;
+        
+        if (!isUnstucking) {
+            isMoving = false;
+        }
+
         currentVelocity = 0f;
         _trail.SetFloat("DragDirection", 0f);
 
@@ -343,4 +358,27 @@ public class CompanionController : MonoBehaviour {
 
         yield break;
     }
+
+    private IEnumerator UnstuckRoutine() {
+        yield return null;
+
+        while (IsStuck) {
+            UpdateRNGToken();
+            travelPosition = ComputeTravelPosition();
+
+            if (!Physics.SphereCast(travelPosition, 3f, Vector3.zero, out RaycastHit hitInfo)) {
+                StartCoroutine("TravelMoveRoutine");
+                
+                yield break;
+
+            } else {
+                UpdateRNGToken();
+            }
+
+            yield return null;
+        }
+        yield break;
+    }
+
+    //
 }

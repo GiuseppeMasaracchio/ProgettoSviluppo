@@ -1,6 +1,3 @@
-using System.Collections;
-using UnityEngine;
-
 public class CStuckState : CBaseState {
     public CStuckState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) {
         IsRootState = true; //SOLO SU STUCK E OPERATIVE (ROOT STATES)
@@ -10,7 +7,7 @@ public class CStuckState : CBaseState {
         InitializeContext();
     }
     public override void UpdateState() {
-        //Update logic        
+        //Update logic
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
@@ -27,5 +24,10 @@ public class CStuckState : CBaseState {
     }
     public void InitializeContext() {
         Ctx.IsOperative = false;
+
+        Ctx.IsMoving = false;
+        Ctx.IsIdle = false;
+        Ctx.IsTalking = false;
+        Ctx.IsUnstucking = true;
     }    
 }
