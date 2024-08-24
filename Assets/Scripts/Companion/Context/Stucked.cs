@@ -10,7 +10,7 @@ public class Stucked : MonoBehaviour {
         }
     }
 
-    private void OnTriggerStay(Collider other) {
+    private void OnTriggerStay(Collider other) {        
         if (!_ctx.IsMoving) {
             _ctx.IsStuck = true;
             _ctx.IsOperative = false;

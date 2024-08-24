@@ -12,7 +12,7 @@ public class CStuckState : CBaseState {
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
-        //Exit logic
+        //Exit logic        
     }
     public override void CheckSwitchStates() {
         //Switch logic

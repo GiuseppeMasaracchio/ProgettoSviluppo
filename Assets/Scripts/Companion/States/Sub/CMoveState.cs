@@ -18,7 +18,8 @@ public class CMoveState : CBaseState {
     public override void ExitState() {
         //Exit logic
 
-        Ctx.VisionLocked = false;
+        Ctx.VisionExitBehaviour();
+        Ctx.TravelExitBehaviour();
 
     }
     public override void CheckSwitchStates() {

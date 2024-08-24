@@ -4,6 +4,7 @@ public class COperativeState : CBaseState {
     }
     public override void EnterState() {
         //Enter logic
+        
         InitializeContext();
     }
     public override void UpdateState() {

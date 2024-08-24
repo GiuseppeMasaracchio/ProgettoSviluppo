@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -200,17 +201,28 @@ public class CompanionController : MonoBehaviour {
         StartCoroutine("TravelMoveRoutine");
     }
 
-    public void UnstuckEnterBehaviour() {
-        travelLocked = true;
-        StartCoroutine("UnstuckRoutine");
+    public void TravelExitBehaviour() {
+        travelLocked = false;        
+        StopCoroutine("TravelPredictRoutine");
+        StopCoroutine("TravelMoveRoutine");
     }
 
-    public void UnstuckUpdateBehaviour() {
+    public void UnstuckEnterBehaviour() {
         if (isStuck) {
-            travelLocked = false;
-            StopCoroutine("UnstuckRoutine");
+            travelLocked = true;
             StartCoroutine("UnstuckRoutine");
         }
+    }
+
+    public void UnstuckExitBehaviour() {
+        travelLocked = false;
+        StopCoroutine("UnstuckRoutine");
+        StopCoroutine("TravelMoveRoutine");
+    }
+
+    public void CheckStuckBehaviour() {
+        StopCoroutine("CheckStuckRoutine");
+        StartCoroutine("CheckStuckRoutine");
     }
 
     private IEnumerator CycleRNGToken() {
@@ -302,19 +314,25 @@ public class CompanionController : MonoBehaviour {
                 visionDiscoveryTransform = _focusDefaultPoint;
 
                 foreach (Collider target in targets) {
-                    Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out RaycastHit hitInfo, 10f);                   
+                    try {
+                        Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out RaycastHit hitInfo, 10f);                 
 
-                    if (hitInfo.collider.transform == target.transform) {                         
-                        float targetDistance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
+                        if (hitInfo.collider.transform == target.transform) {                         
+                            float targetDistance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
 
-                        if (targetDistance <= distanceBuffer) {
-                            distanceBuffer = targetDistance;
-                            visionDiscoveryTransform = target.transform;                          
-                        }
+                            if (targetDistance <= distanceBuffer) {
+                                distanceBuffer = targetDistance;
+                                visionDiscoveryTransform = target.transform;                          
+                            }
                         
-                    }                    
+                        }                    
 
-                    yield return null;
+                    } catch {
+                        visionDiscoveryTransform = _focusDefaultPoint;
+                        break;
+
+                    }
+                        yield return null;
                 }
                                                 
                 visionLocked = true;
@@ -377,6 +395,17 @@ public class CompanionController : MonoBehaviour {
 
             yield return null;
         }
+        yield break;
+    }
+
+    private IEnumerator CheckStuckRoutine() {
+        Physics.Raycast(transform.position, (_playerHead.position - transform.position).normalized, out RaycastHit hitInfo, 10f);             
+
+        if (hitInfo.collider.tag != "Player") {
+            isStuck = true;
+            yield return null;
+        }
+
         yield break;
     }
 

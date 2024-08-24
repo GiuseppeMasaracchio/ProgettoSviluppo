@@ -4,6 +4,7 @@ public class CIdleState : CBaseState {
         //Enter logic
         InitializeContext();
 
+        Ctx.InvokeRepeating("CheckStuckBehaviour", 0f, 5f);
         Ctx.InvokeRepeating("VisionEnterIdleBehaviour", 0f, 3f);
                
     }
@@ -35,5 +36,7 @@ public class CIdleState : CBaseState {
         Ctx.IsMoving = false;
         Ctx.IsTalking = false;
         Ctx.IsUnstucking = false;
+
+        Ctx.CurrentVelocity = 0f;
     }    
 }

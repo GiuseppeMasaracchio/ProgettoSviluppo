@@ -2,8 +2,8 @@ public class CUnstuckState : CBaseState {
     public CUnstuckState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) { }
     public override void EnterState() {
         //Enter logic
-
-        Ctx.InvokeRepeating("UnstuckEnterBehaviour", 0f, 3f);
+        
+        Ctx.InvokeRepeating("UnstuckEnterBehaviour", 0f, 2f);
         //Ctx.UnstuckEnterBehaviour(); 
 
         InitializeContext();
@@ -17,7 +17,7 @@ public class CUnstuckState : CBaseState {
 
     public override void ExitState() {
         //Exit logic
-
+        Ctx.UnstuckExitBehaviour();
     }
 
     public override void CheckSwitchStates() {

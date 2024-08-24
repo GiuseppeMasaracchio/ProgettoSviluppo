@@ -32,5 +32,7 @@ public class CTalkState : CBaseState {
         Ctx.IsMoving = false;
         Ctx.IsIdle = false;
         Ctx.IsUnstucking = false;
+
+        Ctx.CurrentVelocity = 0f;
     }    
 }
