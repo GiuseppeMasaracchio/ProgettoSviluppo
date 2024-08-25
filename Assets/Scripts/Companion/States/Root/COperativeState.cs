@@ -4,7 +4,9 @@ public class COperativeState : CBaseState {
     }
     public override void EnterState() {
         //Enter logic
-        
+
+        Ctx.InvokeRepeating("CheckStuckBehaviour", 0f, 2f);
+
         InitializeContext();
     }
     public override void UpdateState() {
@@ -12,14 +14,14 @@ public class COperativeState : CBaseState {
 
         Ctx.StorePlayerDistance();
         
-        if (!Ctx.IsTalking && Ctx.IsMoving) {
+        if (!Ctx.IsTalking && Ctx.IsMoving && !Ctx.IsStuck) {
             Ctx.IsMoving = true;
             Ctx.IsIdle = false;
         }
-        else if (!Ctx.IsTalking && !Ctx.IsMoving) {
+        else if (!Ctx.IsTalking && !Ctx.IsMoving && !Ctx.IsStuck) {
             Ctx.IsIdle = true;
             Ctx.IsMoving = false;
-        }        
+        }  
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }

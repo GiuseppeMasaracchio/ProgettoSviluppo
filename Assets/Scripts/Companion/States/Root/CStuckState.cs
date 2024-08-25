@@ -1,13 +1,21 @@
+using UnityEngine;
 public class CStuckState : CBaseState {
     public CStuckState(CompanionController currentContext, CompanionStateHandler stateHandler) : base(currentContext, stateHandler) {
         IsRootState = true; //SOLO SU STUCK E OPERATIVE (ROOT STATES)
     }
     public override void EnterState() {
         //Enter logic
+
         InitializeContext();
     }
     public override void UpdateState() {
-        //Update logic
+        //Update logic              
+
+        /*
+        if (!Ctx.IsUnstucking) {
+            Ctx.IsUnstucking = true;
+        }
+        */
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
@@ -25,9 +33,9 @@ public class CStuckState : CBaseState {
     public void InitializeContext() {
         Ctx.IsOperative = false;
 
-        Ctx.IsMoving = false;
-        Ctx.IsIdle = false;
-        Ctx.IsTalking = false;
+        //Ctx.IsMoving = false;
+        //Ctx.IsIdle = false;
+        //Ctx.IsTalking = false;
         Ctx.IsUnstucking = true;
     }    
 }

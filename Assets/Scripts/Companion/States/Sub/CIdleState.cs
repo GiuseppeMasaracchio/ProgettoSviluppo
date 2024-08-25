@@ -3,8 +3,7 @@ public class CIdleState : CBaseState {
     public override void EnterState() {
         //Enter logic
         InitializeContext();
-
-        Ctx.InvokeRepeating("CheckStuckBehaviour", 0f, 5f);
+        
         Ctx.InvokeRepeating("VisionEnterIdleBehaviour", 0f, 3f);
                
     }
@@ -28,7 +27,7 @@ public class CIdleState : CBaseState {
         else if (Ctx.IsOperative && Ctx.IsTalking) {
             SwitchState(StateHandler.Talk());
         }
-        else if (Ctx.IsStuck && Ctx.IsUnstucking) {
+        else if (Ctx.IsStuck) {
             SwitchState(StateHandler.Unstuck());
         }
     }

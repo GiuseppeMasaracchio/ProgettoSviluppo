@@ -34,6 +34,7 @@ public class CMoveState : CBaseState {
         else if (Ctx.IsStuck && Ctx.IsUnstucking) {
             SwitchState(StateHandler.Unstuck());
         }
+        
     }
     public void InitializeContext() {
         Ctx.IsTalking = false;

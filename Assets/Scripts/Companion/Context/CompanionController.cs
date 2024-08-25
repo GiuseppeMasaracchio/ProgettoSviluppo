@@ -202,20 +202,26 @@ public class CompanionController : MonoBehaviour {
     }
 
     public void TravelExitBehaviour() {
-        travelLocked = false;        
+        travelLocked = false;
+        currentVelocity = 0f;
+        _trail.SetFloat("DragDirection", 0f);
+
         StopCoroutine("TravelPredictRoutine");
         StopCoroutine("TravelMoveRoutine");
     }
 
     public void UnstuckEnterBehaviour() {
-        if (isStuck) {
-            travelLocked = true;
-            StartCoroutine("UnstuckRoutine");
-        }
+        travelLocked = true;
+        UpdateRNGToken();
+        StartCoroutine("UnstuckRoutine");
+        StartCoroutine("TravelMoveRoutine");
     }
 
     public void UnstuckExitBehaviour() {
         travelLocked = false;
+        currentVelocity = 0f;
+        _trail.SetFloat("DragDirection", 0f);
+
         StopCoroutine("UnstuckRoutine");
         StopCoroutine("TravelMoveRoutine");
     }
@@ -283,8 +289,10 @@ public class CompanionController : MonoBehaviour {
 
         travelLocked = false;
         
-        if (!isUnstucking) {
+        if (isOperative) {
             isMoving = false;
+        } else {            
+            isUnstucking = false;            
         }
 
         currentVelocity = 0f;
@@ -380,30 +388,35 @@ public class CompanionController : MonoBehaviour {
     private IEnumerator UnstuckRoutine() {
         yield return null;
 
-        while (IsStuck) {
-            UpdateRNGToken();
-            travelPosition = ComputeTravelPosition();
+        travelPosition = ComputeTravelPosition();
 
-            if (!Physics.SphereCast(travelPosition, 3f, Vector3.zero, out RaycastHit hitInfo)) {
-                StartCoroutine("TravelMoveRoutine");
-                
-                yield break;
+        while (travelLocked) {
 
-            } else {
+            if (!Physics.SphereCast(travelPosition, .5f, Vector3.zero, out RaycastHit hitInfo)) {
+                travelPosition = ComputeTravelPosition();
+            } else { 
                 UpdateRNGToken();
             }
-
+            
             yield return null;
+
         }
         yield break;
     }
 
     private IEnumerator CheckStuckRoutine() {
-        Physics.Raycast(transform.position, (_playerHead.position - transform.position).normalized, out RaycastHit hitInfo, 10f);             
+        RaycastHit hitInfo;
+        yield return null;        
+        
+        if (Physics.Raycast(transform.position, (_playerHead.position - transform.position).normalized, out hitInfo, 10f)) {
+            yield return null;            
 
-        if (hitInfo.collider.tag != "Player") {
-            isStuck = true;
-            yield return null;
+            if (hitInfo.collider.tag != "Player") {
+                isStuck = true;
+                yield break;
+
+            }
+            
         }
 
         yield break;
