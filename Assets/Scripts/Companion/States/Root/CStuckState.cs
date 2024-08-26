@@ -6,6 +6,8 @@ public class CStuckState : CBaseState {
     public override void EnterState() {
         //Enter logic
 
+        Ctx.InvokeRepeating("CheckOperativeBehaviour", 0f, 3f);
+
         InitializeContext();
     }
     public override void UpdateState() {
@@ -20,7 +22,9 @@ public class CStuckState : CBaseState {
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
-        //Exit logic        
+        //Exit logic
+        Ctx.CancelInvoke("CheckOperativeBehaviour");
+
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -33,9 +37,6 @@ public class CStuckState : CBaseState {
     public void InitializeContext() {
         Ctx.IsOperative = false;
 
-        //Ctx.IsMoving = false;
-        //Ctx.IsIdle = false;
-        //Ctx.IsTalking = false;
         Ctx.IsUnstucking = true;
     }    
 }

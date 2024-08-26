@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -107,7 +106,7 @@ public class CompanionController : MonoBehaviour {
         _currentSubState.EnterState();
 
         InitializeTravelDestinations();
-
+        
     }
 
     // Update is called once per frame
@@ -115,11 +114,7 @@ public class CompanionController : MonoBehaviour {
         EvaluateHealth();
 
         _currentRootState.UpdateState();
-        _currentSubState.UpdateState();        
-
-        if (playerDistance > limitDistanceMax) {
-            isMoving = true;
-        } 
+        _currentSubState.UpdateState();                 
 
     }
 
@@ -160,8 +155,8 @@ public class CompanionController : MonoBehaviour {
 
     public void StorePlayerDistance() {
         playerDistance = Mathf.Abs(Vector3.Distance(transform.position, _playerHead.position));
-    }    
-  
+    }        
+
     public void UpdateRNGToken() {
         StartCoroutine("CycleRNGToken");
     }   
@@ -210,11 +205,11 @@ public class CompanionController : MonoBehaviour {
         StopCoroutine("TravelMoveRoutine");
     }
 
-    public void UnstuckEnterBehaviour() {
+    public void UnstuckEnterBehaviour() {        
         travelLocked = true;
         UpdateRNGToken();
-        StartCoroutine("UnstuckRoutine");
-        StartCoroutine("TravelMoveRoutine");
+        StartCoroutine("UnstuckPredictRoutine");
+        StartCoroutine("UnstuckMoveRoutine");
     }
 
     public void UnstuckExitBehaviour() {
@@ -222,13 +217,18 @@ public class CompanionController : MonoBehaviour {
         currentVelocity = 0f;
         _trail.SetFloat("DragDirection", 0f);
 
-        StopCoroutine("UnstuckRoutine");
-        StopCoroutine("TravelMoveRoutine");
+        StopCoroutine("UnstuckPredictRoutine");
+        StopCoroutine("UnstuckMoveRoutine");
     }
 
     public void CheckStuckBehaviour() {
         StopCoroutine("CheckStuckRoutine");
         StartCoroutine("CheckStuckRoutine");
+    }
+
+    public void CheckOperativeBehaviour() {
+        StopCoroutine("CheckOperativeRoutine");
+        StartCoroutine("CheckOperativeRoutine");
     }
 
     private IEnumerator CycleRNGToken() {
@@ -288,13 +288,7 @@ public class CompanionController : MonoBehaviour {
         }
 
         travelLocked = false;
-        
-        if (isOperative) {
-            isMoving = false;
-        } else {            
-            isUnstucking = false;            
-        }
-
+        isMoving = false;
         currentVelocity = 0f;
         _trail.SetFloat("DragDirection", 0f);
 
@@ -385,39 +379,97 @@ public class CompanionController : MonoBehaviour {
         yield break;
     }
 
-    private IEnumerator UnstuckRoutine() {
+    private IEnumerator UnstuckPredictRoutine() {
+        RaycastHit sphereInfo;
+        RaycastHit rayInfo;
+
         yield return null;
 
         travelPosition = ComputeTravelPosition();
 
         while (travelLocked) {
-
-            if (!Physics.SphereCast(travelPosition, .5f, Vector3.zero, out RaycastHit hitInfo)) {
-                travelPosition = ComputeTravelPosition();
-            } else { 
-                UpdateRNGToken();
-            }
             
+            if (Physics.SphereCast(_playerHead.position, 1f, (travelPosition - _playerHead.position).normalized, out sphereInfo, 5f, LayerMask.NameToLayer("Player")) && 
+                Physics.Raycast(travelPosition, (_playerHead.position - travelPosition).normalized, out rayInfo, 5f, LayerMask.NameToLayer("Player"))) 
+            {
+
+                UpdateRNGToken();
+
+            } else {
+
+                travelPosition = ComputeTravelPosition();
+
+            }
+
             yield return null;
 
         }
+
         yield break;
     }
 
-    private IEnumerator CheckStuckRoutine() {
-        RaycastHit hitInfo;
+    private IEnumerator UnstuckMoveRoutine() {
+        Vector3 lerpPosition;
+
+        yield return null;
+
+        Quaternion travelRotation = transform.rotation;
+
+        float travelDistance = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
+        Vector3 travelForward = (travelPosition - transform.position).normalized;
+        travelRotation.SetLookRotation(travelForward);
+        _focusDefaultPivot.rotation = Quaternion.Euler(0f, travelRotation.eulerAngles.y, 0f);
+
+        while (travelDistance > .3f) {
+            travelDistance = Mathf.Abs(Vector3.Distance(transform.position, travelPosition));
+            travelForward = (travelPosition - transform.position).normalized;
+            travelRotation.SetLookRotation(travelForward);
+            currentVelocity = Mathf.LerpUnclamped(currentVelocity, maxVelocity, .1f);
+            lerpPosition = Vector3.LerpUnclamped(transform.position, travelPosition, currentVelocity * Time.deltaTime);
+
+            _trail.SetFloat("DragDirection", (currentVelocity / maxVelocity));
+            _focusDefaultPivot.rotation = Quaternion.Euler(0f, travelRotation.eulerAngles.y, 0f);
+            transform.position = lerpPosition;
+
+            yield return null;
+        }
+
+        travelLocked = false;        
+        currentVelocity = 0f;
+        _trail.SetFloat("DragDirection", 0f);
+
+        yield break;
+
+    }
+
+    private IEnumerator CheckStuckRoutine() {        
         yield return null;        
         
-        if (Physics.Raycast(transform.position, (_playerHead.position - transform.position).normalized, out hitInfo, 10f)) {
-            yield return null;            
+        if (Physics.Raycast(transform.position, (_playerHead.position - transform.position).normalized, out RaycastHit hitInfo, LayerMask.NameToLayer("PlayerAttacks"))) {
+            yield return null;
 
-            if (hitInfo.collider.tag != "Player") {
+            if (hitInfo.collider.tag != "Player" && hitInfo.collider.tag != "PlayerAttacks") {
+                Debug.Log("-> Switching to Stuck");
                 isStuck = true;
                 yield break;
 
-            }
-            
+            }            
         }
+
+        yield break;
+    }
+
+    private IEnumerator CheckOperativeRoutine() {
+        Collider[] colliderList;
+        yield return null;
+
+        colliderList = Physics.OverlapSphere(transform.position, 1f, LayerMask.NameToLayer("Companion"));
+        
+        if (colliderList.Length == 0) {
+            Debug.Log("-> Switching to Operative");
+            isOperative = true;
+            yield break;
+        }        
 
         yield break;
     }

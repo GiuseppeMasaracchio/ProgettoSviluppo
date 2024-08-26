@@ -21,13 +21,13 @@ public class CIdleState : CBaseState {
     public override void CheckSwitchStates() {
         //Switch logic
         
-        if (Ctx.IsMoving) {
+        if (Ctx.IsOperative && Ctx.IsMoving) {
             SwitchState(StateHandler.Move());
         }
         else if (Ctx.IsOperative && Ctx.IsTalking) {
             SwitchState(StateHandler.Talk());
         }
-        else if (Ctx.IsStuck) {
+        else if (Ctx.IsStuck && Ctx.IsUnstucking) {
             SwitchState(StateHandler.Unstuck());
         }
     }

@@ -15,6 +15,6 @@ MonoBehaviour:
   _currentHp: 3
   _powerUps: 2
   _score: 0
-  _checkpoint: {x: 0, y: 0}
+  _checkpoint: {x: 1, y: 2}
   _playerRootState: GroundedState
   _playerSubState: IdleState

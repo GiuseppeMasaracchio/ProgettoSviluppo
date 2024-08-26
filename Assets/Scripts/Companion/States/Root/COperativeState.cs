@@ -5,7 +5,7 @@ public class COperativeState : CBaseState {
     public override void EnterState() {
         //Enter logic
 
-        Ctx.InvokeRepeating("CheckStuckBehaviour", 0f, 2f);
+        Ctx.InvokeRepeating("CheckStuckBehaviour", 0f, 3f);
 
         InitializeContext();
     }
@@ -14,19 +14,22 @@ public class COperativeState : CBaseState {
 
         Ctx.StorePlayerDistance();
         
-        if (!Ctx.IsTalking && Ctx.IsMoving && !Ctx.IsStuck) {
-            Ctx.IsMoving = true;
+        if (!Ctx.IsTalking && Ctx.IsMoving && !Ctx.IsStuck) {            
             Ctx.IsIdle = false;
         }
         else if (!Ctx.IsTalking && !Ctx.IsMoving && !Ctx.IsStuck) {
-            Ctx.IsIdle = true;
-            Ctx.IsMoving = false;
-        }  
+            Ctx.IsIdle = true;            
+        }
+
+        if (Ctx.PlayerDistance > Ctx.LimitDistanceMax && !Ctx.IsStuck) {
+            Ctx.IsMoving = true;
+        }
 
         CheckSwitchStates(); //MUST BE LAST INSTRUCTION
     }
     public override void ExitState() {
         //Exit logic
+        Ctx.CancelInvoke("CheckStuckBehaviour");
     }
     public override void CheckSwitchStates() {
         //Switch logic
@@ -38,6 +41,8 @@ public class COperativeState : CBaseState {
     }
     public void InitializeContext() {
         Ctx.IsStuck = false;
+
+        Ctx.IsUnstucking = false;
     }
     
 }

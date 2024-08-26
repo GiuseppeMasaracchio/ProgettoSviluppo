@@ -25,7 +25,7 @@ public class CMoveState : CBaseState {
     public override void CheckSwitchStates() {
         //Switch logic
         
-        if (Ctx.IsTalking) {
+        if (Ctx.IsOperative && Ctx.IsTalking) {
             SwitchState(StateHandler.Talk());
         } 
         else if (Ctx.IsIdle && !Ctx.TravelLocked) {

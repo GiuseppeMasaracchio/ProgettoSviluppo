@@ -18,6 +18,7 @@ TagManager:
   - Pod
   - Checkpoint
   - PowerUps
+  - PlayerAttacks
   layers:
   - Default
   - TransparentFX
@@ -35,7 +36,7 @@ TagManager:
   - Walls
   - Companion
   - Obstacles
-  - 
+  - PlayerAttacks
   - 
   - 
   - 

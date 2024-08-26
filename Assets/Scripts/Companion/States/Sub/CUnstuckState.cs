@@ -31,9 +31,7 @@ public class CUnstuckState : CBaseState {
         if (!Ctx.IsStuck && Ctx.IsIdle) {
             SwitchState(StateHandler.Idle());
         }
-        else if (!Ctx.IsStuck && Ctx.IsMoving) {
-            SwitchState(StateHandler.Move());
-        }
+        
     }
     public void InitializeContext() {
         Ctx.IsMoving = false;
