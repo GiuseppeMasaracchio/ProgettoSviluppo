@@ -6,7 +6,7 @@ public class CStuckState : CBaseState {
     public override void EnterState() {
         //Enter logic
 
-        Ctx.InvokeRepeating("CheckOperativeBehaviour", 0f, 3f);
+        //Ctx.InvokeRepeating("CheckOperativeBehaviour", 3f, 3f);
 
         InitializeContext();
     }
@@ -23,7 +23,7 @@ public class CStuckState : CBaseState {
     }
     public override void ExitState() {
         //Exit logic
-        Ctx.CancelInvoke("CheckOperativeBehaviour");
+        //Ctx.CancelInvoke("CheckOperativeBehaviour");
 
     }
     public override void CheckSwitchStates() {

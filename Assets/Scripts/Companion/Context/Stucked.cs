@@ -11,10 +11,17 @@ public class Stucked : MonoBehaviour {
     }
 
     private void OnTriggerStay(Collider other) {
+
         if (other.tag != "PlayerAttacks" && _ctx.IsOperative && !_ctx.IsMoving) {
             _ctx.IsStuck = true;
             _ctx.IsOperative = false;
         }
+
+        if (_ctx.IsStuck) {
+
+            _ctx.IsUnstucking = true;
+        }
+
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag != "PlayerAttacks" && _ctx.IsStuck && !_ctx.IsMoving) {

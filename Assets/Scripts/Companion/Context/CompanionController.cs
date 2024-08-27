@@ -52,6 +52,7 @@ public class CompanionController : MonoBehaviour {
     private Vector3 travelPosition;
     private bool travelLocked = false;
 
+    public bool[] exclusionList = new bool[8];
     private int rngToken = 0;
     private float currentVelocity = 0f;
 
@@ -222,12 +223,12 @@ public class CompanionController : MonoBehaviour {
     }
 
     public void CheckStuckBehaviour() {
-        StopCoroutine("CheckStuckRoutine");
+        //StopCoroutine("CheckStuckRoutine");
         StartCoroutine("CheckStuckRoutine");
     }
 
     public void CheckOperativeBehaviour() {
-        StopCoroutine("CheckOperativeRoutine");
+        //StopCoroutine("CheckOperativeRoutine");
         StartCoroutine("CheckOperativeRoutine");
     }
 
@@ -380,30 +381,50 @@ public class CompanionController : MonoBehaviour {
     }
 
     private IEnumerator UnstuckPredictRoutine() {
-        RaycastHit sphereInfo;
-        RaycastHit rayInfo;
+        Collider[] collisions = new Collider[8];
 
-        yield return null;
+        yield return null; 
 
-        travelPosition = ComputeTravelPosition();
+        if (exclusionList[rngToken - 1] == false) {
 
-        while (travelLocked) {
-            
-            if (Physics.SphereCast(_playerHead.position, 1f, (travelPosition - _playerHead.position).normalized, out sphereInfo, 5f, LayerMask.NameToLayer("Player")) && 
-                Physics.Raycast(travelPosition, (_playerHead.position - travelPosition).normalized, out rayInfo, 5f, LayerMask.NameToLayer("Player"))) 
-            {
+            travelPosition = ComputeTravelPosition();
+            yield return null;
 
-                UpdateRNGToken();
+        } else {
+
+            UpdateRNGToken();
+            yield return null;
+
+        }
+
+        while (isUnstucking) {            
+            if (exclusionList[rngToken - 1] == false) {
+
+                collisions = Physics.OverlapSphere(ComputeTravelPosition(), .1f);
+ 
+                if (collisions.Length != 0) {
+
+                    exclusionList[rngToken - 1] = true;
+
+                    UpdateRNGToken();
+
+                } else {
+
+                    travelPosition = ComputeTravelPosition();
+
+                }
 
             } else {
+                
+                UpdateRNGToken();
 
-                travelPosition = ComputeTravelPosition();
-
-            }
+            }            
 
             yield return null;
 
         }
+
+        exclusionList = new bool[8];
 
         yield break;
     }
@@ -434,7 +455,9 @@ public class CompanionController : MonoBehaviour {
             yield return null;
         }
 
-        travelLocked = false;        
+        travelLocked = false;
+        isUnstucking = false;
+        isOperative = true;
         currentVelocity = 0f;
         _trail.SetFloat("DragDirection", 0f);
 
@@ -442,18 +465,18 @@ public class CompanionController : MonoBehaviour {
 
     }
 
-    private IEnumerator CheckStuckRoutine() {        
-        yield return null;        
-        
-        if (Physics.Raycast(transform.position, (_playerHead.position - transform.position).normalized, out RaycastHit hitInfo, LayerMask.NameToLayer("PlayerAttacks"))) {
+    private IEnumerator CheckStuckRoutine() {
+        yield return null;
+
+        if (Physics.Raycast(transform.position, (_playerHead.position - transform.position).normalized, out RaycastHit hitInfo, playerDistance + horizontalOffset)) {
             yield return null;
 
             if (hitInfo.collider.tag != "Player" && hitInfo.collider.tag != "PlayerAttacks") {
-                Debug.Log("-> Switching to Stuck");
                 isStuck = true;
-                yield break;
-
-            }            
+            }
+            
+            yield break;
+            
         }
 
         yield break;
@@ -463,10 +486,9 @@ public class CompanionController : MonoBehaviour {
         Collider[] colliderList;
         yield return null;
 
-        colliderList = Physics.OverlapSphere(transform.position, 1f, LayerMask.NameToLayer("Companion"));
+        colliderList = Physics.OverlapSphere(transform.position, .5f, LayerMask.NameToLayer("Companion"), QueryTriggerInteraction.Ignore);
         
         if (colliderList.Length == 0) {
-            Debug.Log("-> Switching to Operative");
             isOperative = true;
             yield break;
         }        
