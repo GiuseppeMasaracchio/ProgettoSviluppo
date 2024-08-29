@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class VFXManager : MonoBehaviour {
     public static VFXManager Instance { get; private set; }
