@@ -125,5 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasParent: 0
-  ignoreScale: 0
+  ignoreScale: 1
   lifeTime: 3
