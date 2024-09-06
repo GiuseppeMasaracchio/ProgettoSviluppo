@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7162864206060183143}
   - component: {fileID: 7162864206060183140}
   - component: {fileID: 7162864206060183141}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Warp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -554,7 +554,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2503
+  m_VersionIndex: 2509
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2806
+  m_VersionIndex: 2812
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1026,7 +1026,7 @@ GameObject:
   - component: {fileID: 7162864206574465933}
   - component: {fileID: 7162864206574465938}
   - component: {fileID: 7162864206574465939}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Warp
   m_TagString: Warp
   m_Icon: {fileID: 0}
@@ -50914,7 +50914,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 463
+  m_VersionIndex: 469
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -51206,7 +51206,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2624
+  m_VersionIndex: 2630
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -51302,7 +51302,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 131063
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -51338,7 +51338,7 @@ Transform:
   m_GameObject: {fileID: 8817378316232672741}
   serializedVersion: 2
   m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: -2.1, z: -2.3}
+  m_LocalPosition: {x: 0, y: -1.06, z: 2.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51357,7 +51357,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 50
-  m_Range: 7.5
+  m_Range: 5
   m_SpotAngle: 45
   m_InnerSpotAngle: 45
   m_CookieSize: 10
@@ -51393,7 +51393,7 @@ Light:
   m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1535
+    m_Bits: 1533
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0

@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7968376205762863719}
   - component: {fileID: 6827014760618525773}
   - component: {fileID: 3966135280673636122}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Antenna_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 5845459367301359203}
   - component: {fileID: 6263119037114369140}
   - component: {fileID: 1834391863195198941}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 3065611741852830983}
   - component: {fileID: 7668765152373650983}
   - component: {fileID: 483427799479800161}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 8868714632242286913}
   - component: {fileID: 968239972485670449}
   - component: {fileID: 6530066778127507816}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Visor_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6043927675866791254}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LB-Asset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -411,7 +411,7 @@ GameObject:
   - component: {fileID: 6018610201571571548}
   - component: {fileID: 6559396633707032203}
   - component: {fileID: 6149173681940594883}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Visor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2823,7 +2823,7 @@ GameObject:
   - component: {fileID: 3791288511416104083}
   - component: {fileID: 8376070145820839332}
   - component: {fileID: 667201542758289555}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Outside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2906,7 +2906,7 @@ GameObject:
   - component: {fileID: 7108003785657902884}
   - component: {fileID: 3573275367864702663}
   - component: {fileID: 2109730521277951088}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2988,7 +2988,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518659626530165113}
   - component: {fileID: 3611565356361859045}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -3040,7 +3040,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7159646934414030404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LB-Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3076,7 +3076,7 @@ GameObject:
   - component: {fileID: 572507709829925876}
   - component: {fileID: 4704822417106651446}
   - component: {fileID: 3329195267911321900}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Antenna_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3157,7 +3157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4129473911652562815}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LB-Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3196,7 +3196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7063653951612783377}
   - component: {fileID: 3816323433682279515}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Enemy
   m_Icon: {fileID: 0}

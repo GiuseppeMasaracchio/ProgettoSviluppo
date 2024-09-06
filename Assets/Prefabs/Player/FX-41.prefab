@@ -475,6 +475,7 @@ MonoBehaviour:
   verticalOffset: 0.5
   maxVelocity: 3
   limitDistance: 2
+  exclusionList: 0000000000000000
 --- !u!1 &8065461994888398084
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,9 +677,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: -8235465815369153301, guid: 20917782684e6ff4d9f352ee38d9937f, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 20917782684e6ff4d9f352ee38d9937f, type: 3}
       propertyPath: m_Name
       value: FX-41
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 20917782684e6ff4d9f352ee38d9937f, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6012146016144484936, guid: 20917782684e6ff4d9f352ee38d9937f, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
