@@ -39,3 +39,8 @@ public enum ActiveData {
     Runtime
 }
 
+public enum SaveSlot {
+    One,
+    Two,
+    Three
+}

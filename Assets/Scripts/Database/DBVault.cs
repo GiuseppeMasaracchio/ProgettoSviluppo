@@ -125,6 +125,51 @@ public static class DBVault {
         CloseConnection();
         return highscore;
     }
+    public static List<object[]> GetSlotData() {        
+        OpenConnection();
+        query = "SELECT * FROM Slot";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        List<object[]> data = new List<object[]>();
+        data.Capacity = 3;
+
+        while (reader.Read()) {
+            object[] array = new object[] { 
+                reader["Slot_ID"],
+                reader["Name"],
+                reader["Powerups"],
+                reader["Score"],
+                reader["CurrentHp"],
+                reader["Runtime"] 
+            };
+
+            data.Add(array);
+        }
+
+        CloseConnection();
+        return data;        
+
+    }
+    public static List<object[]> GetSlotCheckpoints() {        
+        OpenConnection();
+
+        query = "SELECT * FROM Checkpoint;";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        List<object[]> data = new List<object[]>();
+        data.Capacity = 3;
+
+        while (reader.Read()) {
+            object[] array = new object[] { reader["Slot_ID"], reader["Level_idx"], reader["CP_idx"] };
+            data.Add(array);
+        }
+
+        CloseConnection();
+        return data;
+
+    }
     public static object[] GetActiveCheckpoint() {
         int activeslot = GetActiveSlotIdx();
         OpenConnection();
@@ -141,7 +186,7 @@ public static class DBVault {
         CloseConnection();
         return retrieve;
 
-    } 
+    }
 
     //Setters
     private static void UpdateValueByIdx(int idx, string table, string column, object value) {
