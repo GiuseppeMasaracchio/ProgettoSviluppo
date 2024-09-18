@@ -19,6 +19,7 @@ TagManager:
   - Checkpoint
   - PowerUps
   - PlayerAttacks
+  - Light
   layers:
   - Default
   - TransparentFX
