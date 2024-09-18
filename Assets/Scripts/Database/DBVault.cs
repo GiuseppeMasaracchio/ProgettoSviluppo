@@ -125,7 +125,7 @@ public static class DBVault {
         CloseConnection();
         return highscore;
     }
-    public static List<object[]> GetSlotData() {        
+    public static List<object[]> GetSlotsData() {        
         OpenConnection();
         query = "SELECT * FROM Slot";
         dbcmd.CommandText = query;
@@ -151,7 +151,7 @@ public static class DBVault {
         return data;        
 
     }
-    public static List<object[]> GetSlotCheckpoints() {        
+    public static List<object[]> GetSlotsCheckpoint() {        
         OpenConnection();
 
         query = "SELECT * FROM Checkpoint;";
@@ -262,6 +262,12 @@ public static class DBVault {
 
         CloseConnection();
     }
+    private static void UpdateActiveSlotOld(string column, object value) {
+        int activeslot = GetActiveSlotIdx();
+
+        UpdateValueByIdx(activeslot, "Slot", column, value);
+
+    }  //DEPRECATED
 
     ////Public methods
     public static void DisposeActiveSlot() {
@@ -277,12 +283,6 @@ public static class DBVault {
             UpdateValueByIdx(idx, "Slot", "Runtime", 1);
         }
     }
-    public static void UpdateActiveSlot(string column, object value) {
-        int activeslot = GetActiveSlotIdx();
-
-        UpdateValueByIdx(activeslot, "Slot", column, value);
-
-    }  //SINGLE
     public static void UpdateActiveSlot(object[] value) {
         int activeslot = GetActiveSlotIdx();
 
