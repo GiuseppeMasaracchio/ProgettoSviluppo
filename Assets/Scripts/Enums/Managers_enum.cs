@@ -17,6 +17,7 @@ public enum EnvVFX {
     Boom
 }
 public enum Scenes {
+    MainMenu,
     Lab,
     Map1,
     Warp1,
