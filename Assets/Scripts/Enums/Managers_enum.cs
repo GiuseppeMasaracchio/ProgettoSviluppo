@@ -45,3 +45,9 @@ public enum SaveSlot {
     Two,
     Three
 }
+
+public enum UIMode {
+    MainMenu,
+    Slots,
+    Pause
+}

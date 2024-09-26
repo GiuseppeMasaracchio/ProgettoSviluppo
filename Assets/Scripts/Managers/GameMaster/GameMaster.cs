@@ -9,17 +9,17 @@ public class GameMaster : MonoBehaviour {
 
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
-        else { Destroy(this); }
+        else { Destroy(gameObject); }
     }
 
     // Start is called before the first frame update
     void Start() {
         Debug.Log("Game Master Start");
 
-        InitializePlayerInfo();
-        ScenesManager.Instance.StartGame();
+        //InitializePlayerInfo();
+        //ScenesManager.Instance.StartGame();
     }
 
     private void InitializePlayerInfo() {

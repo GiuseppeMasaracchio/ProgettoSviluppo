@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,14 +23,41 @@ public class ScenesManager : MonoBehaviour {
     private void Awake() {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad(this);
-        } else { Destroy(this); }
+            DontDestroyOnLoad(gameObject);
+        } else { Destroy(gameObject); }
     }
 
     public void StartGame() {
         if (paused) { return; }
 
-        StartCoroutine(InitializeStarter((int)Scenes.Lab));        
+        StartCoroutine(InitializeStart((int)Scenes.Lab));
+    }
+
+    public void LoadGame() {
+        if (paused) { return; }
+
+        int n_scene = (int)_playerInfo.Checkpoint.x;
+        StartCoroutine(InitializeLoad(n_scene));        
+    }
+
+    public void ExitGame() {
+        if (paused) { return; }
+
+        StartCoroutine(InitializeMainMenu());
+    }
+
+    public void QuitGame() {
+        #if UNITY_STANDALONE
+                Application.Quit();
+        #endif
+
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+    }
+
+    public void ReloadOnDeath() {
+        StartCoroutine(OnDeath());
     }
 
     public void Switch(Scenes scene, Cp point) {
@@ -41,24 +69,25 @@ public class ScenesManager : MonoBehaviour {
         }
     }
 
-    public void LoadGame(Scenes scene) {
-        if (paused) { return; }
-
-        int n_scene = (int)scene;
-        if (n_scene != SceneManager.GetActiveScene().buildIndex) {
-            StartCoroutine(InitializeLoad(n_scene));
-        }
-    }
-
-    public void ReloadOnDeath() {
-        StartCoroutine(OnDeath());
-    }
-
-    private IEnumerator InitializeStarter(int n_scene) {
+    private IEnumerator InitializeMainMenu() {
         StartCoroutine(BlackOut());
         yield return new WaitWhile(() => paused);
 
-        SceneManager.LoadScene(n_scene, LoadSceneMode.Single);
+        StartCoroutine(SetLoadScene((int)Scenes.MainMenu));
+        yield return new WaitWhile(() => paused);
+
+        StartCoroutine(FadeOut());
+        yield return new WaitWhile(() => paused);
+
+        yield break;
+    }
+
+    private IEnumerator InitializeStart(int n_scene) {
+        StartCoroutine(BlackOut());
+        yield return new WaitWhile(() => paused);
+
+        StartCoroutine(SetLoadScene(n_scene));
+        yield return new WaitWhile(() => paused);
 
         StartCoroutine(RetrievePoint(Cp.CP_0));
         yield return new WaitWhile(() => paused);
@@ -76,7 +105,8 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(FadeIn());
         yield return new WaitWhile(() => paused);
 
-        SceneManager.LoadScene(n_scene, LoadSceneMode.Single);
+        StartCoroutine(SetLoadScene(n_scene));
+        yield return new WaitWhile(() => paused);
 
         StartCoroutine(RetrieveCheckpoints());
         yield return new WaitWhile(() => paused);
@@ -94,7 +124,8 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(FadeIn());
         yield return new WaitWhile(() => paused);
 
-        SceneManager.LoadScene(n_scene, LoadSceneMode.Single); 
+        StartCoroutine(SetLoadScene(n_scene));
+        yield return new WaitWhile(() => paused);
 
         StartCoroutine(RetrievePoint(_point));
         yield return new WaitWhile(() => paused);
@@ -117,6 +148,21 @@ public class ScenesManager : MonoBehaviour {
         _playerInfo.CurrentHp = 3;
 
         yield break;
+    }
+
+    public IEnumerator SetLoadScene(int n_scene) {
+        paused = true;
+        
+        AsyncOperation sceneLoad = SceneManager.LoadSceneAsync(n_scene, LoadSceneMode.Single);
+
+        while (!sceneLoad.isDone) {
+            yield return null;
+        }
+
+        paused = false;
+
+        yield break;
+
     }
 
     private IEnumerator FadeIn() {
@@ -159,6 +205,7 @@ public class ScenesManager : MonoBehaviour {
         yield break;
     }
 
+    //To be removed/updated
     public IEnumerator RetrieveCheckpoints() {
         paused = true;
         yield return new WaitForSeconds(.2f);
@@ -174,6 +221,8 @@ public class ScenesManager : MonoBehaviour {
                 _cpObj = _obj;
                 Debug.Log("Checkpoint: " + _cpObj.name + " Found! " + (int)_targetCp);
             }
+
+            yield return null;
         }
 
         yield return new WaitForSeconds(.2f);
@@ -195,6 +244,8 @@ public class ScenesManager : MonoBehaviour {
                 _cpObj = _obj;
                 Debug.Log("Point: " + _cpObj.name + " Found! " + (int)_targetCp);
             }
+
+            yield return null;
         }
 
         yield return new WaitForSeconds(.2f);

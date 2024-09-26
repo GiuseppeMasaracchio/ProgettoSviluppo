@@ -10,9 +10,9 @@ public class VFXManager : MonoBehaviour {
     void Awake() {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
-        else { Destroy(this); }
+        else { Destroy(gameObject); }
     }          
 
     public void SpawnFixedVFX(PlayerVFX _vfx, Vector3 position, Quaternion rotation) { //OVERLOAD
