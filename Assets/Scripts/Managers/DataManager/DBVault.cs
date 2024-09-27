@@ -268,12 +268,12 @@ public static class DBVault {
         UpdateValueByIdx(activeslot, "Slot", column, value);
 
     }  //DEPRECATED
-
-    ////Public methods
-    public static void DisposeActiveSlot() {
+    private static void DisposeActiveSlot() { 
         int activeslot = GetActiveSlotIdx();
         UpdateValueByIdx(activeslot, "Slot", "Runtime", 0);
-    }
+    }  //DEPRECATED
+
+    ////Public methods
     public static void SetActiveSlot(int idx) {
         int activeslot = GetActiveSlotIdx();
         if (activeslot == 0) {

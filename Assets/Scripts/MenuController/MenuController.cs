@@ -10,10 +10,7 @@ public class MenuController : MonoBehaviour {
     [SerializeField] GameObject[] slots;
     [SerializeField] PlayerInfo _playerInfo;
 
-    private List<object[]> saves; //Da implementare su DataManager
-    private List<object[]> checkpoints; //Da implementare su DataManager
-
-    private UIMode mode = UIMode.Slots;
+    public UIMode mode = UIMode.Slots;
 
     private int currentSlot = 0;
     private int selectedSlot = 0;
@@ -29,10 +26,9 @@ public class MenuController : MonoBehaviour {
     }
 
     private void Start() {
-        RetrieveSaves(); //Da implementare su DataManager
-
         StartCoroutine("DisplaySlots");
         SelectLights();
+
     }
 
     public void OnNavigate(InputValue input) {
@@ -79,15 +75,27 @@ public class MenuController : MonoBehaviour {
 
     public void OnPause(InputValue input) {
         if (input.Get() == null) { return; }
+
+        ScenesManager.Instance.MainMenu();
+    }
+
+    public void OnCancel(InputValue input) {
+        if (input.Get() == null) { return; }
         
-        //ScenesManager.Instance.QuitGame();
+        ContinueGame();
+    }
+
+    public void ContinueGame() {
+        DataManager.Instance.ResumeData();
+        ScenesManager.Instance.LoadGame();
     }
 
     private void SelectSlot() {
-        if ((int)checkpoints[currentSlot][1] == 0) {
+        if (DataManager.Instance.GetSlotInfo(currentSlot).Checkpoint.x == 0) {
+            DataManager.Instance.AssignSlotInfo((SaveSlot)currentSlot);
             ScenesManager.Instance.StartGame();
         } else {
-            AssignSlotInfo();
+            DataManager.Instance.AssignSlotInfo((SaveSlot)currentSlot);
             ScenesManager.Instance.LoadGame();
         }
 
@@ -110,19 +118,19 @@ public class MenuController : MonoBehaviour {
         
         if (direction == 1) {
 
-            if (selectedSlot < 2) {
+            if (selectedSlot < (int)SaveSlot.Three) {
                 selectedSlot++;
             } else {
-                selectedSlot = 0;
+                selectedSlot = (int)SaveSlot.One;
             }
 
         } else {
 
-            if (selectedSlot > 0) {
+            if (selectedSlot > (int)SaveSlot.One) {
                 selectedSlot--;
             }
             else {
-                selectedSlot = 2;
+                selectedSlot = (int)SaveSlot.Three;
             }
 
         }
@@ -152,42 +160,24 @@ public class MenuController : MonoBehaviour {
         }
     }
 
-    private void RetrieveSaves() {  //Da implementare su DataManager
-        /*
-        object[] cpinfo = new object[2];
-        cpinfo[0] = 2;
-        cpinfo[1] = 0;
-
-        DBVault.SetActiveSlot(currentSlot);
-        DBVault.SetCheckpoint(cpinfo);
-        */
-
-        saves = DBVault.GetSlotsData();
-        checkpoints = DBVault.GetSlotsCheckpoint();
-    }
-
-    private void AssignSlotInfo() {  //Da implementare su DataManager
-        _playerInfo.CurrentHp = (int)saves[currentSlot][(int)ActiveData.CurrentHp];
-        _playerInfo.PowerUps = (int)saves[currentSlot][(int)ActiveData.PowerUps];
-        _playerInfo.Checkpoint = new Vector2((int)checkpoints[currentSlot][1], (int)checkpoints[currentSlot][2]);
-    }
-
     private IEnumerator DisplaySlots() {
         int i = 0;
 
         foreach (GameObject slot in slots) {
 
-            if ((int)checkpoints[i][1] != 0) {
+            if (DataManager.Instance.GetSlotInfo(i).Checkpoint.x != 0) {
 
                 TMP_Text[] fields = slot.GetComponentsInChildren<TMP_Text>();
 
-                fields[0].text = saves[i][(int)ActiveData.Name].ToString();
-                fields[1].text = saves[i][(int)ActiveData.CurrentHp].ToString() + " Hp";
-                fields[2].text = "CP: " + checkpoints[i][1].ToString() + "-" + checkpoints[i][2].ToString();
+                fields[0].text = DataManager.Instance.GetSlotInfo(i).Name;
+                fields[1].text = DataManager.Instance.GetSlotInfo(i).CurrentHp + " Hp";
+                fields[2].text = "CP: " + DataManager.Instance.GetSlotInfo(i).Checkpoint.x + "-" + DataManager.Instance.GetSlotInfo(i).Checkpoint.y;
+
                 i++;
-                yield return null;
 
             }
+            
+            yield return null;
 
         }        
 

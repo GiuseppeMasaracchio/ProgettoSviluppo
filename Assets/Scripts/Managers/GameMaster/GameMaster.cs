@@ -1,9 +1,10 @@
 using UnityEngine;
 
 public class GameMaster : MonoBehaviour {
+    public static GameMaster Instance { get; private set; }
+    
     [SerializeField] PlayerInfo _playerinfo;
 
-    public static GameMaster Instance { get; private set; }
 
     private void Awake() {
 
@@ -19,7 +20,7 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("Game Master Start");
 
         //InitializePlayerInfo();
-        //ScenesManager.Instance.StartGame();
+        ScenesManager.Instance.MainMenu();
     }
 
     private void InitializePlayerInfo() {

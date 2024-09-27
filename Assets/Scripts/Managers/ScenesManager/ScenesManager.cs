@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +7,7 @@ public class ScenesManager : MonoBehaviour {
     public static ScenesManager Instance { get; private set; }
     
     [SerializeField] Material _fade;
+    [SerializeField] GameObject _menuPrefab;
     [SerializeField] GameObject _playerPrefab;
     [SerializeField] GameObject _companionPrefab;
     [SerializeField] PlayerInfo _playerInfo;
@@ -40,7 +40,7 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InitializeLoad(n_scene));        
     }
 
-    public void ExitGame() {
+    public void MainMenu() {
         if (paused) { return; }
 
         StartCoroutine(InitializeMainMenu());
@@ -74,6 +74,9 @@ public class ScenesManager : MonoBehaviour {
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(SetLoadScene((int)Scenes.MainMenu));
+        yield return new WaitWhile(() => paused);
+
+        StartCoroutine(InstantiateMenu());
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(FadeOut());
@@ -260,6 +263,25 @@ public class ScenesManager : MonoBehaviour {
         yield return new WaitForSeconds(.2f);
 
         Instantiate(_companionPrefab, _cpObj.transform.position + new Vector3(0f, 1f, 1f), _cpObj.transform.rotation);
+        yield return new WaitForSeconds(.2f);
+
+        paused = false;
+        yield break;
+    }
+
+    public IEnumerator InstantiateMenu() {
+        paused = true;
+        
+        try {
+            GameObject _obj = FindFirstObjectByType<MenuController>().gameObject;
+            Destroy(_obj);
+
+        } catch {
+            Debug.Log("No Object found");
+
+        }
+
+        Instantiate(_menuPrefab, new Vector3(0f, -100f, 0f), new Quaternion());
         yield return new WaitForSeconds(.2f);
 
         paused = false;

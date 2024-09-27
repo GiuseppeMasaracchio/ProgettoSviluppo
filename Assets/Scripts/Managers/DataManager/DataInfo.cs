@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class PlayerInfo : ScriptableObject {
+public class DataInfo : ScriptableObject {
     [SerializeField] private int _slotID;
     [SerializeField] private string _name;
     [SerializeField] private int _powerUps;

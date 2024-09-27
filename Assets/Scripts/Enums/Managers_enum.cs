@@ -31,7 +31,7 @@ public enum Cp {
     CP_3,
     CP_4
 }
-public enum ActiveData {
+public enum SaveData {
     Slot_ID,
     Name,
     PowerUps,

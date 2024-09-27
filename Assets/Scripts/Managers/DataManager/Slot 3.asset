@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5683e02101e27e4cb83447181882c27, type: 3}
-  m_Name: PlayerInfo_Asset
+  m_Script: {fileID: 11500000, guid: 2b2c397ede40ea6408a2e0dc63ba58bc, type: 3}
+  m_Name: Slot 3
   m_EditorClassIdentifier: 
-  _slotID: 1
-  _name: Puzzo
-  _powerUps: 2
+  _slotID: 3
+  _name: Slot 3
+  _powerUps: 0
   _score: 0
   _currentHp: 3
-  _runtime: 1
-  _checkpoint: {x: 3, y: 0}
+  _runtime: 0
+  _checkpoint: {x: 0, y: 0}

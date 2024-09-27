@@ -195,7 +195,6 @@ public class TPCharacterController : MonoBehaviour
         */
 
         EvaluateHealth();
-        StorePlayerStates();
 
         if (!isDead) {
             UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
@@ -248,6 +247,7 @@ public class TPCharacterController : MonoBehaviour
         }
     }
     public void OnPause(InputValue input) {
+        /*
         if (input.Get() != null) {
             if (_playerinput.currentActionMap.name == "UI") {
                 _playerinput.SwitchCurrentActionMap("Player");
@@ -255,7 +255,7 @@ public class TPCharacterController : MonoBehaviour
                 _playerinput.SwitchCurrentActionMap("UI");
             }
         }
-
+        */
     }
     //Collision Callbacks
     private void OnTriggerEnter(Collider other) {
@@ -409,17 +409,7 @@ public class TPCharacterController : MonoBehaviour
                     break;
                 }
         }
-    }
-
-    private void StorePlayerStates() {
-        if (_playerInfo.PlayerRootState != _currentRootState.ToString()) { 
-            _playerInfo.PlayerRootState = _currentRootState.ToString();
-        }
-
-        if (_playerInfo.PlayerSubState != _currentSubState.ToString()) {
-            _playerInfo.PlayerSubState = _currentSubState.ToString();
-        }
-    }
+    }   
 
     //Camera Methods
     private void UpdateCamera(GameObject cam, GameObject player, GameObject forward, Vector2 mouseInput, float sens) {
