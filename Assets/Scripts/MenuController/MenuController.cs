@@ -7,6 +7,8 @@ public class MenuController : MonoBehaviour {
     public static MenuController Instance { get; private set; }
 
     [SerializeField] GameObject[] slots;
+    [Space]
+    [SerializeField] DataInfo[] slotsInfo;
     [SerializeField] PlayerInfo _playerInfo;
 
     public UIMode mode = UIMode.Slots;
@@ -91,13 +93,33 @@ public class MenuController : MonoBehaviour {
         SaveGame();
     }
 
+    public void OnOverwrite(InputValue input) {
+        if (input.Get() == null) { return; }
+
+        OverwriteGame();
+    }
+
+    public void OnClear(InputValue input) {
+        if (input.Get() == null) { return; }
+
+        DeleteSlot();
+    }
+
     public void ContinueGame() {
         DataManager.Instance.ResumeData();
         ScenesManager.Instance.LoadGame();
     }
 
     public void SaveGame() {
-        DataManager.Instance.AutoSaveData();
+        DataManager.Instance.QuickSaveData();
+        DataManager.Instance.RefreshData();
+
+        StartCoroutine("DisplaySlots");
+    }
+
+    public void OverwriteGame() {
+        int slotID = slotsInfo[currentSlot].SlotID;
+        DataManager.Instance.OverwriteData(slotID);
         DataManager.Instance.RefreshData();
 
         StartCoroutine("DisplaySlots");
@@ -105,18 +127,29 @@ public class MenuController : MonoBehaviour {
 
     public void ReturnToMainMenu() {
         ScenesManager.Instance.MainMenu();
+        DataManager.Instance.RefreshData();
+
+        StartCoroutine("DisplaySlots");
+    }
+
+    public void DeleteSlot() {
+        int slotID = slotsInfo[currentSlot].SlotID;
+        DataManager.Instance.DeleteData(slotID);
+        DataManager.Instance.RefreshData();
+
+        StartCoroutine("DisplaySlots");
     }
 
     public void SelectSlot() {
-        if (DataManager.Instance.GetSlotInfo(currentSlot).Checkpoint.x == 0) {            
+        if (slotsInfo[currentSlot].Checkpoint.x == 0) {            
             DataManager.Instance.AssignSlotInfo(currentSlot);
             ScenesManager.Instance.StartGame();
-            DataManager.Instance.AutoSaveData();
+            DataManager.Instance.QuickSaveData();
             DataManager.Instance.RefreshData();
         } else {
             DataManager.Instance.AssignSlotInfo(currentSlot);
             ScenesManager.Instance.LoadGame();
-            DataManager.Instance.AutoSaveData();
+            DataManager.Instance.QuickSaveData();
             DataManager.Instance.RefreshData();
         }
 
@@ -186,13 +219,23 @@ public class MenuController : MonoBehaviour {
 
         foreach (GameObject slot in slots) {
 
-            if (DataManager.Instance.GetSlotInfo(i).Checkpoint.x != 0) {
+            if ((int)slotsInfo[i].Checkpoint.x != 0) {
 
                 TMP_Text[] fields = slot.GetComponentsInChildren<TMP_Text>();
 
-                fields[0].text = DataManager.Instance.GetSlotInfo(i).Name;
-                fields[1].text = DataManager.Instance.GetSlotInfo(i).CurrentHp + " Hp";
-                fields[2].text = "CP: " + DataManager.Instance.GetSlotInfo(i).Checkpoint.x + "-" + DataManager.Instance.GetSlotInfo(i).Checkpoint.y;
+                fields[0].text = slotsInfo[i].Name;
+                fields[1].text = slotsInfo[i].CurrentHp + " Hp";
+                fields[2].text = "CP: " + slotsInfo[i].Checkpoint.x + "-" + slotsInfo[i].Checkpoint.y;
+
+                i++;
+
+            } else {
+
+                TMP_Text[] fields = slot.GetComponentsInChildren<TMP_Text>();
+
+                fields[0].text = "";
+                fields[1].text = "X";
+                fields[2].text = "";
 
                 i++;
 

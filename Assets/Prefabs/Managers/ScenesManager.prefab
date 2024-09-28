@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fade: {fileID: 2100000, guid: 4b0d5e33d146a7c48b351d4f40bfca1c, type: 2}
+  _menuPrefab: {fileID: 1230685322137889735, guid: 63fa5eb0566c80c458b5756bff634373, type: 3}
   _playerPrefab: {fileID: 8529624795265790319, guid: 73e64702af523cb4a96141433111b375, type: 3}
   _companionPrefab: {fileID: 7595553370665594620, guid: 87dedec4ea7dfae4b867d7decb418404, type: 3}
   _playerInfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}

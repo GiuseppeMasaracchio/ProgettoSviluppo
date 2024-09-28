@@ -198,20 +198,6 @@ public static class DBVault {
 
         CloseConnection();
     } 
-    private static void UpdateSlotByIdx(int idx, object[] value) {
-        OpenConnection();
-
-        query = "UPDATE Slot SET Name = '" + value[0] + 
-            "', Powerups = '" + value[1] +
-            "', Score = '" + value[2] +
-            "', CurrentHp = '" + value[3] +
-            "' WHERE Slot_ID = " + idx + ";";  //La capienza dell'array non considera id e runtime come campi del nuovo array
-
-        dbcmd.CommandText = query;
-        reader = dbcmd.ExecuteReader();
-
-        CloseConnection();
-    }  
     private static void InsertHighscore(int idx, string name, int score) {
         OpenConnection();
 
@@ -230,17 +216,6 @@ public static class DBVault {
         } else {
             return;
         }
-    }
-    private static void UpdateCheckpoint(int activeslot, object[] cpinfo) {
-        OpenConnection();
-
-        query = "UPDATE Checkpoint SET Level_idx = '" + cpinfo[0] + 
-            "', CP_idx = '" + cpinfo[1] + 
-            "' WHERE Slot_ID = '" + activeslot + "';";
-        dbcmd.CommandText = query;
-        reader = dbcmd.ExecuteReader();
-
-        CloseConnection();
     }
     private static void InitDB() {
         OpenConnection();
@@ -274,6 +249,31 @@ public static class DBVault {
     }  //DEPRECATED
 
     ////Public methods
+    public static void UpdateCheckpoint(int activeslot, object[] cpinfo) {
+        OpenConnection();
+
+        query = "UPDATE Checkpoint SET Level_idx = '" + cpinfo[0] + 
+            "', CP_idx = '" + cpinfo[1] + 
+            "' WHERE Slot_ID = '" + activeslot + "';";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    }
+    public static void UpdateSlotByIdx(int idx, object[] value) {
+        OpenConnection();
+
+        query = "UPDATE Slot SET Name = '" + value[0] + 
+            "', Powerups = '" + value[1] +
+            "', Score = '" + value[2] +
+            "', CurrentHp = '" + value[3] +
+            "' WHERE Slot_ID = " + idx + ";";  //La capienza dell'array non considera id e runtime come campi del nuovo array
+
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+
+        CloseConnection();
+    }  
     public static void SetActiveSlot(int idx) {
         int activeslot = GetActiveSlotIdx();
         if (activeslot == 0) {

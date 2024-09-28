@@ -1671,6 +1671,10 @@ MonoBehaviour:
   - {fileID: 5078298662764140340}
   - {fileID: 5511221554407832002}
   - {fileID: 6527081286331975009}
+  slotsInfo:
+  - {fileID: 11400000, guid: ef06358dec89ae5488919c26d05dac67, type: 2}
+  - {fileID: 11400000, guid: 16b52352f75e42d459026290f8dfc4a3, type: 2}
+  - {fileID: 11400000, guid: b1a8ed09ca6d563488ffdb7a2b14d773, type: 2}
   _playerInfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
   mode: 1
 --- !u!114 &5058485469461896135

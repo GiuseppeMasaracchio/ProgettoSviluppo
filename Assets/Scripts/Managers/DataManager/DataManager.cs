@@ -41,7 +41,7 @@ public class DataManager : MonoBehaviour {
 
     }
 
-    public void AutoSaveData() {
+    public void QuickSaveData() {
         object[] slotData = new object[4];
         object[] checkpointData = new object[2];
 
@@ -58,6 +58,26 @@ public class DataManager : MonoBehaviour {
 
     }
 
+    public void OverwriteData(int slotID) {
+        object[] slotData = new object[4];
+        object[] checkpointData = new object[2];
+
+        slotData[0] = playerInfo.Name;
+        slotData[1] = playerInfo.PowerUps;
+        slotData[2] = playerInfo.Score;
+        slotData[3] = playerInfo.CurrentHp;
+
+        checkpointData[0] = playerInfo.Checkpoint.x;
+        checkpointData[1] = playerInfo.Checkpoint.y;
+
+        DBVault.UpdateSlotByIdx(slotID, slotData);
+        DBVault.UpdateCheckpoint(slotID, checkpointData);
+    }
+
+    public void DeleteData(int slotID) {
+        DBVault.ResetSlotCPByIdx(slotID);
+    }
+
     public void AssignSlotInfo(int slot) {
         DBVault.SetActiveSlot(slots[slot].SlotID);
 
@@ -69,7 +89,7 @@ public class DataManager : MonoBehaviour {
         playerInfo.Runtime = 1;
         playerInfo.Checkpoint = slots[slot].Checkpoint;
 
-        AutoSaveData();
+        QuickSaveData();
     }
 
     public DataInfo GetSlotInfo(int slot) {
