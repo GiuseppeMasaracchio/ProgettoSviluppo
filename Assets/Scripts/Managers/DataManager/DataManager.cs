@@ -23,6 +23,10 @@ public class DataManager : MonoBehaviour {
         StartCoroutine("InitializeData");
     }
 
+    public void RefreshData() {
+        StartCoroutine("InitializeData");
+    }
+
     public void ResumeData() {
         object[] activeData = DBVault.GetActiveData();
         object[] activeCheckpoint = DBVault.GetActiveCheckpoint();
@@ -37,36 +41,36 @@ public class DataManager : MonoBehaviour {
 
     }
 
-    public void AutoSaveData(PlayerInfo _playerInfo) {
+    public void AutoSaveData() {
         object[] slotData = new object[4];
         object[] checkpointData = new object[2];
 
-        slotData[0] = _playerInfo.Name;
-        slotData[1] = _playerInfo.PowerUps;
-        slotData[2] = _playerInfo.Score;
-        slotData[3] = _playerInfo.CurrentHp;
+        slotData[0] = playerInfo.Name;
+        slotData[1] = playerInfo.PowerUps;
+        slotData[2] = playerInfo.Score;
+        slotData[3] = playerInfo.CurrentHp;
 
-        checkpointData[0] = _playerInfo.Checkpoint.x;
-        checkpointData[1] = _playerInfo.Checkpoint.y;
+        checkpointData[0] = playerInfo.Checkpoint.x;
+        checkpointData[1] = playerInfo.Checkpoint.y;
 
         DBVault.UpdateActiveSlot(slotData);
         DBVault.SetCheckpoint(checkpointData);
 
     }
 
-    public void AssignSlotInfo(SaveSlot slot) {
-        playerInfo.SlotID = slots[(int)slot].SlotID;
-        playerInfo.Name = slots[(int)slot].Name;
-        playerInfo.PowerUps = slots[(int)slot].PowerUps;
-        playerInfo.Score = slots[(int)slot].Score;
-        playerInfo.CurrentHp = slots[(int)slot].CurrentHp;
-        playerInfo.Runtime = slots[(int)slot].Runtime;
-        playerInfo.Checkpoint = slots[(int)slot].Checkpoint;
+    public void AssignSlotInfo(int slot) {
+        DBVault.SetActiveSlot(slots[slot].SlotID);
 
-        DBVault.SetActiveSlot(playerInfo.SlotID);
+        playerInfo.SlotID = slots[slot].SlotID;
+        playerInfo.Name = slots[slot].Name;
+        playerInfo.PowerUps = slots[slot].PowerUps;
+        playerInfo.Score = slots[slot].Score;
+        playerInfo.CurrentHp = slots[slot].CurrentHp;
+        playerInfo.Runtime = 1;
+        playerInfo.Checkpoint = slots[slot].Checkpoint;
 
+        AutoSaveData();
     }
-
 
     public DataInfo GetSlotInfo(int slot) {
         return slots[slot];

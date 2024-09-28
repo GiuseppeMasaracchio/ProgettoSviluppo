@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class MenuController : MonoBehaviour { 
-    public MenuController Instance { get; private set; }
+    public static MenuController Instance { get; private set; }
 
     [SerializeField] GameObject[] slots;
     [SerializeField] PlayerInfo _playerInfo;
@@ -26,6 +25,7 @@ public class MenuController : MonoBehaviour {
     }
 
     private void Start() {
+        DataManager.Instance.RefreshData();
         StartCoroutine("DisplaySlots");
         SelectLights();
 
@@ -76,13 +76,19 @@ public class MenuController : MonoBehaviour {
     public void OnPause(InputValue input) {
         if (input.Get() == null) { return; }
 
-        ScenesManager.Instance.MainMenu();
+        ReturnToMainMenu();
     }
 
     public void OnCancel(InputValue input) {
         if (input.Get() == null) { return; }
-        
+
         ContinueGame();
+    }
+
+    public void OnSave(InputValue input) {
+        if (input.Get() == null) { return; }
+
+        SaveGame();
     }
 
     public void ContinueGame() {
@@ -90,18 +96,33 @@ public class MenuController : MonoBehaviour {
         ScenesManager.Instance.LoadGame();
     }
 
-    private void SelectSlot() {
-        if (DataManager.Instance.GetSlotInfo(currentSlot).Checkpoint.x == 0) {
-            DataManager.Instance.AssignSlotInfo((SaveSlot)currentSlot);
+    public void SaveGame() {
+        DataManager.Instance.AutoSaveData();
+        DataManager.Instance.RefreshData();
+
+        StartCoroutine("DisplaySlots");
+    }
+
+    public void ReturnToMainMenu() {
+        ScenesManager.Instance.MainMenu();
+    }
+
+    public void SelectSlot() {
+        if (DataManager.Instance.GetSlotInfo(currentSlot).Checkpoint.x == 0) {            
+            DataManager.Instance.AssignSlotInfo(currentSlot);
             ScenesManager.Instance.StartGame();
+            DataManager.Instance.AutoSaveData();
+            DataManager.Instance.RefreshData();
         } else {
-            DataManager.Instance.AssignSlotInfo((SaveSlot)currentSlot);
+            DataManager.Instance.AssignSlotInfo(currentSlot);
             ScenesManager.Instance.LoadGame();
+            DataManager.Instance.AutoSaveData();
+            DataManager.Instance.RefreshData();
         }
 
     }
 
-    private void NavigateSlot(Vector2 input) {
+    public void NavigateSlot(Vector2 input) {
         if (input == new Vector2(1f, 0f)) {
             direction = 1;
             SwitchSlot(direction);

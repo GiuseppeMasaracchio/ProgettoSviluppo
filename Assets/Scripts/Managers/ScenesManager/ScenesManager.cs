@@ -30,6 +30,7 @@ public class ScenesManager : MonoBehaviour {
     public void StartGame() {
         if (paused) { return; }
 
+        _playerInfo.Checkpoint = new Vector2(1f, 0f);
         StartCoroutine(InitializeStart((int)Scenes.Lab));
     }
 
@@ -270,18 +271,27 @@ public class ScenesManager : MonoBehaviour {
     }
 
     public IEnumerator InstantiateMenu() {
-        paused = true;
-        
+        paused = true;        
+
+        if (MenuController.Instance == null) {
+            Debug.Log("No menu found");
+            Instantiate(_menuPrefab, new Vector3(0f, -100f, 0f), new Quaternion());
+        } else {
+            Debug.Log("Menu found");
+        }
+
+        /*
         try {
             GameObject _obj = FindFirstObjectByType<MenuController>().gameObject;
-            Destroy(_obj);
+            Debug.Log("Menu found");
 
         } catch {
             Debug.Log("No Object found");
+            Instantiate(_menuPrefab, new Vector3(0f, -100f, 0f), new Quaternion());
 
-        }
+        }        
+        */
 
-        Instantiate(_menuPrefab, new Vector3(0f, -100f, 0f), new Quaternion());
         yield return new WaitForSeconds(.2f);
 
         paused = false;
