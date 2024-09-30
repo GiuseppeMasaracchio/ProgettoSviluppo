@@ -7,8 +7,10 @@ public class MenuController : MonoBehaviour {
     public static MenuController Instance { get; private set; }
 
     [SerializeField] GameObject[] slots;
+    [SerializeField] GameObject recordsPod;
     [Space]
     [SerializeField] DataInfo[] slotsInfo;
+    [SerializeField] RecordInfo[] recordsInfo;
     [SerializeField] PlayerInfo _playerInfo;
 
     public UIMode mode = UIMode.Slots;
@@ -29,6 +31,7 @@ public class MenuController : MonoBehaviour {
     private void Start() {
         DataManager.Instance.RefreshData();
         StartCoroutine("DisplaySlots");
+        StartCoroutine("DisplayRecords");
         SelectLights();
 
     }
@@ -90,15 +93,15 @@ public class MenuController : MonoBehaviour {
     public void OnSave(InputValue input) {
         if (input.Get() == null) { return; }
 
-        DataManager.Instance.SetRecord();
-        DataManager.Instance.RefreshRecords();
+        SetNewRecord();
         //SaveGame();
     }
 
     public void OnOverwrite(InputValue input) {
         if (input.Get() == null) { return; }
 
-        OverwriteGame();
+        DeleteRecords();
+        //OverwriteGame();
     }
 
     public void OnClear(InputValue input) {
@@ -155,6 +158,20 @@ public class MenuController : MonoBehaviour {
             DataManager.Instance.RefreshData();
         }
 
+    }
+
+    public void SetNewRecord() {
+        DataManager.Instance.SetRecord();
+        DataManager.Instance.RefreshRecords();
+
+        StartCoroutine("DisplayRecords");
+    }
+
+    public void DeleteRecords() {
+        DataManager.Instance.ResetRecords();
+        DataManager.Instance.RefreshRecords();
+
+        StartCoroutine("DisplayRecords");
     }
 
     public void NavigateSlot(Vector2 input) {
@@ -246,6 +263,28 @@ public class MenuController : MonoBehaviour {
             yield return null;
 
         }        
+
+        yield break;
+    }
+    
+    public IEnumerator DisplayRecords() {
+        int i = 0;
+        TMP_Text[] fields = recordsPod.GetComponentsInChildren<TMP_Text>();
+
+        foreach (TMP_Text field in fields) {
+
+            if (recordsInfo[i].Name == "Default") {
+                field.text = "";
+            } else {
+                int position = i + 1;
+                field.text = position.ToString() + ". " + recordsInfo[i].Name + " - " + recordsInfo[i].Score;
+                i++;
+            }
+            
+
+            yield return null;
+
+        }
 
         yield break;
     }

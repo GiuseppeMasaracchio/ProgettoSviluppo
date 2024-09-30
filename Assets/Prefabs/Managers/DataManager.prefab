@@ -44,7 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a8ec0a6be45d04b93844a45f2e14bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slots:
+  recordsInfo:
+  - {fileID: 11400000, guid: 4b314a3ba3f8c5b44a1b4964e4f34063, type: 2}
+  - {fileID: 11400000, guid: 34a6c3409329b78419371af0e1a2bd1c, type: 2}
+  - {fileID: 11400000, guid: c22d8d540e6082745a8dcec4a37e46b5, type: 2}
+  - {fileID: 11400000, guid: 5a190210de4f5084b925540abed56656, type: 2}
+  - {fileID: 11400000, guid: 6e9302127d960df4b94d3f992ffd61f6, type: 2}
+  slotsInfo:
   - {fileID: 11400000, guid: ef06358dec89ae5488919c26d05dac67, type: 2}
   - {fileID: 11400000, guid: 16b52352f75e42d459026290f8dfc4a3, type: 2}
   - {fileID: 11400000, guid: b1a8ed09ca6d563488ffdb7a2b14d773, type: 2}

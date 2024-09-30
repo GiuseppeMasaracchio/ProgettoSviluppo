@@ -6,7 +6,7 @@ public class DataManager : MonoBehaviour {
     public static DataManager Instance { get; private set; }
 
     [SerializeField] RecordInfo[] recordsInfo;
-    [SerializeField] DataInfo[] slots;
+    [SerializeField] DataInfo[] slotsInfo;
     [SerializeField] PlayerInfo playerInfo;
 
     private void Awake() {
@@ -20,7 +20,7 @@ public class DataManager : MonoBehaviour {
 
     private void Start() {
         RefreshData();
-        RefreshRecords();
+        Invoke("RefreshRecords", .5f);
     }
 
     public void RefreshData() {
@@ -83,25 +83,30 @@ public class DataManager : MonoBehaviour {
     }
 
     public void AssignSlotInfo(int slot) {
-        DBVault.SetActiveSlot(slots[slot].SlotID);
+        DBVault.SetActiveSlot(slotsInfo[slot].SlotID);
 
-        playerInfo.SlotID = slots[slot].SlotID;
-        playerInfo.Name = slots[slot].Name;
-        playerInfo.PowerUps = slots[slot].PowerUps;
-        playerInfo.Score = slots[slot].Score;
-        playerInfo.CurrentHp = slots[slot].CurrentHp;
+        playerInfo.SlotID = slotsInfo[slot].SlotID;
+        playerInfo.Name = slotsInfo[slot].Name;
+        playerInfo.PowerUps = slotsInfo[slot].PowerUps;
+        playerInfo.Score = slotsInfo[slot].Score;
+        playerInfo.CurrentHp = slotsInfo[slot].CurrentHp;
         playerInfo.Runtime = 1;
-        playerInfo.Checkpoint = slots[slot].Checkpoint;
+        playerInfo.Checkpoint = slotsInfo[slot].Checkpoint;
 
         QuickSaveData();
     }
 
     public DataInfo GetSlotInfo(int slot) {
-        return slots[slot];
+        return slotsInfo[slot];
     }
 
     public void SetRecord() {                
         DBVault.SetHighscore(playerInfo.Name, playerInfo.Score);
+    }
+
+    public void ResetRecords() {
+        DBVault.ResetHighscore();
+
     }
 
     private IEnumerator InitializeData() {
@@ -110,13 +115,13 @@ public class DataManager : MonoBehaviour {
         List<object[]> checkpoints = DBVault.GetSlotsCheckpoint();
 
         foreach (object[] save in saves) {
-            slots[i].SlotID = (int)save[(int)SaveData.Slot_ID];
-            slots[i].Name = (string)save[(int)SaveData.Name];
-            slots[i].PowerUps = (int)save[(int)SaveData.PowerUps];
-            slots[i].Score = (int)save[(int)SaveData.Score];
-            slots[i].CurrentHp = (int)save[(int)SaveData.CurrentHp];
-            slots[i].Runtime = (int)save[(int)SaveData.Runtime];
-            slots[i].Checkpoint = new Vector2((int)checkpoints[i][1], (int)checkpoints[i][2]);
+            slotsInfo[i].SlotID = (int)save[(int)SaveData.Slot_ID];
+            slotsInfo[i].Name = (string)save[(int)SaveData.Name];
+            slotsInfo[i].PowerUps = (int)save[(int)SaveData.PowerUps];
+            slotsInfo[i].Score = (int)save[(int)SaveData.Score];
+            slotsInfo[i].CurrentHp = (int)save[(int)SaveData.CurrentHp];
+            slotsInfo[i].Runtime = (int)save[(int)SaveData.Runtime];
+            slotsInfo[i].Checkpoint = new Vector2((int)checkpoints[i][1], (int)checkpoints[i][2]);
             i++;
 
             yield return null;
@@ -129,14 +134,25 @@ public class DataManager : MonoBehaviour {
         int i = 0;
         List<object[]> records = DBVault.GetHighscore();       
 
-        foreach (object[] record in records) {            
-            recordsInfo[i].Name = (string)record[(int)Record.Name];
-            recordsInfo[i].Score = (int)record[(int)Record.Score];
+        if (DBVault.GetHighscoreCount() > 0) {
+            foreach (object[] record in records) {            
+                recordsInfo[i].Name = (string)record[(int)Record.Name];
+                recordsInfo[i].Score = (int)record[(int)Record.Score];
 
-            i++;
+                i++;
 
-            yield return null;
-        }
+                yield return null;
+            }
+
+        } else {
+            foreach (RecordInfo recordinfo in recordsInfo) {
+                recordinfo.Name = "Default";
+                recordinfo.Score = 0;
+
+                yield return null;
+            }
+        } 
+
 
         yield break;
     }

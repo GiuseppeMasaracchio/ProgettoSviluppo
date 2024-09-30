@@ -371,9 +371,12 @@ public static class DBVault {
     public static void ReBuildDB() {
         DropTable("Slot");
         DropTable("Checkpoint");
-        DropTable("Highscore");
+        //DropTable("Highscore");
 
         InitDB();
+    }
+    public static void ResetHighscore() {
+        DeleteFromTable("Highscore");
     }
     public static void ResetSlotCPByIdx(int idx) {
         OpenConnection();
