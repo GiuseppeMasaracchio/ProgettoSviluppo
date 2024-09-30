@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5683e02101e27e4cb83447181882c27, type: 3}
-  m_Name: PlayerInfo_Asset
+  m_Script: {fileID: 11500000, guid: dad926429b68b9545bd80bb9412b66c7, type: 3}
+  m_Name: Record 4
   m_EditorClassIdentifier: 
-  _slotID: 2
-  _name: Pesce
-  _powerUps: 0
-  _score: 5
-  _currentHp: 3
-  _runtime: 1
-  _checkpoint: {x: 1, y: 0}
+  _name: Default
+  _score: 0

@@ -5,11 +5,9 @@ using UnityEngine;
 public class DataManager : MonoBehaviour {
     public static DataManager Instance { get; private set; }
 
+    [SerializeField] RecordInfo[] recordsInfo;
     [SerializeField] DataInfo[] slots;
     [SerializeField] PlayerInfo playerInfo;
-
-    private List<object[]> saves; 
-    private List<object[]> checkpoints;
 
     private void Awake() {
         if (Instance == null) {
@@ -17,14 +15,20 @@ public class DataManager : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
         }
         else { Destroy(gameObject); }
+        
     }
 
     private void Start() {
-        StartCoroutine("InitializeData");
+        RefreshData();
+        RefreshRecords();
     }
 
     public void RefreshData() {
         StartCoroutine("InitializeData");
+    }
+
+    public void RefreshRecords() {
+        StartCoroutine("InitializeRecords");
     }
 
     public void ResumeData() {
@@ -96,11 +100,14 @@ public class DataManager : MonoBehaviour {
         return slots[slot];
     }
 
+    public void SetRecord() {                
+        DBVault.SetHighscore(playerInfo.Name, playerInfo.Score);
+    }
+
     private IEnumerator InitializeData() {
         int i = 0;
-
-        saves = DBVault.GetSlotsData();
-        checkpoints = DBVault.GetSlotsCheckpoint();
+        List<object[]> saves = DBVault.GetSlotsData();
+        List<object[]> checkpoints = DBVault.GetSlotsCheckpoint();
 
         foreach (object[] save in saves) {
             slots[i].SlotID = (int)save[(int)SaveData.Slot_ID];
@@ -117,5 +124,21 @@ public class DataManager : MonoBehaviour {
 
         yield break;
     }
-    
+
+    private IEnumerator InitializeRecords() {
+        int i = 0;
+        List<object[]> records = DBVault.GetHighscore();       
+
+        foreach (object[] record in records) {            
+            recordsInfo[i].Name = (string)record[(int)Record.Name];
+            recordsInfo[i].Score = (int)record[(int)Record.Score];
+
+            i++;
+
+            yield return null;
+        }
+
+        yield break;
+    }
+
 }

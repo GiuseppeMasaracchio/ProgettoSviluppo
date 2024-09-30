@@ -67,6 +67,20 @@ public static class DBVault {
         CloseConnection();
         return minscore;
     }
+    private static object[] GetMaxScore() {
+        OpenConnection();
+
+        query = "SELECT * FROM Highscore WHERE highscore = (SELECT MAX(highscore) FROM Highscore)";
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+        object[] maxscore = new object[2];
+        while (reader.Read()) {
+            maxscore = new object[] { reader["Highscore_ID"], reader["name"], reader["Highscore"] };
+        }
+
+        CloseConnection();
+        return maxscore;
+    }
 
     ////Public methods
     public static int GetHighscoreCount() {
@@ -110,7 +124,7 @@ public static class DBVault {
     public static List<object[]> GetHighscore() {
         OpenConnection();
 
-        query = "SELECT * FROM Highscore ORDER BY highscore DESC";
+        query = "SELECT * FROM Highscore ORDER BY highscore ASC";
         dbcmd.CommandText = query;
         reader = dbcmd.ExecuteReader();
 
@@ -217,6 +231,17 @@ public static class DBVault {
             return;
         }
     }
+    private static void UpdateTimescore(string name, int score) {
+        object[] maxscore = GetMaxScore();
+
+        if (score < (int)maxscore[2]) {
+            UpdateValueByIdx((int)maxscore[0], "Highscore", "name", name);
+            UpdateValueByIdx((int)maxscore[0], "Highscore", "Highscore", score);
+        }
+        else {
+            return;
+        }
+    }
     private static void InitDB() {
         OpenConnection();
 
@@ -294,7 +319,7 @@ public static class DBVault {
         if (count <= 4) {
             InsertHighscore(count + 1, name, score);
         } else {
-            UpdateHighscore(name, score);
+            UpdateTimescore(name, score);
         }
     }
     public static void SetCheckpoint(object[] checkpoint) {

@@ -46,6 +46,11 @@ public enum SaveSlot {
     Three
 }
 
+public enum Record {
+    Name = 1,
+    Score = 2
+}
+
 public enum UIMode {
     MainMenu,
     Slots,

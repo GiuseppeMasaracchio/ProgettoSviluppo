@@ -90,7 +90,9 @@ public class MenuController : MonoBehaviour {
     public void OnSave(InputValue input) {
         if (input.Get() == null) { return; }
 
-        SaveGame();
+        DataManager.Instance.SetRecord();
+        DataManager.Instance.RefreshRecords();
+        //SaveGame();
     }
 
     public void OnOverwrite(InputValue input) {
