@@ -138,11 +138,15 @@ public class MenuController : MonoBehaviour {
     }
 
     public void DeleteSlot() {
-        int slotID = slotsInfo[currentSlot].SlotID;
-        DataManager.Instance.DeleteData(slotID);
-        DataManager.Instance.RefreshData();
+        if (slotsInfo[currentSlot].Runtime == 0) {
+            int slotID = slotsInfo[currentSlot].SlotID;
+            DataManager.Instance.DeleteData(slotID);
+            DataManager.Instance.RefreshData();
 
-        StartCoroutine("DisplaySlots");
+            StartCoroutine("DisplaySlots");
+        } else {
+            Debug.Log("Current slot is active!");
+        }
     }
 
     public void SelectSlot() {
@@ -267,7 +271,7 @@ public class MenuController : MonoBehaviour {
         yield break;
     }
     
-    public IEnumerator DisplayRecords() {
+    private IEnumerator DisplayRecords() {
         int i = 0;
         TMP_Text[] fields = recordsPod.GetComponentsInChildren<TMP_Text>();
 

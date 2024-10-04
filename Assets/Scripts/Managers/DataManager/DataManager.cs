@@ -153,7 +153,6 @@ public class DataManager : MonoBehaviour {
             }
         } 
 
-
         yield break;
     }
 
