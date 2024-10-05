@@ -42,15 +42,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Lock",
-                    "type": "Value",
-                    "id": "69f9e60c-a0f1-4efe-8049-6c7505350a6c",
-                    "expectedControlType": "Analog",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Dash",
                     "type": "Value",
                     "id": "35391ceb-a357-4e2a-b49b-25ad34368a09",
@@ -218,7 +209,7 @@
                     "id": "8c8e490b-c610-4785-884f-f04217b23ca4",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "groups": "Keyboard&Mouse;Touch",
                     "action": "Look",
                     "isComposite": false,
@@ -331,28 +322,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fea933e9-65ec-4ad1-8586-01a53935ccf9",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Lock",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f0eb4b0e-89e8-47d8-850c-cce325a29d17",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Lock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -475,7 +444,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
+                    "name": "UnPause",
                     "type": "Button",
                     "id": "51f59875-b320-4dc1-8e18-85bc4ef1fb5c",
                     "expectedControlType": "Button",
@@ -937,7 +906,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Pause",
+                    "action": "UnPause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -948,7 +917,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pause",
+                    "action": "UnPause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

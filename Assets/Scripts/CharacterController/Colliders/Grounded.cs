@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Grounded : MonoBehaviour
 {
-    [SerializeField] TPCharacterController _ctx;
+    [SerializeField] PXCharacterController _ctx;
     
     private void OnTriggerStay(Collider other) {
         if (other.tag == "Ground") {

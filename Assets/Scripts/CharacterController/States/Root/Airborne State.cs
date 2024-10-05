@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 public class AirborneState : BaseState, IContextInit, IPhysics {
-    public AirborneState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
+    public AirborneState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         IsRootState = true; //SOLO SU GROUNDED, AIRBORNE E DEAD (ROOT STATES)
     }
     public override void EnterState() {

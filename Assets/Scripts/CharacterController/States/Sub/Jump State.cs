@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class JumpState : BaseState, IContextInit, IWalk, IVFXInit {
-    public JumpState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
+    public JumpState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {

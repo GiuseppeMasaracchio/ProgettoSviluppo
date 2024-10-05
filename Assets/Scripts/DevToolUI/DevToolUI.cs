@@ -21,7 +21,7 @@ public class DevToolUI : MonoBehaviour {
         _currentClip = GameObject.Find("CurrentClip").GetComponent<TMP_Text>();
         _targetClip = GameObject.Find("TargetClip").GetComponent<TMP_Text>();
     }
-    public void UpdateText(TPCharacterController _ctx) {
+    public void UpdateText(PXCharacterController _ctx) {
         _rootText.text = _ctx.CurrentRootState.ToString();
         _subText.text = _ctx.CurrentSubState.ToString();
         _jumpCountText.text = _ctx.JumpCount.ToString();

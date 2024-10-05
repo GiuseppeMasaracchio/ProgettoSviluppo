@@ -3,16 +3,16 @@ using UnityEngine;
 public abstract class BaseState {
     private bool _isRootState = false;
 
-    private TPCharacterController _ctx;
+    private PXCharacterController _ctx;
     private StateHandler _stateHandler;
     private AnimHandler _animHandler;
 
     protected bool IsRootState { set { _isRootState = value; } }
-    protected TPCharacterController Ctx { get { return _ctx; } }
+    protected PXCharacterController Ctx { get { return _ctx; } }
     protected StateHandler StateHandler { get { return _stateHandler; } }
     protected AnimHandler AnimHandler { get { return _animHandler; } }
 
-    public BaseState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) {
+    public BaseState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) {
         _ctx = currentContext;
         _stateHandler = stateHandler;
         _animHandler = animHandler;

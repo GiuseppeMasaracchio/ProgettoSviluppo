@@ -30,7 +30,7 @@ TagManager:
   - Level
   - VFX
   - Enemy
-  - Cam2
+  - Camera_1
   - Ground
   - Secondary Lights
   - Checkpoint
@@ -39,7 +39,7 @@ TagManager:
   - Obstacles
   - PlayerAttacks
   - Pods
-  - 
+  - Camera_2
   - 
   - 
   - 

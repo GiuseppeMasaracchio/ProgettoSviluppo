@@ -99,6 +99,9 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InstantiatePlayerAndCompanion());
         yield return new WaitWhile(() => paused);
 
+        StartCoroutine(InstantiateMenu());
+        yield return new WaitWhile(() => paused);
+
         StartCoroutine(FadeOut());
         yield return new WaitWhile(() => paused);
 
@@ -116,6 +119,9 @@ public class ScenesManager : MonoBehaviour {
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(InstantiatePlayerAndCompanion());
+        yield return new WaitWhile(() => paused);
+
+        StartCoroutine(InstantiateMenu());
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(FadeOut());
@@ -279,18 +285,6 @@ public class ScenesManager : MonoBehaviour {
         } else {
             Debug.Log("Menu found");
         }
-
-        /*
-        try {
-            GameObject _obj = FindFirstObjectByType<MenuController>().gameObject;
-            Debug.Log("Menu found");
-
-        } catch {
-            Debug.Log("No Object found");
-            Instantiate(_menuPrefab, new Vector3(0f, -100f, 0f), new Quaternion());
-
-        }        
-        */
 
         yield return new WaitForSeconds(.2f);
 

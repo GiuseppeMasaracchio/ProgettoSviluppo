@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
 public class StateHandler {
-    TPCharacterController _context;
+    PXCharacterController _context;
     AnimHandler _animHandler;
     Dictionary<States, BaseState> stateList = new Dictionary<States, BaseState>(10); 
 
-    public StateHandler(TPCharacterController currentContext, AnimHandler animHandler) {
+    public StateHandler(PXCharacterController currentContext, AnimHandler animHandler) {
         _context = currentContext;
         _animHandler = animHandler;
 
