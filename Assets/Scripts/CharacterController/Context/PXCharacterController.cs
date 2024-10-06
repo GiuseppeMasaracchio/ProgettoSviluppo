@@ -169,11 +169,11 @@ public class PXCharacterController : MonoBehaviour {
         _currentSubState = StateHandler.Fall();
         _currentSubState.EnterState();
 
-        InitializeActions();
     }
 
     // Start is called before the first frame update
     void Start() {
+        InitializeActions();
         InitializePowerUps();
         SubscribeCallbacks();
 
@@ -188,6 +188,7 @@ public class PXCharacterController : MonoBehaviour {
         }
         
     }
+
     void FixedUpdate() {       
         _currentRootState.UpdateState();
         if (!isDead) { 
@@ -195,11 +196,7 @@ public class PXCharacterController : MonoBehaviour {
         }
     }
 
-    private void OnEnable() {
-        //SubscribeCallbacks();
-    }
-
-    private void OnDisable() {
+    public void OnDestroy() {
         UnsubscribeCallbacks();
     }
 

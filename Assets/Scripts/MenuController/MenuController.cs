@@ -25,7 +25,7 @@ public class MenuController : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
         }
         else { Destroy(gameObject); }
-               
+                
     }
 
     private void Start() {
@@ -33,7 +33,8 @@ public class MenuController : MonoBehaviour {
         StartCoroutine("DisplaySlots");
         StartCoroutine("DisplayRecords");
         SelectLights();
-
+        
+        CameraManager.Instance.InitializeVCameras();
     }
 
     public void OnNavigate(InputValue input) {

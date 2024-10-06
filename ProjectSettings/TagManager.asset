@@ -20,6 +20,9 @@ TagManager:
   - PowerUps
   - PlayerAttacks
   - Light
+  - PlayerVirtualCamera
+  - GameVirtualCamera
+  - MenuVirtualCamera
   layers:
   - Default
   - TransparentFX

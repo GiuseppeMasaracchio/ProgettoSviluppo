@@ -27,6 +27,10 @@ public class ScenesManager : MonoBehaviour {
         } else { Destroy(gameObject); }
     }
 
+    public bool IsBusy() {
+        return paused;
+    }
+
     public void StartGame() {
         if (paused) { return; }
 

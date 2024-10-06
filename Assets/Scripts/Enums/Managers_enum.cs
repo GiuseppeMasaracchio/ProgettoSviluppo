@@ -56,3 +56,12 @@ public enum UIMode {
     Slots,
     Pause
 }
+
+public enum MenuVCameras {
+    MainScreen,
+    PauseStart,
+    PauseEnd,
+    Menu,
+    Slots,
+    Record
+}

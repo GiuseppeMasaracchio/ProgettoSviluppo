@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,27 +13,26 @@ public class InputManager : MonoBehaviour {
         }
         else { Destroy(gameObject); }
     }
-    private void Start() {
 
-    }
     public PlayerInput GetPlayerInput() {
         return playerInput;
     }
+
     public void SwitchActionMap(InputAction.CallbackContext input) {
         if (input.phase == InputActionPhase.Started) {
-            SetActionMap();
+            //SetActionMap();
         }
 
     }
 
-    private void SetActionMap() {
+    public void SetActionMap() {
         if (playerInput.currentActionMap.name == "Player") {
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
             playerInput.SwitchCurrentActionMap("UI");
         } else {
-            Time.timeScale = 1f;
+            //Time.timeScale = 1f;
             playerInput.SwitchCurrentActionMap("Player");
         }
     }
-
+   
 }
