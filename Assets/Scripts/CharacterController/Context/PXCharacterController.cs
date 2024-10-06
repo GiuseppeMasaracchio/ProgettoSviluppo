@@ -241,8 +241,16 @@ public class PXCharacterController : MonoBehaviour {
 
     private void SubscribeCallbacks() {
         _jumpAction.started += OnJump;
+        _jumpAction.performed += OnJump;
+        _jumpAction.canceled += OnJump;
+
         _attackAction.started += OnAttack;
+        _attackAction.performed += OnAttack;
+        _attackAction.canceled += OnAttack;
+
         _dashAction.started += OnDash;
+        _dashAction.performed += OnDash;
+        _dashAction.canceled += OnDash;
 
         _moveAction.started += OnMove;
         _moveAction.performed += OnMove;
@@ -255,8 +263,16 @@ public class PXCharacterController : MonoBehaviour {
 
     private void UnsubscribeCallbacks() {
         _jumpAction.started -= OnJump;
+        _jumpAction.performed -= OnJump;
+        _jumpAction.canceled -= OnJump;
+
         _attackAction.started -= OnAttack;
+        _attackAction.performed -= OnAttack;
+        _attackAction.canceled -= OnAttack;
+
         _dashAction.started -= OnDash;
+        _dashAction.performed -= OnDash;
+        _dashAction.canceled -= OnDash;
 
         _moveAction.started -= OnMove;
         _moveAction.performed -= OnMove;
