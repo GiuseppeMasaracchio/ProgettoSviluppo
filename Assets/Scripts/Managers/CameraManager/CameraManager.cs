@@ -8,52 +8,55 @@ public class CameraManager : MonoBehaviour {
 
     [SerializeField] GameObject gameBrain;
     [SerializeField] GameObject menuBrain;
-
     private GameObject currentBrain;
 
     private List<GameObject> menuVCameras = new List<GameObject>();
-
+    private GameObject currentVCamera;
 
     private void Awake() {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else { Destroy(gameObject); }
-
-        currentBrain = gameBrain;
-        currentBrain.SetActive(true);
+        else { Destroy(gameObject); }        
     }
 
     private void Start() {
-        //InitializeVCameras();
+        SetInitialState();
     }
 
     public void OnPauseCamera(InputAction.CallbackContext input) {
         if (input.phase == InputActionPhase.Started) {
-            //menuVCameras[(int)MenuVCameras.PauseStart].gameObject.SetActive(true);
-            //SwitchBrain(menuBrain);
             StartCoroutine("PauseCameraOut");
         }
     }
 
     public void OnResumeCamera(InputAction.CallbackContext input) {
         if (input.phase == InputActionPhase.Started) {
-            StartCoroutine("PauseCameraIn");
-            //SwitchBrain(gameBrain);
+            StartCoroutine("PauseCameraIn");            
         }
     }
 
-    public void SetMenuBrain() {
-        SwitchBrain(menuBrain);
-    }
-
-    public void SetGameBrain() {
-        SwitchBrain(gameBrain);
+    public void OnAnyButton(InputAction.CallbackContext input) {
+        if (input.phase == InputActionPhase.Started) {
+            SwitchToMainMenu();            
+        }
     }
 
     public void InitializeVCameras() {
         StartCoroutine("RetrieveVCameras");
+    }
+
+    private void SwitchToMainMenu() {
+        SwitchMenuVCamera(MenuVCameras.Menu);        
+    }
+
+    private void SwitchMenuVCamera(MenuVCameras target) {
+        if (currentVCamera != menuVCameras[(int)target]) {
+            menuVCameras[(int)target].gameObject.SetActive(true);
+            currentVCamera.gameObject.SetActive(false);
+            currentVCamera = menuVCameras[(int)target].gameObject;
+        }
     }
 
     private void SwitchBrain(GameObject targetBrain) {
@@ -64,16 +67,26 @@ public class CameraManager : MonoBehaviour {
         }
     }
 
-    private void SwitchVCamera(GameObject target) {
+    private void SetInitialState() {
+        try {
+            currentVCamera = menuVCameras[(int)MenuVCameras.MainScreen].gameObject;
+            currentVCamera.SetActive(true);
 
+            currentBrain = menuBrain;
+            currentBrain.SetActive(true);
+        } catch {
+            InitializeVCameras();
+            Invoke("SetInitialState", .5f);
+        }
     }
 
     private IEnumerator PauseCameraOut() {
         Time.timeScale = 0f;
-        InputManager.Instance.SetActionMap();
+        InputManager.Instance.SetActionMap("UI");
 
         if (!menuVCameras[(int)MenuVCameras.PauseStart].gameObject.activeSelf) {
             menuVCameras[(int)MenuVCameras.PauseStart].gameObject.SetActive(true);
+            currentVCamera = menuVCameras[(int)MenuVCameras.PauseStart].gameObject;
         }
 
         SwitchBrain(menuBrain);
@@ -81,30 +94,37 @@ public class CameraManager : MonoBehaviour {
 
         menuVCameras[(int)MenuVCameras.PauseEnd].gameObject.SetActive(true);
         menuVCameras[(int)MenuVCameras.PauseStart].gameObject.SetActive(false);
-        
+        currentVCamera = menuVCameras[(int)MenuVCameras.PauseEnd].gameObject;
+
         yield break;
     }
 
     private IEnumerator PauseCameraIn() {
         menuVCameras[(int)MenuVCameras.PauseStart].gameObject.SetActive(true);
         menuVCameras[(int)MenuVCameras.PauseEnd].gameObject.SetActive(false);
+        currentVCamera = menuVCameras[(int)MenuVCameras.PauseStart].gameObject;
         yield return new WaitForSecondsRealtime(.25f);
 
         SwitchBrain(gameBrain);
-        InputManager.Instance.SetActionMap();
+        InputManager.Instance.SetActionMap("Player");
         Time.timeScale = 1f;
 
         yield break;
     }
 
     private IEnumerator RetrieveVCameras() {
-        GameObject parent = GameObject.Find("VCameras");
-        Cinemachine.CinemachineVirtualCamera[] cameras = parent.GetComponentsInChildren<Cinemachine.CinemachineVirtualCamera>();
+        try {
+            GameObject parent = GameObject.Find("MenuVCameras");
+            Cinemachine.CinemachineVirtualCamera[] cameras = parent.GetComponentsInChildren<Cinemachine.CinemachineVirtualCamera>();
 
-        foreach (Cinemachine.CinemachineVirtualCamera camera in cameras) {
-            menuVCameras.Add(camera.gameObject);
-            camera.gameObject.SetActive(false);
-            yield return null;
+            foreach (Cinemachine.CinemachineVirtualCamera camera in cameras) {
+                menuVCameras.Add(camera.gameObject);
+                camera.gameObject.SetActive(false);
+                //yield return null;
+            }
+        } catch {
+            Debug.Log("There was a problem retrieving Cameras");
+            //yield return null;
         }
 
         yield break;

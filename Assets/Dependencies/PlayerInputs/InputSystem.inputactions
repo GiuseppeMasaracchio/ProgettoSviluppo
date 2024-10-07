@@ -955,6 +955,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MainScreen",
+            "id": "2798cf61-32d1-41b6-b999-fe61fd94549e",
+            "actions": [
+                {
+                    "name": "AnyButton",
+                    "type": "Button",
+                    "id": "d1263c13-422f-4c4e-830c-a97ef8b3ef91",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f0c8f428-15c9-4603-9c80-43a7c71c6028",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse;Gamepad",
+                    "action": "AnyButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

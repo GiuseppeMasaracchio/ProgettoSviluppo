@@ -57,6 +57,11 @@ public enum UIMode {
     Pause
 }
 
+public enum VCameraMode {
+    MenuVCameras,
+    GameVCameras
+}
+
 public enum MenuVCameras {
     MainScreen,
     PauseStart,

@@ -280,7 +280,7 @@ public class PXCharacterController : MonoBehaviour {
         _lookAction.canceled -= OnLook;
     }
 
-    private void InitializeActions() {       
+    private void InitializeActions() {
         _moveAction = InputManager.Instance.GetPlayerInput().actions["Move"];
         _jumpAction = InputManager.Instance.GetPlayerInput().actions["Jump"];
         _lookAction = InputManager.Instance.GetPlayerInput().actions["Look"];

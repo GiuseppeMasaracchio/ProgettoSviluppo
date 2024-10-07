@@ -173,6 +173,7 @@ public class ScenesManager : MonoBehaviour {
             yield return null;
         }
 
+        Time.timeScale = 1;
         paused = false;
 
         yield break;

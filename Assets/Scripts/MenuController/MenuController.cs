@@ -13,7 +13,9 @@ public class MenuController : MonoBehaviour {
     [SerializeField] RecordInfo[] recordsInfo;
     [SerializeField] PlayerInfo _playerInfo;
 
-    public UIMode mode = UIMode.Slots;
+    private UIMode mode = UIMode.MainMenu;
+
+    public UIMode Mode { get { return mode; } set { mode = value; } }
 
     private int currentSlot = 0;
     private int selectedSlot = 0;
@@ -82,33 +84,33 @@ public class MenuController : MonoBehaviour {
     public void OnPause(InputValue input) {
         if (input.Get() == null) { return; }
 
-        ReturnToMainMenu();
+        //ReturnToMainMenu();
     }
 
     public void OnCancel(InputValue input) {
         if (input.Get() == null) { return; }
 
-        ContinueGame();
+        //ContinueGame();
     }
 
     public void OnSave(InputValue input) {
         if (input.Get() == null) { return; }
 
-        SetNewRecord();
+        //SetNewRecord();
         //SaveGame();
     }
 
     public void OnOverwrite(InputValue input) {
         if (input.Get() == null) { return; }
 
-        DeleteRecords();
+        //DeleteRecords();
         //OverwriteGame();
     }
 
     public void OnClear(InputValue input) {
         if (input.Get() == null) { return; }
 
-        DeleteSlot();
+        //DeleteSlot();
     }
 
     public void ContinueGame() {
@@ -134,6 +136,8 @@ public class MenuController : MonoBehaviour {
     public void ReturnToMainMenu() {
         ScenesManager.Instance.MainMenu();
         DataManager.Instance.RefreshData();
+
+        mode = UIMode.MainMenu;
 
         StartCoroutine("DisplaySlots");
     }

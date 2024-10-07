@@ -14,6 +14,10 @@ public class InputManager : MonoBehaviour {
         else { Destroy(gameObject); }
     }
 
+    private void Start() {
+
+    }
+
     public PlayerInput GetPlayerInput() {
         return playerInput;
     }
@@ -25,14 +29,15 @@ public class InputManager : MonoBehaviour {
 
     }
 
-    public void SetActionMap() {
-        if (playerInput.currentActionMap.name == "Player") {
-            //Time.timeScale = 0f;
-            playerInput.SwitchCurrentActionMap("UI");
-        } else {
-            //Time.timeScale = 1f;
-            playerInput.SwitchCurrentActionMap("Player");
+    public void OnAnyButton(InputAction.CallbackContext input) {
+        if (input.phase == InputActionPhase.Started) {
+            SetActionMap("UI");
         }
     }
-   
+
+    public void SetActionMap(string target) {
+        if (playerInput.currentActionMap.name != target) {
+            playerInput.SwitchCurrentActionMap(target);
+        }        
+    }
 }

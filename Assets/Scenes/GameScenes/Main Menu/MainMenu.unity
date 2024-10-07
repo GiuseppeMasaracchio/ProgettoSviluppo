@@ -1270,6 +1270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameMaster
       objectReference: {fileID: 0}
+    - target: {fileID: 1981389472270744146, guid: 339fde776f4934b4f93d6faaac349b07, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3713682081838079054, guid: 339fde776f4934b4f93d6faaac349b07, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1608,6 +1612,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 336e472d3a7feaf46a444d0550aa1d9a, type: 3}
+--- !u!114 &1075023814 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5132687814019743423, guid: 8c3dc4a7b57e314458aba2e484db3603, type: 3}
+  m_PrefabInstance: {fileID: 1587260901}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab0d6d0a985813642acae2deda554025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1194004512
 GameObject:
   m_ObjectHideFlags: 0
@@ -2397,6 +2412,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5028357515432968190, guid: f5327d8c66092d040b63b71c405f9996, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1075023814}
+    - target: {fileID: 5028357515432968190, guid: f5327d8c66092d040b63b71c405f9996, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1075023814}
+    - target: {fileID: 5028357515432968190, guid: f5327d8c66092d040b63b71c405f9996, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1075023814}
     - target: {fileID: 7573724632308363618, guid: f5327d8c66092d040b63b71c405f9996, type: 3}
       propertyPath: m_Name
       value: InputManager
@@ -2983,6 +3010,10 @@ PrefabInstance:
     - target: {fileID: 5717954940236864013, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_Name
       value: ScenesManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717954940236864013, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7593554463513585107, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_LocalPosition.x
