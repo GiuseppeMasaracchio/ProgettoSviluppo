@@ -220,7 +220,14 @@ public class ScenesManager : MonoBehaviour {
         yield break;
     }
 
-    //To be removed/updated
+    private IEnumerator DissolveIn() {
+        yield return null;
+    }
+
+    private IEnumerator DissolveOut() {
+        yield return null;
+    }
+
     public IEnumerator RetrieveCheckpoints() {
         paused = true;
         yield return new WaitForSeconds(.2f);

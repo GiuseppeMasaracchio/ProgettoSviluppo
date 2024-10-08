@@ -119,12 +119,10 @@ public class CameraManager : MonoBehaviour {
 
             foreach (Cinemachine.CinemachineVirtualCamera camera in cameras) {
                 menuVCameras.Add(camera.gameObject);
-                camera.gameObject.SetActive(false);
-                //yield return null;
+                camera.gameObject.SetActive(false);                
             }
         } catch {
-            Debug.Log("There was a problem retrieving Cameras");
-            //yield return null;
+            Debug.Log("Retrieve failed, trying again...");        
         }
 
         yield break;
