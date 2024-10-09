@@ -3007,13 +3007,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4685415326737356853, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
+      propertyPath: _fadeSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4685415326737356853, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
+      propertyPath: _dissolveSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5717954940236864013, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_Name
       value: ScenesManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 5717954940236864013, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7593554463513585107, guid: 1d1e304441dcfe64fb22d27db09c4461, type: 3}
       propertyPath: m_LocalPosition.x

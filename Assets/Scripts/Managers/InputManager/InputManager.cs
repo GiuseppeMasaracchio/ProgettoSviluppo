@@ -14,8 +14,8 @@ public class InputManager : MonoBehaviour {
         else { Destroy(gameObject); }
     }
 
-    private void Start() {
-
+    public void StartGame() {
+        SetActionMap("Player");
     }
 
     public PlayerInput GetPlayerInput() {

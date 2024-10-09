@@ -47,6 +47,10 @@ public class CameraManager : MonoBehaviour {
         StartCoroutine("RetrieveVCameras");
     }
 
+    public void StartGame() {
+        SwitchBrain(gameBrain);
+    }
+
     private void SwitchToMainMenu() {
         SwitchMenuVCamera(MenuVCameras.Menu);        
     }

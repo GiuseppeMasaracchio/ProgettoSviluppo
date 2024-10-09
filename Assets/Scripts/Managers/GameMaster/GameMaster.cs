@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameMaster : MonoBehaviour {
@@ -21,6 +22,7 @@ public class GameMaster : MonoBehaviour {
 
         //InitializePlayerInfo();
         ScenesManager.Instance.MainMenu();
+        StartCoroutine(StartGame());
     }
 
     private void InitializePlayerInfo() {
@@ -30,4 +32,17 @@ public class GameMaster : MonoBehaviour {
         _playerinfo.Score = 0;
     }
 
+    private IEnumerator StartGame() {
+        yield return new WaitForSeconds(10f);
+        ScenesManager.Instance.StartGame();
+        CameraManager.Instance.StartGame();
+
+        while (ScenesManager.Instance.IsBusy()) {
+            yield return null;
+        }
+
+        InputManager.Instance.StartGame();
+
+        yield break;
+    }
 }

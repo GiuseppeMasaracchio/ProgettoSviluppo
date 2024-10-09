@@ -7,15 +7,20 @@ public class ScenesManager : MonoBehaviour {
     public static ScenesManager Instance { get; private set; }
     
     [SerializeField] Material _fade;
+    [SerializeField] Material _dissolve;
     [SerializeField] GameObject _menuPrefab;
     [SerializeField] GameObject _playerPrefab;
     [SerializeField] GameObject _companionPrefab;
     [SerializeField] PlayerInfo _playerInfo;
 
     [SerializeField]
-    [Range(.1f, 2f)] float _fadeSpeed;
+    [Range(1f, 20f)] float _fadeSpeed;
+
+    [SerializeField]
+    [Range(.1f, 2f)] float _dissolveSpeed;
 
     private bool paused;
+    private bool globalPause;
 
     private Cp _targetCp;
     private GameObject _cpObj;
@@ -28,12 +33,13 @@ public class ScenesManager : MonoBehaviour {
     }
 
     public bool IsBusy() {
-        return paused;
+        return globalPause;
     }
 
     public void StartGame() {
         if (paused) { return; }
 
+        globalPause = true;
         _playerInfo.Checkpoint = new Vector2(1f, 0f);
         StartCoroutine(InitializeStart((int)Scenes.Lab));
     }
@@ -41,13 +47,15 @@ public class ScenesManager : MonoBehaviour {
     public void LoadGame() {
         if (paused) { return; }
 
+        globalPause = true;
         int n_scene = (int)_playerInfo.Checkpoint.x;
-        StartCoroutine(InitializeLoad(n_scene));        
+        StartCoroutine(InitializeLoad(n_scene));
     }
 
     public void MainMenu() {
         if (paused) { return; }
 
+        globalPause = true;
         StartCoroutine(InitializeMainMenu());
     }
 
@@ -62,20 +70,23 @@ public class ScenesManager : MonoBehaviour {
     }
 
     public void ReloadOnDeath() {
+        globalPause = true;
         StartCoroutine(OnDeath());
     }
 
     public void Switch(Scenes scene, Cp point) {
         if (paused) { return; }
 
+        globalPause = true;
         int n_scene = (int)scene;
+        InputManager.Instance.SetActionMap("Disabled");
         if (n_scene != SceneManager.GetActiveScene().buildIndex) {
             StartCoroutine(InitializeSwitch(n_scene, point));
         }
     }
 
     private IEnumerator InitializeMainMenu() {
-        StartCoroutine(BlackOut());
+        StartCoroutine(TransitionBlackOut(_dissolve));        
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(SetLoadScene((int)Scenes.MainMenu));
@@ -84,14 +95,17 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InstantiateMenu());
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(FadeOut());
+        yield return new WaitForSecondsRealtime(1f);
+
+        StartCoroutine(TransitionOut(_dissolve, _dissolveSpeed));
         yield return new WaitWhile(() => paused);
 
+        globalPause = false;
         yield break;
     }
 
     private IEnumerator InitializeStart(int n_scene) {
-        StartCoroutine(BlackOut());
+        StartCoroutine(TransitionBlackOut(_fade));
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(SetLoadScene(n_scene));
@@ -103,17 +117,18 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InstantiatePlayerAndCompanion());
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(InstantiateMenu());
+        StartCoroutine(TransitionOut(_fade, _fadeSpeed));
+        yield return new WaitWhile(() => paused);        
+
+        StartCoroutine(TransitionOut(_fade, _fadeSpeed));
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(FadeOut());
-        yield return new WaitWhile(() => paused);
-
+        globalPause = false;
         yield break;
     }
 
     private IEnumerator InitializeLoad(int n_scene) {
-        StartCoroutine(FadeIn());
+        StartCoroutine(TransitionBlackOut(_fade));
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(SetLoadScene(n_scene));
@@ -128,14 +143,15 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InstantiateMenu());
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(FadeOut());
+        StartCoroutine(TransitionOut(_fade, _fadeSpeed));
         yield return new WaitWhile(() => paused);
 
+        globalPause = false;
         yield break;
     }
 
     private IEnumerator InitializeSwitch(int n_scene, Cp _point) {
-        StartCoroutine(FadeIn());
+        StartCoroutine(TransitionIn(_fade, _fadeSpeed));
         yield return new WaitWhile(() => paused);
 
         StartCoroutine(SetLoadScene(n_scene));
@@ -147,9 +163,11 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InstantiatePlayerAndCompanion());
         yield return new WaitWhile(() => paused);
 
-        StartCoroutine(FadeOut());
+        StartCoroutine(TransitionOut(_fade, _fadeSpeed));
         yield return new WaitWhile(() => paused);
 
+        globalPause = false;
+        InputManager.Instance.SetActionMap("Player");
         yield break;
     }
 
@@ -161,10 +179,11 @@ public class ScenesManager : MonoBehaviour {
 
         _playerInfo.CurrentHp = 3;
 
+        globalPause = false;
         yield break;
     }
 
-    public IEnumerator SetLoadScene(int n_scene) {
+    private IEnumerator SetLoadScene(int n_scene) {
         paused = true;
         
         AsyncOperation sceneLoad = SceneManager.LoadSceneAsync(n_scene, LoadSceneMode.Single);
@@ -180,39 +199,39 @@ public class ScenesManager : MonoBehaviour {
 
     }
 
-    private IEnumerator FadeIn() {
+    private IEnumerator TransitionIn(Material _material, float speed) {
         paused = true;
-        while (_fade.GetFloat("_Size") > 0.01f) {
-            float size = _fade.GetFloat("_Size");
-            float lerpSize = size - _fadeSpeed * .1f;
-            _fade.SetFloat("_Size", lerpSize);            
+        while (_material.GetFloat("_Transition") > 0.01f) {
+            float size = _material.GetFloat("_Transition");
+            float lerpSize = size - speed * .01f;
+            _material.SetFloat("_Transition", lerpSize);
             yield return null;
         }
 
-        _fade.SetFloat("_Size", 0f);
+        _material.SetFloat("_Transition", 0f);
         paused = false;
 
         yield break;
     }
 
-    private IEnumerator FadeOut() {
+    private IEnumerator TransitionOut(Material _material, float speed) {
         paused = true;
-        while (_fade.GetFloat("_Size") < 3f) {
-            float size = _fade.GetFloat("_Size");
-            float lerpSize = size + _fadeSpeed * .1f;
-            _fade.SetFloat("_Size", lerpSize);
+        while (_material.GetFloat("_Transition") < 1f) {
+            float size = _material.GetFloat("_Transition");
+            float lerpSize = size + speed * .01f;
+            _material.SetFloat("_Transition", lerpSize);
             yield return null;
         }
 
-        _fade.SetFloat("_Size", 3f);
+        _material.SetFloat("_Transition", 1f);
         paused = false;
 
         yield break;
     }
 
-    private IEnumerator BlackOut() {
+    private IEnumerator TransitionBlackOut(Material _material) {
         paused = true;
-        _fade.SetFloat("_Size", 0f);
+        _material.SetFloat("_Transition", 0f);
         yield return null;
 
         paused = false;
@@ -220,15 +239,7 @@ public class ScenesManager : MonoBehaviour {
         yield break;
     }
 
-    private IEnumerator DissolveIn() {
-        yield return null;
-    }
-
-    private IEnumerator DissolveOut() {
-        yield return null;
-    }
-
-    public IEnumerator RetrieveCheckpoints() {
+    private IEnumerator RetrieveCheckpoints() {
         paused = true;
         yield return new WaitForSeconds(.2f);
 
@@ -253,7 +264,7 @@ public class ScenesManager : MonoBehaviour {
         yield break;
     }
 
-    public IEnumerator RetrievePoint(Cp _point) {
+    private IEnumerator RetrievePoint(Cp _point) {
         paused = true;
         yield return new WaitForSeconds(.2f);
 
@@ -276,7 +287,7 @@ public class ScenesManager : MonoBehaviour {
         yield break;
     }
 
-    public IEnumerator InstantiatePlayerAndCompanion() {
+    private IEnumerator InstantiatePlayerAndCompanion() {
         paused = true;
         Instantiate(_playerPrefab, _cpObj.transform.position, _cpObj.transform.rotation);
         yield return new WaitForSeconds(.2f);
@@ -288,7 +299,7 @@ public class ScenesManager : MonoBehaviour {
         yield break;
     }
 
-    public IEnumerator InstantiateMenu() {
+    private IEnumerator InstantiateMenu() {
         paused = true;        
 
         if (MenuController.Instance == null) {
