@@ -50,4 +50,5 @@ MonoBehaviour:
   _playerPrefab: {fileID: 7584392840918931769, guid: e1998169766e6034899864c21716ff38, type: 3}
   _companionPrefab: {fileID: 7595553370665594620, guid: 87dedec4ea7dfae4b867d7decb418404, type: 3}
   _playerInfo: {fileID: 11400000, guid: ab9b38bfd6de9aa41bf77144a6371ac0, type: 2}
-  _fadeSpeed: 0.5
+  _fadeSpeed: 5
+  _dissolveSpeed: 0.5

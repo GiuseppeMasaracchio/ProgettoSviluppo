@@ -15,11 +15,11 @@ public class MenuController : MonoBehaviour {
 
     private UIMode mode = UIMode.MainMenu;
 
-    public UIMode Mode { get { return mode; } set { mode = value; } }
-
     private int currentSlot = 0;
     private int selectedSlot = 0;
     private int direction;
+
+    public UIMode Mode { get { return mode; } set { mode = value; } }
 
     private void Awake() {
         if (Instance == null) {
@@ -39,46 +39,46 @@ public class MenuController : MonoBehaviour {
         CameraManager.Instance.InitializeVCameras();
     }
 
-    public void OnNavigate(InputValue input) {
-        if (input.Get() == null) { return; }
+    public void OnNavigate(InputAction.CallbackContext input) {
+        if (input.phase == InputActionPhase.Started) {
+            switch (mode) {
+                case UIMode.MainMenu: {
+                        //NavigateMenu()
+                        break;
+                    }
+                case UIMode.Slots: {
+                        NavigateSlot(input.ReadValue<Vector2>());                        
+                        break;
+                    }
+                case UIMode.Pause: {
+                        //NavigatePause()
+                        break;
+                    }
 
-        switch (mode) {
-            case UIMode.MainMenu: {
-                    //NavigateMenu()
-                    break;
-                }
-            case UIMode.Slots: {
-                    NavigateSlot(input.Get<Vector2>());
-                    break;
-                }
-            case UIMode.Pause: {
-                    //NavigatePause()
-                    break;
-                }
-
+            }        
         }
+
         
     }
 
-    public void OnSubmit(InputValue input) {
-        if (input.Get() == null) { return; }
+    public void OnSubmit(InputAction.CallbackContext input) {
+        if (input.phase == InputActionPhase.Started) { 
+            switch (mode) {
+                case UIMode.MainMenu: {
+                        SubmitMenu();
+                        break;
+                    }
+                case UIMode.Slots: {
+                        SelectSlot();
+                        break;
+                    }
+                case UIMode.Pause: {
+                        //SubmitPause()
+                        break;
+                    }
 
-        switch (mode) {
-            case UIMode.MainMenu: {
-                    //SubmitMenu()
-                    break;
-                }
-            case UIMode.Slots: {
-                    SelectSlot();
-                    break;
-                }
-            case UIMode.Pause: {
-                    //SubmitPause()
-                    break;
-                }
-
-        }
-        
+            }        
+        }        
     }
 
     public void OnPause(InputValue input) {
@@ -93,11 +93,22 @@ public class MenuController : MonoBehaviour {
         //ContinueGame();
     }
 
-    public void OnSave(InputValue input) {
-        if (input.Get() == null) { return; }
+    public void OnSave(InputAction.CallbackContext input) {
+        if (mode != UIMode.Pause) { return; }
 
-        //SetNewRecord();
-        //SaveGame();
+        if (input.phase == InputActionPhase.Started) {
+
+            SaveGame();
+        }
+    }
+
+    public void OnQuit(InputAction.CallbackContext input) {
+        if (mode != UIMode.Pause) { return; }
+
+        if (input.phase == InputActionPhase.Started) {
+
+            ScenesManager.Instance.QuitGame();
+        }
     }
 
     public void OnOverwrite(InputValue input) {
@@ -142,6 +153,11 @@ public class MenuController : MonoBehaviour {
         StartCoroutine("DisplaySlots");
     }
 
+    public void SubmitMenu() {
+        mode = UIMode.Slots;
+        CameraManager.Instance.MenuToSlot();
+    }
+
     public void DeleteSlot() {
         if (slotsInfo[currentSlot].Runtime == 0) {
             int slotID = slotsInfo[currentSlot].SlotID;
@@ -160,11 +176,16 @@ public class MenuController : MonoBehaviour {
             ScenesManager.Instance.StartGame();
             DataManager.Instance.QuickSaveData();
             DataManager.Instance.RefreshData();
+            CameraManager.Instance.SetCameraMode(VCameraMode.GameVCameras);
+            InputManager.Instance.SetActionMap("Player");
+
         } else {
             DataManager.Instance.AssignSlotInfo(currentSlot);
             ScenesManager.Instance.LoadGame();
             DataManager.Instance.QuickSaveData();
             DataManager.Instance.RefreshData();
+            CameraManager.Instance.SetCameraMode(VCameraMode.GameVCameras);
+            InputManager.Instance.SetActionMap("Player");
         }
 
     }

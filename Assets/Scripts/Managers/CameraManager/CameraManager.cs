@@ -13,6 +13,8 @@ public class CameraManager : MonoBehaviour {
     private List<GameObject> menuVCameras = new List<GameObject>();
     private GameObject currentVCamera;
 
+    private VCameraMode mode;
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -27,11 +29,15 @@ public class CameraManager : MonoBehaviour {
 
     public void OnPauseCamera(InputAction.CallbackContext input) {
         if (input.phase == InputActionPhase.Started) {
+
+            MenuController.Instance.Mode = UIMode.Pause;
             StartCoroutine("PauseCameraOut");
         }
     }
 
     public void OnResumeCamera(InputAction.CallbackContext input) {
+        if (MenuController.Instance.Mode != UIMode.Pause) { return; }
+
         if (input.phase == InputActionPhase.Started) {
             StartCoroutine("PauseCameraIn");            
         }
@@ -39,7 +45,7 @@ public class CameraManager : MonoBehaviour {
 
     public void OnAnyButton(InputAction.CallbackContext input) {
         if (input.phase == InputActionPhase.Started) {
-            SwitchToMainMenu();            
+            SwitchMenuVCamera(MenuVCameras.Menu);
         }
     }
 
@@ -51,8 +57,25 @@ public class CameraManager : MonoBehaviour {
         SwitchBrain(gameBrain);
     }
 
-    private void SwitchToMainMenu() {
-        SwitchMenuVCamera(MenuVCameras.Menu);        
+    public void SetCameraMode(VCameraMode target) {
+        if (mode == target) { return; }
+
+        if (target == VCameraMode.MenuVCameras) {
+            SwitchBrain(menuBrain);
+        } else {
+            currentVCamera.gameObject.SetActive(false);
+            SwitchBrain(gameBrain);
+        }
+
+        mode = target;
+    }
+
+    public void MenuToSlot() {
+        if (currentVCamera == menuVCameras[(int)MenuVCameras.Menu]) {
+            SwitchMenuVCamera(MenuVCameras.Slots);
+        } else {
+            SwitchMenuVCamera(MenuVCameras.Menu);
+        }       
     }
 
     private void SwitchMenuVCamera(MenuVCameras target) {
@@ -78,6 +101,8 @@ public class CameraManager : MonoBehaviour {
 
             currentBrain = menuBrain;
             currentBrain.SetActive(true);
+
+            mode = VCameraMode.MenuVCameras;
         } catch {
             InitializeVCameras();
             Invoke("SetInitialState", .5f);
@@ -126,7 +151,7 @@ public class CameraManager : MonoBehaviour {
                 camera.gameObject.SetActive(false);                
             }
         } catch {
-            Debug.Log("Retrieve failed, trying again...");        
+            //Debug.Log("Retrieve failed, trying again...");        
         }
 
         yield break;

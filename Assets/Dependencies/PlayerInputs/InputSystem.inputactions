@@ -462,18 +462,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Overwrite",
+                    "name": "Quit",
                     "type": "Button",
-                    "id": "955e6f1b-2302-4d8e-b60f-fbc301bd6a8b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Clear",
-                    "type": "Button",
-                    "id": "8d9416ae-d618-4a56-8bb1-81d378085a42",
+                    "id": "e92c52f1-f57d-4509-8d5c-5e0507b4cc36",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -924,33 +915,22 @@
                 {
                     "name": "",
                     "id": "17008633-f445-4138-978e-f8d463e809f0",
-                    "path": "<Keyboard>/k",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Save",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "3b196a06-12e4-4bcd-a16a-28abb6089672",
-                    "path": "<Keyboard>/o",
+                    "id": "217e89ef-8df9-4d6e-b7fe-e7dd22a566c9",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Overwrite",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bbddee73-6c81-4b58-98b5-6c23ea6502c2",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Clear",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

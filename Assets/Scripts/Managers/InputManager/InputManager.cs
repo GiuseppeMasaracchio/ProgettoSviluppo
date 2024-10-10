@@ -6,12 +6,16 @@ public class InputManager : MonoBehaviour {
 
     [SerializeField] PlayerInput playerInput;
 
+    private string _currentActionMap;
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);            
         }
         else { Destroy(gameObject); }
+
+        _currentActionMap = playerInput.defaultActionMap;
     }
 
     public void StartGame() {
@@ -22,11 +26,8 @@ public class InputManager : MonoBehaviour {
         return playerInput;
     }
 
-    public void SwitchActionMap(InputAction.CallbackContext input) {
-        if (input.phase == InputActionPhase.Started) {
-            //SetActionMap();
-        }
-
+    public string GetActionMap() {
+        return _currentActionMap;
     }
 
     public void OnAnyButton(InputAction.CallbackContext input) {
@@ -36,8 +37,9 @@ public class InputManager : MonoBehaviour {
     }
 
     public void SetActionMap(string target) {
-        if (playerInput.currentActionMap.name != target) {
+        if (_currentActionMap != target) {
             playerInput.SwitchCurrentActionMap(target);
+            _currentActionMap = target;
         }        
     }
 }

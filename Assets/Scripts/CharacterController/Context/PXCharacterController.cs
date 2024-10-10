@@ -84,7 +84,7 @@ public class PXCharacterController : MonoBehaviour {
     [Range(0.1f, 80f)] float jumpHeight;
 
     [SerializeField]
-    [Range(100f, 3200f)] float _sens;
+    [Range(0f, 300f)] float _sens;
     
     [SerializeField]
     [Range(0.01f, 1f)] float _sensRatio;

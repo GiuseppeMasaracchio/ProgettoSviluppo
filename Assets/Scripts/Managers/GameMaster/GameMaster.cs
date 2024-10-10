@@ -20,16 +20,8 @@ public class GameMaster : MonoBehaviour {
     void Start() {
         Debug.Log("Game Master Start");
 
-        //InitializePlayerInfo();
         ScenesManager.Instance.MainMenu();
-        StartCoroutine(StartGame());
-    }
-
-    private void InitializePlayerInfo() {
-        _playerinfo.Checkpoint = new Vector2(0f, 0f);
-        _playerinfo.CurrentHp = 3;
-        _playerinfo.PowerUps = 0;
-        _playerinfo.Score = 0;
+        //StartCoroutine(StartGame());
     }
 
     private IEnumerator StartGame() {

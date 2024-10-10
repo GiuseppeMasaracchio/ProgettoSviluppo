@@ -78,8 +78,8 @@ public class ScenesManager : MonoBehaviour {
         if (paused) { return; }
 
         globalPause = true;
-        int n_scene = (int)scene;
-        InputManager.Instance.SetActionMap("Disabled");
+        int n_scene = (int)scene;        
+
         if (n_scene != SceneManager.GetActiveScene().buildIndex) {
             StartCoroutine(InitializeSwitch(n_scene, point));
         }
@@ -151,6 +151,9 @@ public class ScenesManager : MonoBehaviour {
     }
 
     private IEnumerator InitializeSwitch(int n_scene, Cp _point) {
+        string currentActionMap = InputManager.Instance.GetActionMap();
+        InputManager.Instance.SetActionMap("Disabled");
+
         StartCoroutine(TransitionIn(_fade, _fadeSpeed));
         yield return new WaitWhile(() => paused);
 
@@ -167,11 +170,14 @@ public class ScenesManager : MonoBehaviour {
         yield return new WaitWhile(() => paused);
 
         globalPause = false;
-        InputManager.Instance.SetActionMap("Player");
+        InputManager.Instance.SetActionMap(currentActionMap);
         yield break;
     }
 
     public IEnumerator OnDeath() {
+        string currentActionMap = InputManager.Instance.GetActionMap();
+        InputManager.Instance.SetActionMap("Disabled");
+
         yield return new WaitForSeconds(2f);
 
         StartCoroutine(InitializeLoad(SceneManager.GetActiveScene().buildIndex));
@@ -180,6 +186,7 @@ public class ScenesManager : MonoBehaviour {
         _playerInfo.CurrentHp = 3;
 
         globalPause = false;
+        InputManager.Instance.SetActionMap(currentActionMap);
         yield break;
     }
 
@@ -252,7 +259,7 @@ public class ScenesManager : MonoBehaviour {
         foreach (GameObject _obj in _tmp) {
             if (_obj.name == _targetCp.ToString()) {
                 _cpObj = _obj;
-                Debug.Log("Checkpoint: " + _cpObj.name + " Found! " + (int)_targetCp);
+                //Debug.Log("Checkpoint: " + _cpObj.name + " Found! " + (int)_targetCp);
             }
 
             yield return null;
@@ -303,10 +310,10 @@ public class ScenesManager : MonoBehaviour {
         paused = true;        
 
         if (MenuController.Instance == null) {
-            Debug.Log("No menu found");
+            //Debug.Log("No menu found");
             Instantiate(_menuPrefab, new Vector3(0f, -100f, 0f), new Quaternion());
         } else {
-            Debug.Log("Menu found");
+            //Debug.Log("Menu found");
         }
 
         yield return new WaitForSeconds(.2f);
