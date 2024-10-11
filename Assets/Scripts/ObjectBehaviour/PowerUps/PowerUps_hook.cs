@@ -14,7 +14,7 @@ public class PowerUps_hook : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (other.tag != "Player") { return; }
 
-        _playerInfo.PowerUps++;
+        _playerInfo.PowerUps++;        
 
         Destroy(gameObject);
     }

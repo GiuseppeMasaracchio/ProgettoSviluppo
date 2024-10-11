@@ -12,17 +12,15 @@ public class DataManager : MonoBehaviour {
     private void Awake() {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            DBVault.ReBuildDB();
-            //CheckData();
+            DontDestroyOnLoad(gameObject);            
         }
         else { Destroy(gameObject); }
         
     }
 
     private void Start() {
-        RefreshData();
+        CheckData();
+        Invoke("RefreshData", .25f);
         Invoke("RefreshRecords", .5f);
     }
 
@@ -73,20 +71,22 @@ public class DataManager : MonoBehaviour {
 
     }
 
-    public void OverwriteData(int slotID) {
+    public void OverwriteData(int slot) {
+        int slotID = slotsInfo[slot].SlotID;
+
         object[] slotData = new object[4];
         object[] checkpointData = new object[2];
 
         slotData[0] = playerInfo.Name;
         slotData[1] = playerInfo.PowerUps;
         slotData[2] = playerInfo.Score;
-        slotData[3] = playerInfo.CurrentHp;
+        slotData[3] = playerInfo.CurrentHp;        
 
         checkpointData[0] = playerInfo.Checkpoint.x;
         checkpointData[1] = playerInfo.Checkpoint.y;
 
         DBVault.UpdateSlotByIdx(slotID, slotData);
-        DBVault.UpdateCheckpoint(slotID, checkpointData);
+        DBVault.UpdateCheckpoint(slotID, checkpointData);        
     }
 
     public void DeleteData(int slotID) {
@@ -103,8 +103,6 @@ public class DataManager : MonoBehaviour {
         playerInfo.CurrentHp = slotsInfo[slot].CurrentHp;
         playerInfo.Runtime = 1;
         playerInfo.Checkpoint = slotsInfo[slot].Checkpoint;
-
-        QuickSaveData();
     }
 
     public DataInfo GetSlotInfo(int slot) {

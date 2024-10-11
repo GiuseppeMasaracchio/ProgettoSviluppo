@@ -25,6 +25,7 @@ public class MenuController : MonoBehaviour {
     private InputAction _quitAction;
 
     public UIMode Mode { get { return mode; } set { mode = value; } }
+    public int CurrentSlot { get {  return currentSlot; } set {  currentSlot = value; } }
 
     private void Awake() {
         if (Instance == null) {
@@ -154,7 +155,7 @@ public class MenuController : MonoBehaviour {
     }
 
     public void SaveGame() {
-        DataManager.Instance.QuickSaveData();
+        DataManager.Instance.OverwriteData(currentSlot);
         DataManager.Instance.RefreshData();
 
         StartCoroutine("DisplaySlots");
@@ -195,22 +196,18 @@ public class MenuController : MonoBehaviour {
     }
 
     public void SelectSlot() {
-        if (slotsInfo[currentSlot].Checkpoint.x == 0) {
-            try {
-                DataManager.Instance.AssignSlotInfo(currentSlot);
-                ScenesManager.Instance.StartGame();
-                DataManager.Instance.QuickSaveData();
-                DataManager.Instance.RefreshData();
-                CameraManager.Instance.SetCameraMode(VCameraMode.GameVCameras);
-                InputManager.Instance.SetActionMap("Player");
-            } catch {
-                Debug.Log("Failed to assign slot info");
-            }
+        if (slotsInfo[currentSlot].Checkpoint.x == 0) {            
+            DataManager.Instance.AssignSlotInfo(currentSlot);
+            ScenesManager.Instance.StartGame();
+            DataManager.Instance.OverwriteData(currentSlot);
+            DataManager.Instance.RefreshData();
+            CameraManager.Instance.SetCameraMode(VCameraMode.GameVCameras);
+            InputManager.Instance.SetActionMap("Player");            
 
         } else {
             DataManager.Instance.AssignSlotInfo(currentSlot);
             ScenesManager.Instance.LoadGame();
-            DataManager.Instance.QuickSaveData();
+            DataManager.Instance.OverwriteData(currentSlot);
             DataManager.Instance.RefreshData();
             CameraManager.Instance.SetCameraMode(VCameraMode.GameVCameras);
             InputManager.Instance.SetActionMap("Player");

@@ -95,11 +95,12 @@ public class ScenesManager : MonoBehaviour {
         StartCoroutine(InstantiateMenu());
         yield return new WaitWhile(() => paused);
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);
 
         StartCoroutine(TransitionOut(_dissolve, _dissolveSpeed));
         yield return new WaitWhile(() => paused);
 
+        InputManager.Instance.SetActionMap("MainScreen");
         globalPause = false;
         yield break;
     }

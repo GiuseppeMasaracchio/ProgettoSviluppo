@@ -17,9 +17,7 @@ public class Checkpoint_hook : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag != "Player") { return; }
-
-        Vector2 _checkpoint = new Vector2((int)_scene, (int)_cp);
+        if (other.tag != "Player") { return; }        
 
         _playerInfo.Checkpoint = _target;
 
