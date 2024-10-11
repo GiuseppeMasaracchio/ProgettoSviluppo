@@ -1,10 +1,11 @@
 using System.Data;
 using System.Collections.Generic;
 using Mono.Data.Sqlite;
+using UnityEngine;
 
 public static class DBVault {
     //Env vars
-    private static string path = "Data Source=file:DB.db";
+    private static string path = "URI=file:" + Application.streamingAssetsPath + "/DB.db";
     private static IDbConnection dbcon;
     private static IDbCommand dbcmd;
     private static IDataReader reader;
@@ -371,7 +372,7 @@ public static class DBVault {
     public static void ReBuildDB() {
         DropTable("Slot");
         DropTable("Checkpoint");
-        //DropTable("Highscore");
+        DropTable("Highscore");
 
         InitDB();
     }

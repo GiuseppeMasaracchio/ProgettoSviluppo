@@ -223,7 +223,7 @@ public class ScenesManager : MonoBehaviour {
 
     private IEnumerator TransitionOut(Material _material, float speed) {
         paused = true;
-        while (_material.GetFloat("_Transition") < 1f) {
+        while (_material.GetFloat("_Transition") < .98f) {
             float size = _material.GetFloat("_Transition");
             float lerpSize = size + speed * .01f;
             _material.SetFloat("_Transition", lerpSize);

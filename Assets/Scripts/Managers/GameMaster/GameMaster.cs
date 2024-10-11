@@ -18,7 +18,7 @@ public class GameMaster : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        Debug.Log("Game Master Start");
+        Debug.Log("Game Master Start");        
 
         ScenesManager.Instance.MainMenu();
         //StartCoroutine(StartGame());

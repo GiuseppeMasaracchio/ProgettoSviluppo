@@ -19,6 +19,11 @@ public class MenuController : MonoBehaviour {
     private int selectedSlot = 0;
     private int direction;
 
+    private InputAction _navigateAction;
+    private InputAction _submitAction;
+    private InputAction _saveAction;
+    private InputAction _quitAction;
+
     public UIMode Mode { get { return mode; } set { mode = value; } }
 
     private void Awake() {
@@ -37,6 +42,13 @@ public class MenuController : MonoBehaviour {
         SelectLights();
         
         CameraManager.Instance.InitializeVCameras();
+
+        InitializeActions();
+        SubscribeCallbacks();
+    }
+
+    private void OnDestroy() {
+        UnsubscribeCallbacks();
     }
 
     public void OnNavigate(InputAction.CallbackContext input) {
@@ -54,11 +66,8 @@ public class MenuController : MonoBehaviour {
                         //NavigatePause()
                         break;
                     }
-
             }        
-        }
-
-        
+        }        
     }
 
     public void OnSubmit(InputAction.CallbackContext input) {
@@ -76,28 +85,14 @@ public class MenuController : MonoBehaviour {
                         //SubmitPause()
                         break;
                     }
-
             }        
         }        
-    }
-
-    public void OnPause(InputValue input) {
-        if (input.Get() == null) { return; }
-
-        //ReturnToMainMenu();
-    }
-
-    public void OnCancel(InputValue input) {
-        if (input.Get() == null) { return; }
-
-        //ContinueGame();
     }
 
     public void OnSave(InputAction.CallbackContext input) {
         if (mode != UIMode.Pause) { return; }
 
         if (input.phase == InputActionPhase.Started) {
-
             SaveGame();
         }
     }
@@ -106,22 +101,51 @@ public class MenuController : MonoBehaviour {
         if (mode != UIMode.Pause) { return; }
 
         if (input.phase == InputActionPhase.Started) {
-
             ScenesManager.Instance.QuitGame();
         }
     }
 
-    public void OnOverwrite(InputValue input) {
-        if (input.Get() == null) { return; }
+    private void SubscribeCallbacks() {
+        _navigateAction.started += OnNavigate;
+        _navigateAction.performed += OnNavigate;
+        _navigateAction.canceled += OnNavigate;
 
-        //DeleteRecords();
-        //OverwriteGame();
+        _submitAction.started += OnSubmit;
+        _submitAction.performed += OnSubmit;
+        _submitAction.canceled += OnSubmit;
+
+        _saveAction.started += OnSave;
+        _saveAction.performed += OnSave;
+        _saveAction.canceled += OnSave;
+
+        _quitAction.started += OnQuit;
+        _quitAction.performed += OnQuit;
+        _quitAction.canceled += OnQuit;
     }
 
-    public void OnClear(InputValue input) {
-        if (input.Get() == null) { return; }
+    private void UnsubscribeCallbacks() {
+        _navigateAction.started -= OnNavigate;
+        _navigateAction.performed -= OnNavigate;
+        _navigateAction.canceled -= OnNavigate;
 
-        //DeleteSlot();
+        _submitAction.started -= OnSubmit;
+        _submitAction.performed -= OnSubmit;
+        _submitAction.canceled -= OnSubmit;
+
+        _saveAction.started -= OnSave;
+        _saveAction.performed -= OnSave;
+        _saveAction.canceled -= OnSave;
+
+        _quitAction.started -= OnQuit;
+        _quitAction.performed -= OnQuit;
+        _quitAction.canceled -= OnQuit;
+    }
+
+    private void InitializeActions() {
+        _navigateAction = InputManager.Instance.GetPlayerInput().actions["Navigate"];
+        _submitAction = InputManager.Instance.GetPlayerInput().actions["Submit"];
+        _saveAction = InputManager.Instance.GetPlayerInput().actions["Save"];
+        _quitAction = InputManager.Instance.GetPlayerInput().actions["Quit"];
     }
 
     public void ContinueGame() {
@@ -171,13 +195,17 @@ public class MenuController : MonoBehaviour {
     }
 
     public void SelectSlot() {
-        if (slotsInfo[currentSlot].Checkpoint.x == 0) {            
-            DataManager.Instance.AssignSlotInfo(currentSlot);
-            ScenesManager.Instance.StartGame();
-            DataManager.Instance.QuickSaveData();
-            DataManager.Instance.RefreshData();
-            CameraManager.Instance.SetCameraMode(VCameraMode.GameVCameras);
-            InputManager.Instance.SetActionMap("Player");
+        if (slotsInfo[currentSlot].Checkpoint.x == 0) {
+            try {
+                DataManager.Instance.AssignSlotInfo(currentSlot);
+                ScenesManager.Instance.StartGame();
+                DataManager.Instance.QuickSaveData();
+                DataManager.Instance.RefreshData();
+                CameraManager.Instance.SetCameraMode(VCameraMode.GameVCameras);
+                InputManager.Instance.SetActionMap("Player");
+            } catch {
+                Debug.Log("Failed to assign slot info");
+            }
 
         } else {
             DataManager.Instance.AssignSlotInfo(currentSlot);

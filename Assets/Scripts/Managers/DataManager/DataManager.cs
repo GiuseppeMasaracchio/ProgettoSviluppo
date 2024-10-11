@@ -13,6 +13,9 @@ public class DataManager : MonoBehaviour {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            DBVault.ReBuildDB();
+            //CheckData();
         }
         else { Destroy(gameObject); }
         
@@ -24,11 +27,19 @@ public class DataManager : MonoBehaviour {
     }
 
     public void RefreshData() {
-        StartCoroutine("InitializeData");
+        StartCoroutine("RetrieveData");
     }
 
     public void RefreshRecords() {
         StartCoroutine("InitializeRecords");
+    }
+
+    public void CheckData() {
+        try {
+            DBVault.GetActiveData();
+        } catch {
+            DBVault.ReBuildDB();
+        }
     }
 
     public void ResumeData() {
@@ -109,7 +120,7 @@ public class DataManager : MonoBehaviour {
 
     }
 
-    private IEnumerator InitializeData() {
+    private IEnumerator RetrieveData() {
         int i = 0;
         List<object[]> saves = DBVault.GetSlotsData();
         List<object[]> checkpoints = DBVault.GetSlotsCheckpoint();
