@@ -106,6 +106,53 @@ public class MenuController : MonoBehaviour {
         }
     }
 
+    public void ContinueGame() {
+        DataManager.Instance.ResumeData();
+        ScenesManager.Instance.LoadGame();
+    }
+
+    public void SaveGame() {
+        DataManager.Instance.OverwriteData(currentSlot);
+        DataManager.Instance.RefreshData();
+
+        StartCoroutine("DisplaySlots");
+    }
+
+    public void ReturnToMainMenu() {
+        ScenesManager.Instance.MainMenu();
+        DataManager.Instance.RefreshData();
+
+        mode = UIMode.MainMenu;
+
+        StartCoroutine("DisplaySlots");
+    }
+
+    public void DeleteSlot() {
+        if (slotsInfo[currentSlot].Runtime == 0) {
+            int slotID = slotsInfo[currentSlot].SlotID;
+            DataManager.Instance.DeleteData(slotID);
+            DataManager.Instance.RefreshData();
+
+            StartCoroutine("DisplaySlots");
+        } else {
+            Debug.Log("Current slot is active!");
+        }
+    }
+
+    public void SetNewRecord() {
+        DataManager.Instance.SetRecord();
+        DataManager.Instance.RefreshRecords();
+
+        StartCoroutine("DisplayRecords");
+    }
+
+    public void DeleteRecords() {
+        DataManager.Instance.ResetRecords();
+        DataManager.Instance.RefreshRecords();
+
+        StartCoroutine("DisplayRecords");
+    }
+
     private void SubscribeCallbacks() {
         _navigateAction.started += OnNavigate;
         _navigateAction.performed += OnNavigate;
@@ -149,19 +196,7 @@ public class MenuController : MonoBehaviour {
         _quitAction = InputManager.Instance.GetPlayerInput().actions["Quit"];
     }
 
-    public void ContinueGame() {
-        DataManager.Instance.ResumeData();
-        ScenesManager.Instance.LoadGame();
-    }
-
-    public void SaveGame() {
-        DataManager.Instance.OverwriteData(currentSlot);
-        DataManager.Instance.RefreshData();
-
-        StartCoroutine("DisplaySlots");
-    }
-
-    public void OverwriteGame() {
+    private void OverwriteGame() {
         int slotID = slotsInfo[currentSlot].SlotID;
         DataManager.Instance.OverwriteData(slotID);
         DataManager.Instance.RefreshData();
@@ -169,33 +204,12 @@ public class MenuController : MonoBehaviour {
         StartCoroutine("DisplaySlots");
     }
 
-    public void ReturnToMainMenu() {
-        ScenesManager.Instance.MainMenu();
-        DataManager.Instance.RefreshData();
-
-        mode = UIMode.MainMenu;
-
-        StartCoroutine("DisplaySlots");
-    }
-
-    public void SubmitMenu() {
+    private void SubmitMenu() {
         mode = UIMode.Slots;
         CameraManager.Instance.MenuToSlot();
     }
 
-    public void DeleteSlot() {
-        if (slotsInfo[currentSlot].Runtime == 0) {
-            int slotID = slotsInfo[currentSlot].SlotID;
-            DataManager.Instance.DeleteData(slotID);
-            DataManager.Instance.RefreshData();
-
-            StartCoroutine("DisplaySlots");
-        } else {
-            Debug.Log("Current slot is active!");
-        }
-    }
-
-    public void SelectSlot() {
+    private void SelectSlot() {
         if (slotsInfo[currentSlot].Checkpoint.x == 0) {            
             DataManager.Instance.AssignSlotInfo(currentSlot);
             ScenesManager.Instance.StartGame();
@@ -215,21 +229,7 @@ public class MenuController : MonoBehaviour {
 
     }
 
-    public void SetNewRecord() {
-        DataManager.Instance.SetRecord();
-        DataManager.Instance.RefreshRecords();
-
-        StartCoroutine("DisplayRecords");
-    }
-
-    public void DeleteRecords() {
-        DataManager.Instance.ResetRecords();
-        DataManager.Instance.RefreshRecords();
-
-        StartCoroutine("DisplayRecords");
-    }
-
-    public void NavigateSlot(Vector2 input) {
+    private void NavigateSlot(Vector2 input) {
         if (input == new Vector2(1f, 0f)) {
             direction = 1;
             SwitchSlot(direction);
