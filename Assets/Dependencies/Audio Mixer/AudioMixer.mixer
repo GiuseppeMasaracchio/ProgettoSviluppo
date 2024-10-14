@@ -6,7 +6,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sfx
+  m_Name: Effects
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 28703ea976664bc46b35f10a16e9d388
   m_Children: []
@@ -54,7 +54,7 @@ AudioMixerController:
   - guid: f71cd8cbd3e024347a2d1a9d5c1e62af
     name: MusicVolume
   - guid: c884d03f358c8814d8d11adf06781742
-    name: SfxVolume
+    name: EffectsVolume
   m_AudioMixerGroupViews:
   - guids:
     - 5813bd3aa17a2624da0d3dab1a0c0387
@@ -108,7 +108,9 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 35e6d95f425e616419c2c2a3173ce576
   m_FloatValues:
-    f71cd8cbd3e024347a2d1a9d5c1e62af: 0
+    f71cd8cbd3e024347a2d1a9d5c1e62af: 10.334249
+    7649569cba8c2aa47822f1ae19aa8b71: -28.412685
+    c884d03f358c8814d8d11adf06781742: -2.6324472
   m_TransitionOverrides: {}
 --- !u!243 &7175127687168755950
 AudioMixerGroupController:

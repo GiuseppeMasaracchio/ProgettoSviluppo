@@ -1,0 +1,33 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Test/TestUIcss.uss?fileID=7433441132597879392&amp;guid=4702610777ba73246b816e69e536e213&amp;type=3#TestUIcss" />
+    <ui:VisualElement name="Background" style="flex-grow: 0; width: 65%; height: 50%; justify-content: flex-start; align-self: center; align-items: auto; background-color: rgba(0, 23, 191, 0); flex-shrink: 0; top: 25%; overflow: hidden;">
+        <ui:Label tabindex="-1" text="Pause" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" style="width: 100%; height: 20%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-right-radius: 50px; border-left-color: rgb(128, 182, 251); border-right-color: rgb(128, 182, 251); border-top-color: rgb(128, 182, 251); border-bottom-color: rgb(128, 182, 251); font-size: 20%; -unity-text-align: middle-left; background-color: rgba(0, 23, 191, 0.39);" />
+        <ui:VisualElement name="PauseButtons" style="flex-grow: 1; width: 100%; height: 100%; border-left-color: rgb(128, 182, 251); border-right-color: rgb(128, 182, 251); border-top-color: rgb(128, 182, 251); border-bottom-color: rgb(128, 182, 251); border-right-width: 4px; border-left-width: 4px; justify-content: space-around; align-self: stretch; align-items: center; background-color: rgba(0, 23, 191, 0.39);">
+            <ui:Button text="Resume" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Resume" />
+            <ui:Button text="Options" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Options" />
+            <ui:Button text="Main Menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MainMenu" />
+        </ui:VisualElement>
+        <ui:VisualElement name="OptionsPage" class="MainPage" style="display: none;">
+            <ui:VisualElement name="OptionsTabs" style="flex-grow: 0; flex-direction: row; height: 15%; align-items: center; align-self: center; justify-content: center; overflow: hidden;">
+                <ui:Button text="Video" parse-escape-sequences="true" display-tooltip-when-elided="true" name="VideoTab" class="Tab" />
+                <ui:Button text="Audio" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AudioTab" class="Tab" />
+                <ui:Button text="Controls" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ControlsTab" class="Tab" />
+            </ui:VisualElement>
+            <ui:VisualElement name="OptionsContainer" style="flex-grow: 1;">
+                <ui:VisualElement name="VideoOptions" style="flex-grow: 0; align-self: center; justify-content: space-around; align-items: stretch; flex-shrink: 0; width: 90%; height: 90%; display: flex;">
+                    <ui:DropdownField label="Resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="ResolutionDropdown" />
+                    <ui:DropdownField label="Quality" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="QualityDropdown" />
+                    <ui:RadioButton label="Fullscreen" name="FullscreenRadioButton" />
+                </ui:VisualElement>
+                <ui:VisualElement name="AudioOptions" style="flex-grow: 1; display: none; width: 90%; align-self: center; height: 90%; justify-content: space-around; align-items: center;">
+                    <ui:Slider picking-mode="Ignore" label="Master" value="42" high-value="100" name="MasterVolume" style="align-self: stretch; justify-content: space-around;" />
+                    <ui:Slider picking-mode="Ignore" label="Music" value="42" high-value="100" name="MusicVolume" style="align-self: stretch; justify-content: space-around;" />
+                    <ui:Slider picking-mode="Ignore" label="Effects" value="42" high-value="100" name="EffectsVolume" style="align-self: stretch; justify-content: space-around;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="ControlsOptions" style="flex-grow: 1; display: none;" />
+            </ui:VisualElement>
+            <ui:Button text="Back" parse-escape-sequences="true" display-tooltip-when-elided="true" name="BackButton" style="align-self: flex-end; width: 30%; height: 12%; right: 1%; bottom: 1%; flex-grow: 0; flex-shrink: 1;" />
+        </ui:VisualElement>
+        <ui:Label tabindex="-1" text="v0.3" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Footer" style="height: 10%; width: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-left-color: rgb(128, 182, 251); border-right-color: rgb(128, 182, 251); border-top-color: rgb(128, 182, 251); border-bottom-color: rgb(128, 182, 251); border-bottom-left-radius: 30px; font-size: 10%; -unity-text-align: middle-right; background-color: rgba(0, 23, 191, 0.39);" />
+    </ui:VisualElement>
+</ui:UXML>

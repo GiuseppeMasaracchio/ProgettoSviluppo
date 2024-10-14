@@ -1,0 +1,171 @@
+Button {
+    width: 100%;
+    height: 15%;
+    flex-shrink: 0;
+    color: rgb(128, 182, 251);
+    font-size: 110%;
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(128, 182, 251);
+    border-right-color: rgb(128, 182, 251);
+    border-top-color: rgb(128, 182, 251);
+    border-bottom-color: rgb(128, 182, 251);
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    transition-property: all;
+    transition-duration: 0s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+Button:hover {
+    width: 100%;
+    height: 15%;
+    flex-shrink: 0;
+    color: rgb(128, 182, 251);
+    font-size: 110%;
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 23, 191, 0.39);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(128, 182, 251);
+    border-right-color: rgb(128, 182, 251);
+    border-top-color: rgb(128, 182, 251);
+    border-bottom-color: rgb(128, 182, 251);
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    transition-property: all;
+    transition-duration: 0s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.MainPage {
+    flex-grow: 1;
+    justify-content: space-around;
+    align-items: center;
+    align-self: stretch;
+    background-color: rgba(0, 23, 191, 0.39);
+    border-right-width: 4px;
+    border-left-width: 4px;
+    border-left-color: rgb(128, 182, 251);
+    border-right-color: rgb(128, 182, 251);
+    border-top-color: rgb(128, 182, 251);
+    border-bottom-color: rgb(128, 182, 251);
+}
+
+.Switch {
+    flex-grow: 1;
+    justify-content: space-around;
+    align-items: center;
+    align-self: stretch;
+    background-color: rgba(0, 23, 191, 0.39);
+    border-right-width: 4px;
+    border-left-width: 4px;
+    border-left-color: rgb(128, 182, 251);
+    border-right-color: rgb(128, 182, 251);
+    border-top-color: rgb(128, 182, 251);
+    border-bottom-color: rgb(128, 182, 251);
+    position: relative;
+    left: auto;
+    transition-duration: 0.7s;
+    transition-timing-function: ease-out-bounce;
+    transform-origin: center;
+    translate: 200% 0;
+    scale: 1 1;
+    opacity: 1;
+    right: 0;
+    display: flex;
+}
+
+.Tab {
+    border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    width: 30%;
+    align-self: stretch;
+    align-items: auto;
+    height: auto;
+    justify-content: space-around;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 100%;
+}
+
+.Tab:hover {
+    border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    width: 30%;
+    align-self: stretch;
+    align-items: auto;
+    height: auto;
+    justify-content: space-around;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 100%;
+}
+
+.Tab:focus {
+    border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    width: 30%;
+    align-self: stretch;
+    align-items: auto;
+    height: auto;
+    justify-content: space-around;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: rgba(0, 23, 191, 0.39);
+    font-size: 100%;
+}
+
+Label {
+    color: rgb(128, 182, 251);
+}
+
+.unity-base-field__input {
+    background-color: rgba(0, 23, 191, 0);
+    align-self: stretch;
+    justify-content: space-around;
+    color: rgb(128, 182, 251);
+}
+
+.unity-radio-button__checkmark-background {
+    background-color: rgba(0, 23, 191, 0.39);
+}
+
+.unity-button {
+}
