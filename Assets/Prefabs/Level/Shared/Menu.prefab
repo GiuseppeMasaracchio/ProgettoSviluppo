@@ -20525,7 +20525,7 @@ GameObject:
   - component: {fileID: 4389660785971193212}
   - component: {fileID: 3902946496063695340}
   m_Layer: 18
-  m_Name: UICamera
+  m_Name: UICamera_PLACEHOLDER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

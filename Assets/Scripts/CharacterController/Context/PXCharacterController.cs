@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,6 +38,8 @@ public class PXCharacterController : MonoBehaviour {
     InputAction _attackAction;
     InputAction _dashAction;
 
+    InputAction _confirmAction; //Dialogue
+
     [SerializeField] SphereCollider _attackCollider;
     [SerializeField] SphereCollider _dashCollider;
 
@@ -57,6 +60,7 @@ public class PXCharacterController : MonoBehaviour {
     private Vector3 surfaceNormal;
     private bool onPlatform;
     private bool onSlope;
+    private bool onDialog;
     private bool canDMG = true;
     private bool canDash;
     private bool canAttack = true;
@@ -183,7 +187,7 @@ public class PXCharacterController : MonoBehaviour {
     void Update() {
         EvaluateHealth();
         
-        if (!isDead) {
+        if (!isDead && !onDialog) {
             UpdateCamera(_cam, _player, _forward, camInput, _currentSens);
         }
         
@@ -235,7 +239,11 @@ public class PXCharacterController : MonoBehaviour {
     public void OnMove(InputAction.CallbackContext input) {
         moveInput = input.ReadValue<Vector2>();
     } 
+    public void OnConfirm(InputAction.CallbackContext input) {
+        if (input.ReadValue<float>() == 0f) { return; }
 
+        DialogConfirm();
+    }
     private void SubscribeCallbacks() {
         _jumpAction.started += OnJump;
         _jumpAction.performed += OnJump;
@@ -256,6 +264,10 @@ public class PXCharacterController : MonoBehaviour {
         _lookAction.started += OnLook;
         _lookAction.performed += OnLook;
         _lookAction.canceled += OnLook;
+        
+        _confirmAction.started += OnConfirm;
+        _confirmAction.performed += OnConfirm;
+        _confirmAction.canceled += OnConfirm;        
     }
 
     private void UnsubscribeCallbacks() {
@@ -278,6 +290,11 @@ public class PXCharacterController : MonoBehaviour {
         _lookAction.started -= OnLook;
         _lookAction.performed -= OnLook;
         _lookAction.canceled -= OnLook;
+        
+        _confirmAction.started -= OnConfirm;
+        _confirmAction.performed -= OnConfirm;
+        _confirmAction.canceled -= OnConfirm;
+        
     }
 
     private void InitializeActions() {
@@ -286,6 +303,24 @@ public class PXCharacterController : MonoBehaviour {
         _lookAction = InputManager.Instance.GetPlayerInput().actions["Look"];
         _attackAction = InputManager.Instance.GetPlayerInput().actions["Attack"];
         _dashAction = InputManager.Instance.GetPlayerInput().actions["Dash"];
+
+        _confirmAction = InputManager.Instance.GetPlayerInput().actions["Confirm"];
+    }
+
+    //External Callbacks
+    public void DialogEnter(Transform standPos) {
+        onDialog = true;
+        InputManager.Instance.SetActionMap("Dialog");
+        StartCoroutine(DialogRoutine(standPos));
+    }
+
+    public void DialogExit() {
+        onDialog = false;
+        //InputManager.Instance.SetActionMap("Player");
+    }
+
+    private void DialogConfirm() {
+        DialogExit();
     }
 
     //Collision Callbacks
@@ -438,6 +473,26 @@ public class PXCharacterController : MonoBehaviour {
         }
     }   
 
+    private float ComputeDistance2D(Transform _a, Transform _b) {
+        Vector2 a = new Vector2(_a.position.x, _a.position.z);
+        Vector2 b = new Vector2(_b.position.x, _b.position.z);
+
+        float distance = Mathf.Abs(Vector2.Distance(a, b));
+
+        return distance;
+    }
+
+    private Vector3 ComputeForward2D(Transform _a, Transform _b) {
+        Vector2 a = new Vector2(_a.position.x, _a.position.z);
+        Vector2 b = new Vector2(_b.position.x, _b.position.z);
+
+        Vector2 targetForward = (a - b).normalized;
+
+        Vector3 forward = new Vector3(targetForward.x, 0f, targetForward.y);
+
+        return forward;
+    }
+
     //Camera Methods
     private void UpdateCamera(GameObject cam, GameObject player, GameObject forward, Vector2 mouseInput, float sens) {
         CalculateCamMotion(mouseInput, sens);
@@ -519,6 +574,36 @@ public class PXCharacterController : MonoBehaviour {
         isDamaged = false;
         canDMG = true;
         yield break;
-    }    
+    }
+    
+    private IEnumerator DialogRoutine(Transform target) {
+        //_cam.transform.LookAt(target);
+        Vector3 targetForward = ComputeForward2D(target, _asset.transform);        
+
+        while (ComputeDistance2D(_asset.transform, target) > .5f) {
+            //_cam.transform.LookAt(target);
+
+            targetForward = ComputeForward2D(target, _asset.transform);
+            _cam.transform.forward = targetForward;
+
+            targetForward = ComputeForward2D(target, _asset.transform);        
+            _forward.transform.forward = targetForward;
+
+            yield return null;
+
+            moveInput = new Vector2(0,1);
+            yield return null;
+        }
+
+        moveInput = new Vector2(0f, 0f);
+
+        yield return new WaitWhile(() => onDialog);
+
+        yield return new WaitForSeconds(.2f);
+
+        InputManager.Instance.SetActionMap("Player");
+
+        yield break;
+    }
     //
 }

@@ -937,6 +937,45 @@
             ]
         },
         {
+            "name": "Dialog",
+            "id": "b6458fc8-ed47-42b4-a108-5f02a31f48ff",
+            "actions": [
+                {
+                    "name": "Confirm",
+                    "type": "Button",
+                    "id": "d5d8147b-ceff-435b-8ded-9279c76390ca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "03f3703e-7b70-4266-b7e0-9120d22c40e0",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Confirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8639174f-821a-4801-bae9-8c95c2a5fd79",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Confirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "MainScreen",
             "id": "2798cf61-32d1-41b6-b999-fe61fd94549e",
             "actions": [
