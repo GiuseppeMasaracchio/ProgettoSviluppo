@@ -78,6 +78,13 @@ public class CameraManager : MonoBehaviour {
         }       
     }
 
+    public void SwitchVirtualCamera(GameObject current, GameObject target) {
+        if (current != target) {
+            target.SetActive(true);
+            current.SetActive(false);
+        }
+    }
+
     private void SwitchMenuVCamera(MenuVCameras target) {
         if (currentVCamera != menuVCameras[(int)target]) {
             menuVCameras[(int)target].gameObject.SetActive(true);

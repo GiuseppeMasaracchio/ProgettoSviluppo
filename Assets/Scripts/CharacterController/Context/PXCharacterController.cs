@@ -17,6 +17,7 @@ public class PXCharacterController : MonoBehaviour {
     [SerializeField] GameObject _player;
     [SerializeField] GameObject _asset;
     [SerializeField] GameObject _cam;
+    [SerializeField] GameObject _virtualCamera;
     [SerializeField] GameObject _forward;
     [SerializeField] GameObject _playerparent;
 
@@ -204,7 +205,7 @@ public class PXCharacterController : MonoBehaviour {
         UnsubscribeCallbacks();
     }
 
-    //Input Callbacks    
+    //Input Callbacks
     public void OnLook(InputAction.CallbackContext input) {
         if (input.ReadValue<Vector2>() != Vector2.zero) {
             camInput = input.ReadValue<Vector2>();
@@ -267,7 +268,7 @@ public class PXCharacterController : MonoBehaviour {
         
         _confirmAction.started += OnConfirm;
         _confirmAction.performed += OnConfirm;
-        _confirmAction.canceled += OnConfirm;        
+        _confirmAction.canceled += OnConfirm;
     }
 
     private void UnsubscribeCallbacks() {
@@ -308,10 +309,10 @@ public class PXCharacterController : MonoBehaviour {
     }
 
     //External Callbacks
-    public void DialogEnter(Transform standPos) {
+    public void DialogEnter(Transform playerPos, Transform cameraFocus, GameObject _vcam) {
         onDialog = true;
         InputManager.Instance.SetActionMap("Dialog");
-        StartCoroutine(DialogRoutine(standPos));
+        StartCoroutine(DialogRoutine(playerPos, cameraFocus, _vcam));
     }
 
     public void DialogExit() {
@@ -576,24 +577,56 @@ public class PXCharacterController : MonoBehaviour {
         yield break;
     }
     
-    private IEnumerator DialogRoutine(Transform target) {
-        //_cam.transform.LookAt(target);
-        Vector3 targetForward = ComputeForward2D(target, _asset.transform);        
+    private IEnumerator DialogRoutine(Transform playerTarget, Transform cameraTarget, GameObject _vcam) {
+        CameraManager.Instance.SwitchVirtualCamera(_virtualCamera, _vcam);
 
-        while (ComputeDistance2D(_asset.transform, target) > .5f) {
-            //_cam.transform.LookAt(target);
+        yield return null;
 
-            targetForward = ComputeForward2D(target, _asset.transform);
+        Vector3 targetForward = ComputeForward2D(playerTarget, _asset.transform);        
+
+        while (ComputeDistance2D(_asset.transform, playerTarget) > .5f) {
+
+            targetForward = ComputeForward2D(playerTarget, _asset.transform);
             _cam.transform.forward = targetForward;
 
-            targetForward = ComputeForward2D(target, _asset.transform);        
+            targetForward = ComputeForward2D(playerTarget, _asset.transform); 
             _forward.transform.forward = targetForward;
 
             yield return null;
 
-            moveInput = new Vector2(0,1);
+            moveInput = new Vector2(0f, 1f);
+
             yield return null;
         }
+
+        while (ComputeDistance2D(_asset.transform, cameraTarget) > 1f) {
+
+            targetForward = ComputeForward2D(cameraTarget, _asset.transform);
+            _cam.transform.forward = targetForward;
+
+            targetForward = ComputeForward2D(cameraTarget, _asset.transform);
+            _forward.transform.forward = targetForward;
+
+            yield return null;
+
+            moveInput = new Vector2(0f, 1f);
+
+            yield return null;
+        }
+
+        targetForward = ComputeForward2D(cameraTarget, _asset.transform);
+        _cam.transform.forward = targetForward;
+
+        targetForward = ComputeForward2D(cameraTarget, _asset.transform);
+        _forward.transform.forward = targetForward;
+
+        yield return null;
+
+        moveInput = new Vector2(0f, 1f);
+
+        yield return null;
+
+        ///
 
         moveInput = new Vector2(0f, 0f);
 
@@ -601,6 +634,7 @@ public class PXCharacterController : MonoBehaviour {
 
         yield return new WaitForSeconds(.2f);
 
+        CameraManager.Instance.SwitchVirtualCamera(_vcam, _virtualCamera);
         InputManager.Instance.SetActionMap("Player");
 
         yield break;
