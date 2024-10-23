@@ -6,10 +6,10 @@ public class Trail : MonoBehaviour {
     [SerializeField] GameObject vfx;
 
     private VisualEffect effect;
-    private PXCharacterController ctx;
+    private PXController ctx;
     void Awake() {
         effect = vfx.GetComponent<VisualEffect>();
-        ctx = asset.GetComponent<PXCharacterController>();
+        ctx = asset.GetComponent<PXController>();
     }
     void Update() {
         effect.SetVector2("RefDirection", ctx.MoveInput);

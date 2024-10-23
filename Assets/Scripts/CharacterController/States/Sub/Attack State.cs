@@ -1,5 +1,5 @@
 public class AttackState : BaseState, IContextInit, IVFXInit {
-    public AttackState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
+    public AttackState(PXController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {

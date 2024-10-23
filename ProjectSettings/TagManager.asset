@@ -23,6 +23,7 @@ TagManager:
   - PlayerVirtualCamera
   - GameVirtualCamera
   - MenuVirtualCamera
+  - Interact
   layers:
   - Default
   - TransparentFX

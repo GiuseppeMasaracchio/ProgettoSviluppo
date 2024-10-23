@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundedState : BaseState, IContextInit {
-    public GroundedState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
+    public GroundedState(PXController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
         IsRootState = true; //SOLO SU GROUNDED, AIRBORNE E DEAD (ROOT STATES)
     }
     public override void EnterState() {

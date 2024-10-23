@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class FallState : BaseState, IContextInit, IWalk {
-    public FallState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
+    public FallState(PXController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base(currentContext, stateHandler, animHandler) {
         //State Constructor
     }
     public override void EnterState() {

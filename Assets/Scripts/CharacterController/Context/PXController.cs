@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PXCharacterController : MonoBehaviour {
+public class PXController : MonoBehaviour {
     //State reference
     BaseState _currentRootState;
     BaseState _currentSubState;
@@ -39,10 +38,14 @@ public class PXCharacterController : MonoBehaviour {
     InputAction _attackAction;
     InputAction _dashAction;
 
+    InputAction _interactAction; //Interaction
+
     InputAction _confirmAction; //Dialogue
 
     [SerializeField] SphereCollider _attackCollider;
     [SerializeField] SphereCollider _dashCollider;
+
+    private Collider _interactionCollider;
 
     //Root States
     private bool isDead = false;
@@ -62,6 +65,7 @@ public class PXCharacterController : MonoBehaviour {
     private bool onPlatform;
     private bool onSlope;
     private bool onDialog;
+    private bool onInteract;
     private bool canDMG = true;
     private bool canDash;
     private bool canAttack = true;
@@ -214,6 +218,8 @@ public class PXCharacterController : MonoBehaviour {
         }
     }
     public void OnJump(InputAction.CallbackContext input) {
+        if (onInteract) { return; }
+
         if (input.ReadValue<float>() != 0f) {
             SetUpJump();
         }
@@ -245,6 +251,14 @@ public class PXCharacterController : MonoBehaviour {
 
         DialogConfirm();
     }
+    public void OnInteract(InputAction.CallbackContext input) {
+        if (!onInteract) { return; }
+
+        if (input.ReadValue<float>() == 0f) { return; }
+
+        InteractController ctx = _interactionCollider.GetComponent<InteractController>();
+        DialogEnter(ctx.PlayerTarget.transform, ctx.FocusTarget.transform, ctx.VCam);
+    }
     private void SubscribeCallbacks() {
         _jumpAction.started += OnJump;
         _jumpAction.performed += OnJump;
@@ -269,6 +283,10 @@ public class PXCharacterController : MonoBehaviour {
         _confirmAction.started += OnConfirm;
         _confirmAction.performed += OnConfirm;
         _confirmAction.canceled += OnConfirm;
+
+        _interactAction.started += OnInteract;
+        _interactAction.performed += OnInteract;
+        _interactAction.canceled += OnInteract;
     }
 
     private void UnsubscribeCallbacks() {
@@ -296,6 +314,9 @@ public class PXCharacterController : MonoBehaviour {
         _confirmAction.performed -= OnConfirm;
         _confirmAction.canceled -= OnConfirm;
         
+        _interactAction.started -= OnInteract;
+        _interactAction.performed -= OnInteract;
+        _interactAction.canceled -= OnInteract;
     }
 
     private void InitializeActions() {
@@ -306,6 +327,8 @@ public class PXCharacterController : MonoBehaviour {
         _dashAction = InputManager.Instance.GetPlayerInput().actions["Dash"];
 
         _confirmAction = InputManager.Instance.GetPlayerInput().actions["Confirm"];
+
+        _interactAction = InputManager.Instance.GetPlayerInput().actions["Interact"];
     }
 
     //External Callbacks
@@ -317,7 +340,6 @@ public class PXCharacterController : MonoBehaviour {
 
     public void DialogExit() {
         onDialog = false;
-        //InputManager.Instance.SetActionMap("Player");
     }
 
     private void DialogConfirm() {
@@ -339,11 +361,19 @@ public class PXCharacterController : MonoBehaviour {
         if (other.tag == "PowerUps") {
             InitializePowerUps();
         }
+        if (other.tag == "Interact") {
+            onInteract = true;
+            _interactionCollider = other;
+        }
     }
     private void OnTriggerExit(Collider other) {
         if (other.tag == "Platform") {
             onPlatform = false;
             _playerparent.transform.SetParent(null); //Platform fix (2)
+        }
+        if (other.tag == "Interact") {
+            onInteract = false;
+            _interactionCollider = null;
         }
     }
     private void OnCollisionEnter(Collision collision) {
@@ -584,7 +614,7 @@ public class PXCharacterController : MonoBehaviour {
 
         Vector3 targetForward = ComputeForward2D(playerTarget, _asset.transform);        
 
-        while (ComputeDistance2D(_asset.transform, playerTarget) > .5f) {
+        while (ComputeDistance2D(_asset.transform, playerTarget) > .3f) {
 
             targetForward = ComputeForward2D(playerTarget, _asset.transform);
             _cam.transform.forward = targetForward;
@@ -599,7 +629,7 @@ public class PXCharacterController : MonoBehaviour {
             yield return null;
         }
 
-        while (ComputeDistance2D(_asset.transform, cameraTarget) > 1f) {
+        while (ComputeDistance2D(_asset.transform, cameraTarget) > 3f) {
 
             targetForward = ComputeForward2D(cameraTarget, _asset.transform);
             _cam.transform.forward = targetForward;

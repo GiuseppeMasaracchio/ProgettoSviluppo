@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class DeadState : BaseState, IContextInit {
-    public DeadState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
+    public DeadState(PXController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
         IsRootState = true; //SOLO SU GROUNDED, AIRBORNE E DEAD (ROOT STATES)
     }
     public override void EnterState() {
