@@ -257,6 +257,8 @@ public class PXController : MonoBehaviour {
         if (input.ReadValue<float>() == 0f) { return; }
 
         InteractController ctx = _interactionCollider.GetComponent<InteractController>();
+        ctx.OnInteract();
+
         DialogEnter(ctx.PlayerTarget.transform, ctx.FocusTarget.transform, ctx.VCam);
     }
     private void SubscribeCallbacks() {
