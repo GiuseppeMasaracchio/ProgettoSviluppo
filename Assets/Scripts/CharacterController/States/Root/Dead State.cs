@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DeadState : BaseState, IContextInit {
-    public DeadState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
+    public DeadState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
         IsRootState = true; //SOLO SU GROUNDED, AIRBORNE E DEAD (ROOT STATES)
     }
     public override void EnterState() {
@@ -12,9 +10,12 @@ public class DeadState : BaseState, IContextInit {
 
         Ctx.AnimHandler.SetAlt(true);
         Ctx.AnimHandler.PlayDirect(AnimHandler.Dead());
+        VFXManager.Instance.SpawnFollowVFX(EnvVFX.Shock, Ctx.Player.transform.position, Ctx.Player.transform.rotation, Ctx.Player);
+        VFXManager.Instance.SpawnFollowVFX(EnvVFX.Smoke, Ctx.Player.transform.position, Ctx.Player.transform.rotation, Ctx.Player);
+
         GravityOff();
         InitializeContext();
-        Ctx.StartCoroutine("ReloadScene");
+        ScenesManager.Instance.ReloadOnDeath();
     }
     public override void UpdateState() {
         //Update logic

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundedState : BaseState, IContextInit {
-    public GroundedState(TPCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
+    public GroundedState(PXCharacterController currentContext, StateHandler stateHandler, AnimHandler animHandler) : base (currentContext, stateHandler, animHandler){
         IsRootState = true; //SOLO SU GROUNDED, AIRBORNE E DEAD (ROOT STATES)
     }
     public override void EnterState() {
@@ -51,9 +51,9 @@ public class GroundedState : BaseState, IContextInit {
 
         Ctx.AttackCount = 1;
 
-        if (Ctx.PowerUps >= 1) {
+        if (Ctx.PlayerInfo.PowerUps >= 1) {
             Ctx.JumpCount = 2;
-        } else if (Ctx.PowerUps <= 0) {
+        } else if (Ctx.PlayerInfo.PowerUps <= 0) {
             Ctx.JumpCount = 1;
         }
     }

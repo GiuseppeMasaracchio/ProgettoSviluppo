@@ -21,12 +21,16 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Visor
-  m_Shader: {fileID: -6465566751694194690, guid: 6d7c78f650dd4ca41b53a7d6eec0ea80, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b8ac1c5459eda464697c823cbb66f26f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
+<<<<<<< HEAD
   m_InvalidKeywords:
   - _STATES_IDLE
+=======
+  m_InvalidKeywords: []
+>>>>>>> Develop
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -117,6 +121,7 @@ Material:
     - _Glossiness: 0.59999996
     - _GlossinessSource: 0
     - _GlossyReflections: 1
+    - _HealthDisplayColor: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1

@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PivotRotation : MonoBehaviour {
+    [SerializeField]
+    [Range(10f, 100f)] float speed;
     void Update() {
-        this.transform.Rotate(Vector3.up);
+        this.transform.Rotate(Vector3.up * speed * Time.deltaTime);
     }
 }

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 9edc04a8c6ab54543a2afd6679a844a3
+<<<<<<<< HEAD:Assets/TextMesh Pro/Examples & Extras/Scenes/26 - Dropdown Placeholder Example.unity.meta
+guid: bcf74fbf55ee15a4296d8caf0ca1429b
+========
+guid: 4fdbdc769b54c25459914b582f2ca4b7
+>>>>>>>> Paolo:Assets/Scenes/GameScenes/Warp 1/Warp 1.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

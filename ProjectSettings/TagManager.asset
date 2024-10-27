@@ -16,6 +16,13 @@ TagManager:
   - Lamp
   - DragPoint
   - Pod
+  - Checkpoint
+  - PowerUps
+  - PlayerAttacks
+  - Light
+  - PlayerVirtualCamera
+  - GameVirtualCamera
+  - MenuVirtualCamera
   layers:
   - Default
   - TransparentFX
@@ -26,16 +33,16 @@ TagManager:
   - Level
   - VFX
   - Enemy
-  - Cam2
+  - Camera_1
   - Ground
   - Secondary Lights
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Checkpoint
+  - Walls
+  - Companion
+  - Obstacles
+  - PlayerAttacks
+  - Pods
+  - Camera_2
   - 
   - 
   - 
