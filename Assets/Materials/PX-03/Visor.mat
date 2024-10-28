@@ -25,12 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-<<<<<<< HEAD
-  m_InvalidKeywords:
-  - _STATES_IDLE
-=======
   m_InvalidKeywords: []
->>>>>>> Develop
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
