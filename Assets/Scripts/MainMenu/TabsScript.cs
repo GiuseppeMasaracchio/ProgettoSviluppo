@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TabsScript : MonoBehaviour
+public class TabsScript : GroupHandler
 {
     private Button _currentTab;
     private GameObject _currentBox;
@@ -24,21 +24,8 @@ public class TabsScript : MonoBehaviour
 
     //Metodi da usare altrove
 
-    public void BoxSwitch(GameObject newBox) {
-        if (_currentBox == newBox) return;
-
-        _currentBox.SetActive(false);
-        newBox.SetActive(true);
-        _currentBox = newBox;
-    }
-
-    public void TabSelect(Button newTab) {
-        if (_currentTab == newTab) return;
-
-        _currentTab.Select();
-        _currentTab.interactable = true;
-        newTab.Select();
-        newTab.interactable = false;
-        _currentTab = newTab;
+    public void Test(Button test) {
+        Debug.Log("E' stato premuto il tab: " + test.name);
+        Debug.Log("Prova EventSystem: " + EventSystem.current.currentSelectedGameObject.name);
     }
 }
