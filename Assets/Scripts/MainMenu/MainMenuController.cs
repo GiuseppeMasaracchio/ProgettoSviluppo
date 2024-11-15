@@ -2,14 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.Audio;
 
 public class MainMenuController : MonoBehaviour
 {
     public enum boxName {
         mainBox,
-        TabsBox,
+        tabsBox,
         videoBox,
-        audioBox
+        audioBox,
+        controlsBox,
+        accessBox,
+        credits
     }
 
     boxName currentBox;
@@ -23,7 +27,22 @@ public class MainMenuController : MonoBehaviour
     private Button[] _mainButtons;
     private Button[] _tabs;
     private Selectable[] _videoSettings;
-    private Selectable[] _audioSettings;
+    private Slider[] _audioSettings;
+
+    [Header("VideoSettings")]
+    [SerializeField] Dropdown _resDropdown;
+    [SerializeField] Dropdown _qualityDropdown;
+    [SerializeField] Toggle _fullscreen;
+
+    private UnityEngine.UI.Button _currentTab;
+
+
+    private void Awake() {
+        if (Instance != this) Destroy(Instance);
+        
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
 
     // Start is called before the first frame update
@@ -43,15 +62,51 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void Test() {
-        Debug.Log(gameObject.name);
+        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
     }
 
+    //private void InitVideoSettings() {
+    //    DropdownField _resDropdown = _videoSettings[0].GetComponent<DropdownField>();
+    //    DropdownField _qualityDropdown = _videoSettings[1].GetComponent<DropdownField>();
+    //    UnityEngine.UI.Toggle _fullscreen = _videoSettings[2].GetComponent<UnityEngine.UI.Toggle>();
+
+    //    foreach (Resolution r in Screen.resolutions) {
+    //        _resDropdown.choices.Add(r.width + "x" + r.height);
+    //    }
+    //    _resDropdown.value = _resDropdown.choices.Last();
+
+    //    _qualityDropdown.choices = QualitySettings.names.ToList();
+    //    _qualityDropdown.value = _qualityDropdown.choices.Last();
+
+    //    _fullscreen.value = Screen.fullScreen;
+    //}
+
+    //private void InitAudioSettings() {
+    //    float x;
+    //    //AudioMixer _mixer to do
+    //    _mixer.GetFloat("MasterVolume", out x);
+    //    _audioSettings[0].value = x;
+
+    //    _mixer.GetFloat("MusicVolume", out x);
+    //    _audioSettings[2].value = x;
+
+    //    _mixer.GetFloat("EffectsVolume", out x);
+    //    _audioSettings[3].value = x;
+    //}
+
+    private void TabSelect(Button tab) {
+        if (_currentTab == tab) return;
+        if(_currentTab != null) _currentTab.interactable = true;
+
+        tab.interactable = false;
+        _currentTab = tab;
+    }
     private void SelectFirst(boxName newBox) {
         switch (newBox) {
             case boxName.mainBox:
                 EventSystem.current.firstSelectedGameObject = _mainButtons[0].gameObject;
                 break;
-            case boxName.TabsBox:
+            case boxName.tabsBox:
                 EventSystem.current.firstSelectedGameObject = _tabs[0].gameObject;
                 break;
             case boxName.videoBox:
@@ -63,19 +118,24 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
-    public void SwitchBox(boxName newBox) {
+    public void SwapperWrapper(int val) {
+        SwitchBox((boxName)val);
+    }
+
+    private void SwitchBox(boxName newBox) {
         if (currentBox == newBox) return;
-        if (currentBox != boxName.TabsBox) _boxes[(int)currentBox].SetActive(false);
-        
+        if (currentBox != boxName.tabsBox) _boxes[(int)currentBox].SetActive(false);
+        if ((int)newBox > 1) TabSelect(EventSystem.current.currentSelectedGameObject.GetComponent<Button>());
+
         _boxes[(int)newBox].SetActive(true);
         SelectFirst(newBox);
         currentBox = newBox;
     }
     private void FillArrays() {
         _mainButtons = _boxes[(int)boxName.mainBox].GetComponentsInChildren<Button>();
-        _tabs = _boxes[(int)boxName.TabsBox].GetComponentsInChildren<Button>();
+        _tabs = _boxes[(int)boxName.tabsBox].GetComponentsInChildren<Button>();
         _videoSettings = _boxes[(int)boxName.videoBox].GetComponentsInChildren<Selectable>();
-        _audioSettings = _boxes[(int)boxName.audioBox].GetComponentsInChildren<Selectable>();
+        _audioSettings = _boxes[(int)boxName.audioBox].GetComponentsInChildren<Slider>();
     }
 
     public void OnNavigate(InputAction.CallbackContext input) {
@@ -88,7 +148,7 @@ public class MainMenuController : MonoBehaviour
                 _mainButtons[i].Select();
                 break;
 
-            case boxName.TabsBox:
+            case boxName.tabsBox:
                 if (i < 0) i = _tabs.Length;
                 _tabs[i].Select();
                 break;
@@ -106,28 +166,19 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void OnQuit(InputAction.CallbackContext input) {
-        if (input.phase != InputActionPhase.Started) return;
+        //if (input.phase != InputActionPhase.Started) return;
 
         if (currentBox == boxName.mainBox) ScenesManager.Instance.QuitGame();
 
-        if (currentBox == boxName.TabsBox) {
+        if (currentBox == boxName.tabsBox) {
             SwitchBox(boxName.mainBox);
         }
-        else SwitchBox(boxName.TabsBox);
+        else SwitchBox(boxName.tabsBox);
         
     }
 
     //public void OnPoint(InputAction.CallbackContext input) {
-    //    Vector2 temp = input.ReadValue<Vector2>();
-    //    Vector2 pos = _boxes[(int)currentBox].GetComponentInChildren<Selectable>().transform.position;
-    //    Cursor.SetCursor(null, pos, CursorMode.Auto);
-        
-    //    if(input.phase == InputActionPhase.Performed) {
-
-    //     if(temp.y > 0.4f ) {
-
-    //        }   
-    //    }
+    //    EventSystem.current.currentSelectedTarget = null;
     //}
     #region AudioSettings
     public void SetMasterVolume(float val) {
