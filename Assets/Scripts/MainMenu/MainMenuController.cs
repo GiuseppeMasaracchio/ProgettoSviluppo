@@ -3,11 +3,15 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
+using Unity.VisualScripting;
 
 public class MainMenuController : MonoBehaviour
 {
+    [System.Serializable]
     public enum boxName {
         mainBox,
+        pauseBox,
         tabsBox,
         videoBox,
         audioBox,
@@ -25,6 +29,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] GameObject[] _boxes;
 
     private Button[] _mainButtons;
+    private Button[] _pauseButtons;
     private Button[] _tabs;
     private Selectable[] _videoSettings;
     private Slider[] _audioSettings;
@@ -34,8 +39,8 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] Dropdown _qualityDropdown;
     [SerializeField] Toggle _fullscreen;
 
-    private UnityEngine.UI.Button _currentTab;
-
+    private Button _currentTab;
+    private bool isMainMenu;
 
     private void Awake() {
         if (Instance != this) Destroy(Instance);
@@ -50,9 +55,10 @@ public class MainMenuController : MonoBehaviour
     {
         //_pointAction = InputManager.Instance.GetPlayerInput().actions["Point"];
 
-        currentBox = boxName.mainBox;
+        currentBox = isMainMenu ? boxName.mainBox : boxName.pauseBox;
         FillArrays();
         SelectFirst(currentBox);
+
     }
 
     // Update is called once per frame
@@ -106,6 +112,9 @@ public class MainMenuController : MonoBehaviour
             case boxName.mainBox:
                 EventSystem.current.firstSelectedGameObject = _mainButtons[0].gameObject;
                 break;
+            case boxName.pauseBox:
+                EventSystem.current.firstSelectedGameObject = _pauseButtons[0].gameObject;
+                break;
             case boxName.tabsBox:
                 EventSystem.current.firstSelectedGameObject = _tabs[0].gameObject;
                 break;
@@ -125,7 +134,7 @@ public class MainMenuController : MonoBehaviour
     private void SwitchBox(boxName newBox) {
         if (currentBox == newBox) return;
         if (currentBox != boxName.tabsBox) _boxes[(int)currentBox].SetActive(false);
-        if ((int)newBox > 1) TabSelect(EventSystem.current.currentSelectedGameObject.GetComponent<Button>());
+        if ((int)newBox > 2) TabSelect(EventSystem.current.currentSelectedGameObject.GetComponent<Button>());
 
         _boxes[(int)newBox].SetActive(true);
         SelectFirst(newBox);
@@ -133,10 +142,21 @@ public class MainMenuController : MonoBehaviour
     }
     private void FillArrays() {
         _mainButtons = _boxes[(int)boxName.mainBox].GetComponentsInChildren<Button>();
+        _pauseButtons = _boxes[(int)boxName.pauseBox].GetComponentsInChildren<Button>();
         _tabs = _boxes[(int)boxName.tabsBox].GetComponentsInChildren<Button>();
         _videoSettings = _boxes[(int)boxName.videoBox].GetComponentsInChildren<Selectable>();
         _audioSettings = _boxes[(int)boxName.audioBox].GetComponentsInChildren<Slider>();
     }
+
+    public void ContinueButton() {}
+
+    public void StartButton() { }
+
+    public void QuitButton() { }
+
+    public void ResumeButton() { }
+
+    public void MainMenuButton() { }
 
     public void OnNavigate(InputAction.CallbackContext input) {
         Vector2 temp = input.ReadValue<Vector2>();
@@ -146,6 +166,10 @@ public class MainMenuController : MonoBehaviour
             case boxName.mainBox:
                 if (i < 0) i = _mainButtons.Length;
                 _mainButtons[i].Select();
+                break;
+
+            case boxName.pauseBox:
+                if (i < 0) i = _pauseButtons.Length;
                 break;
 
             case boxName.tabsBox:
@@ -170,8 +194,12 @@ public class MainMenuController : MonoBehaviour
 
         if (currentBox == boxName.mainBox) ScenesManager.Instance.QuitGame();
 
+        if (currentBox == boxName.pauseBox) return; //to do Resume
+
         if (currentBox == boxName.tabsBox) {
-            SwitchBox(boxName.mainBox);
+            if(isMainMenu) SwitchBox(boxName.mainBox);
+
+            if (!isMainMenu) SwitchBox(boxName.pauseBox);
         }
         else SwitchBox(boxName.tabsBox);
         
