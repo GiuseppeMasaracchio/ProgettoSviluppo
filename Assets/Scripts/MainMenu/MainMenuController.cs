@@ -24,6 +24,8 @@ public class MainMenuController : MonoBehaviour
     public static MainMenuController Instance { get; private set; }
 
     private InputAction _pointAction;
+    private InputAction _navigateAction;
+    private InputAction _quitAction;
     //To do: subscribe alle InputAction già presenti in MenuController
 
     [SerializeField] GameObject[] _boxes;
@@ -56,15 +58,28 @@ public class MainMenuController : MonoBehaviour
         //_pointAction = InputManager.Instance.GetPlayerInput().actions["Point"];
 
         currentBox = isMainMenu ? boxName.mainBox : boxName.pauseBox;
+
+        InitializeActions();
+        SubscribeCallbacks();
+
         FillArrays();
         SelectFirst(currentBox);
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    private void InitializeActions() {
+        _navigateAction = InputManager.Instance.GetPlayerInput().actions["Navigate"];
+        _quitAction = InputManager.Instance.GetPlayerInput().actions["Quit"];
+    }
+
+    private void SubscribeCallbacks() {
+        _navigateAction.performed += OnNavigate;
+        _quitAction.started += OnQuit;
     }
 
     public void Test() {
@@ -148,15 +163,25 @@ public class MainMenuController : MonoBehaviour
         _audioSettings = _boxes[(int)boxName.audioBox].GetComponentsInChildren<Slider>();
     }
 
-    public void ContinueButton() {}
+    public void ContinueButton() {
+        MenuController.Instance.ContinueGame();
+    }
 
-    public void StartButton() { }
+    public void StartButton() {
+        //MenuController.Instance.SubmitMenu();
+    }
 
-    public void QuitButton() { }
+    public void QuitButton() {
+        Application.Quit();
+    }
 
-    public void ResumeButton() { }
+    public void ResumeButton() { 
+        //Time.timeScale = 1f;
+    }
 
-    public void MainMenuButton() { }
+    public void MainMenuButton() {
+        MenuController.Instance.ReturnToMainMenu();
+    }
 
     public void OnNavigate(InputAction.CallbackContext input) {
         Vector2 temp = input.ReadValue<Vector2>();
@@ -205,9 +230,7 @@ public class MainMenuController : MonoBehaviour
         
     }
 
-    //public void OnPoint(InputAction.CallbackContext input) {
-    //    EventSystem.current.currentSelectedTarget = null;
-    //}
+    
     #region AudioSettings
     public void SetMasterVolume(float val) {
         //_mixer.SetFloat("Master", val);
